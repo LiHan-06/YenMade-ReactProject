@@ -1,36 +1,33 @@
 //首頁
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import './App.css'
+// import './index.css'
+
+const API_BASE = import.meta.env.VITE_API_BASE;
+const API_PATH = import.meta.env.VITE_API_PATH;
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    {/* Section / Hero */}
+      <div className='container-fluid p-0'>
+        <img src="./src/assets/images/Hero_bg_pc.png" alt="Hero picture" className="w-100 d-block"/>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+    {/* Section / NewArrivals */}
+    {/*Section / Features*/}
+    {/*Section / Testimonials*/}
+    {/* Section / FinalCTA */}
+      <div className='container-fluid p-0'>
+        <img src="./src/assets/images/FinalCTA_bg_img.jpg" alt="FinalCTA picture" className="w-100 d-block"/>
+        <h2>買的不是食物</h2>
+        <h2>是替日常留點餘裕</h2>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
-}
+} 
 
 export default App
