@@ -3,77 +3,54 @@ import { getProductsApi } from "./api/products";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
-  const [currentTab, setCurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("所有商品"); // 預設值改為中文
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProductsApi()
-      .then((res) => {
-        setProducts(res.data);
+    const fetchData = async () => {
+      try {
+        const res = await getProductsApi();
+        // 檢查 res.data 是否存在
+        setProducts(res.data || []);
+      } catch (err) {
+        console.error("API 請求出錯:", err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("API Error:", err);
-        setLoading(false);
-      });
+      }
+    };
+    fetchData();
   }, []);
 
-  // 過濾邏輯
+  // 篩選邏輯：對齊 API 的中文分類名稱
   const filteredProducts =
-    currentTab === "all"
+    currentTab === "所有商品"
       ? products
       : products.filter((p) => p.category === currentTab);
 
+  if (loading) return <div className="text-center mt-5">醃漬中...</div>;
+
   return (
     <div className="all-products-page">
-      {/* 1. Banner - 使用相對路徑，Vite 會處理 src 內的圖片 */}
+      {/* Banner 區域 */}
       <div className="mt-104 d-none d-lg-block">
         <img
           src="src/assets/images/第二階段更新/img/Banner_allproducts.png"
           alt="banner"
-          className="img-fluid w-100 h-100"
-        />
-      </div>
-      <div className="mt-104 d-lg-none">
-        <img
-          src="src/assets/images/第二階段更新/img/Banner_allproducts_mobile.png"
-          alt="mobile banner"
-          className="img-fluid w-100 h-100"
+          className="img-fluid w-100"
         />
       </div>
 
       <main className="container mb-160">
-        {/* 2. Breadcrumb */}
-        <div className="d-none d-sm-block ms-3">
-          <div className="px-0 px-md-4 px-lg-6 py-3">
-            <nav
-              style={{ "--bs-breadcrumb-divider": "'〉'" }}
-              aria-label="breadcrumb"
-            >
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item breadcrumb-link">
-                  <a href="/" className="text-decoration-none py-9">
-                    <i className="bi bi-house-door fs-8"></i>
-                  </a>
-                </li>
-                <li className="breadcrumb-item breadcrumb-link active">
-                  <span className="fs-8 py-9">所有商品</span>
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-
         <div className="row justify-content-center">
-          {/* 3. Sidebar Categories */}
-          <div className="col-md-3 col-12 ms--10">
+          {/* 左側分類選單：ID 必須與 API 的 category 欄位字串完全一致 */}
+          <div className="col-md-3">
             <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile">
               {[
-                { id: "all", label: "所有商品" },
-                { id: "hot", label: "熱門商品" },
-                { id: "classic", label: "經典系列" },
-                { id: "cool", label: "清爽系列" },
-                { id: "spicy", label: "勁辣系列" },
+                { id: "所有商品", label: "所有商品" },
+                { id: "熱門商品", label: "熱門商品" },
+                { id: "經典系列", label: "經典系列" },
+                { id: "清爽系列", label: "清爽系列" },
+                { id: "勁辣系列", label: "勁辣系列" },
               ].map((tab) => (
                 <li key={tab.id} className="nav-item border-bottom mb-md-2">
                   <button
@@ -87,45 +64,14 @@ const AllProducts = () => {
             </ul>
           </div>
 
-          {/* 4. Product Grid */}
+          {/* 右側商品列表 */}
           <div className="col-12 col-md-9 mt-md-0 mt-4 ps-md-2">
             <div className="row">
-              {loading ? (
-                <div className="text-center py-5">醃漬中...</div>
-              ) : filteredProducts.length > 0 ? (
+              {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <div className="col-6 col-md-4" key={product.id}>
                     <div className="card mb-3 mb-md-4 border-0 position-relative product-hover-card">
-                      {/* Badge Area */}
-                      <div
-                        className="position-absolute top-0 start-0 m-2 d-flex flex-column align-items-start"
-                        style={{ zIndex: 5 }}
-                      >
-                        {product.is_new && (
-                          <span
-                            className="badge mb-2 px-2 py-1"
-                            style={{
-                              backgroundColor: "#DDD292",
-                              color: "black",
-                            }}
-                          >
-                            新品
-                          </span>
-                        )}
-                        {product.is_hot && (
-                          <span
-                            className="badge px-2 py-1"
-                            style={{
-                              backgroundColor: "#DDD292",
-                              color: "black",
-                            }}
-                          >
-                            熱門
-                          </span>
-                        )}
-                      </div>
-
-                      {/* API Image */}
+                      {/* 使用 API 欄位: image_url */}
                       <img
                         src={product.image_url}
                         alt={product.title}
@@ -134,33 +80,23 @@ const AllProducts = () => {
 
                       <div className="card-body p-0 ps-md-3 pt-md-3 text-md-start text-center">
                         <p className="card-title mb--4">{product.title}</p>
-                        <p className="d-inline mb-1 fs-md-8 fs-9">NTD$</p>
-                        <p className="d-inline fs-md-6 fs-8">{product.price}</p>
-
-                        {/* Mobile Add to Cart */}
-                        <button className="btn btn-sm d-block bg-primary-50 d-md-none pb-12 mt-2 z w-100">
-                          <i className="bi bi-cart3 d-inline"></i>
-                          <span className="fs-9 ms-1">加入購物車</span>
-                        </button>
+                        <p className="d-inline fs-md-6 fs-8">
+                          NTD$ {product.price}
+                        </p>
                       </div>
 
-                      {/* Desktop Hover Effect */}
+                      {/* Hover 效果區 */}
                       <div className="product-hover-content d-none d-md-flex">
                         <div className="hover-text-area">
-                          <p>
-                            {product.description_short ||
-                              "職人手作，鮮甜脆口。"}
-                          </p>
+                          <p>{product.summary || "新鮮直送，美味醃漬。"}</p>
                         </div>
                         <div className="hover-cart-area">
-                          <div className="d-flex justify-content-between align-items-center">
-                            <div>
-                              <p className="card-title mb-0">{product.title}</p>
-                              <p className="mb-0">NTD$ {product.price}</p>
+                          <div className="d-flex justify-content-between align-items-center w-100 px-3">
+                            <div className="text-white text-start">
+                              <p className="mb-0">{product.title}</p>
+                              <p className="mb-0">${product.price}</p>
                             </div>
-                            <button className="btn p-0">
-                              <i className="bi bi-cart3 text-white fs-4"></i>
-                            </button>
+                            <i className="bi bi-cart3 text-white fs-4"></i>
                           </div>
                         </div>
                       </div>
@@ -173,7 +109,13 @@ const AllProducts = () => {
                 ))
               ) : (
                 <div className="col-12 text-center py-5">
-                  小廚房忙碌中，敬請期待
+                  <p>該分類目前沒有商品，來看看其他的吧！</p>
+                  <button
+                    onClick={() => setCurrentTab("所有商品")}
+                    className="btn btn-outline-primary"
+                  >
+                    回所有商品
+                  </button>
                 </div>
               )}
             </div>
