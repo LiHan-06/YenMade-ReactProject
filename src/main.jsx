@@ -9,6 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./assets/scss/all.scss";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
+import AllProducts from "./AllProducts";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById("root")).render(
     <Header variant="home" />
     {/* 其他頁面使用 */}
     <Header />
+    <AllProducts />
     <Footer />
   </StrictMode>,
 );
