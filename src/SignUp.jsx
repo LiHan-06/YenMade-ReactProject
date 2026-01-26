@@ -54,8 +54,8 @@ const SignUp = () => {
 
   return (
     <div className="d-flex align-items-center justify-content-center min-vh-100">
-      {/* 若 Header 已修復，請取消註解 */}
-      {/* <Header /> */}
+      
+      <Header />
 
       {/*<main className="auth-page-wrapper w-100">*/}
         <main className="auth-page-wrapper w-100 mx-auto">

@@ -10,10 +10,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './assets/scss/all.scss';
 import SignIn from './SignIn.jsx';
 import SignUp from './SignUp.jsx';
+import Header from './Header';  
+import Footer from './Footer';  
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <SignUp/>
+    {/* 元件首頁用 */}
+    <Header variant="home" />
+    {/* 其他頁面使用 */}
+    <Header />
+    <Footer />
+     <SignUp/>
   </StrictMode>,
-)
-
+);
