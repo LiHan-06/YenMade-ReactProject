@@ -1,1 +1,2 @@
 // header
+export default Header;

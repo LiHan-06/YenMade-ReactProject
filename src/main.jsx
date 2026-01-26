@@ -8,10 +8,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import './assets/scss/all.scss';
+import SignIn from './SignIn.jsx';
+import SignUp from './SignUp.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <SignUp/>
   </StrictMode>,
 )
 

@@ -4,6 +4,10 @@
 }
 /* Register Page (auth-page) */
 .auth-page {
+  // 💡 放在這裡：確保整個區塊在寬螢幕時水平居中
+  margin-left: auto;
+  margin-right: auto;
+
   /* 兩欄等高 */
   .auth-columns { align-items: stretch; }
 
