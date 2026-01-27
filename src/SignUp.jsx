@@ -1,6 +1,6 @@
 // 註冊頁
 import React, { useState } from 'react';
-
+import logoImg from './assets/images/logo/Type=Logo_Horizontal.svg';
 // 子元件：社群註冊按鈕 (增加代碼複用性)
 const SocialButton = ({ icon, text, provider }) => {
   const handleSocialRegister = (e) => {
@@ -53,21 +53,11 @@ const SignUp = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center min-vh-100">
-      
-      <Header />
-
-      {/*<main className="auth-page-wrapper w-100">*/}
-        <main className="auth-page-wrapper w-100 mx-auto">
-        <div className="container-md py-4 auth-page signup-page">
+    <main className="auth-page-wrapper w-100">
+    <div className="container-md py-4 auth-page signup-page">
           <div className="text-center mb-4">
-            <img 
-              className="d-block mx-auto mb-4" 
-              src="/assets/images/logo/Type=Logo_Horizontal.svg" 
-              alt="logo" 
-              style={{ maxWidth: '200px' }}
-            />
-            <h2 className="text-neutral-500 fw-semibold">
+            <img src={logoImg} className="d-block mx-auto mb-4" alt="logo"  />
+            <h2 className="text-center fw-semibold mb-4">
               加入 YenMade <br className="d-lg-none" /> 醃造所
             </h2>
           </div>
@@ -183,9 +173,6 @@ const SignUp = () => {
           </div>
         </div>
       </main>
-
-      {/* <Footer /> */}
-    </div>
   );
 };
 

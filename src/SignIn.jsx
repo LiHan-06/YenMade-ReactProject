@@ -1,5 +1,6 @@
 //登入頁
 import React, { useState } from 'react';
+import logoImg from './assets/images/logo/Type=Logo_Horizontal.svg';
 // 導入同事做好的共用元件
 //import Header from './Header'; 
 //import Footer from './Footer';
@@ -45,11 +46,10 @@ const SignIn = () => {
 
   return (
     <>
-      {/* 使用同事做的 Header */}
-      {/*<Header />*/}
 
       <main className="auth-page-wrapper">
-        <div className="container-md py-4 mt-100 auth-page login-page mb-80">
+        <div className="container-md py-4 auth-page login-page mb-80">
+          <img src={logoImg} className="d-block mx-auto mb-4" alt="logo"  />
           <h2 className="text-center fw-semibold mb-4">
             登入 YenMade<br className="d-lg-none" /> 醃造所
           </h2>
@@ -176,9 +176,6 @@ const SignIn = () => {
           </div>
         </div>
       </main>
-
-      {/* 使用同事做的 Footer */}
-      {/*<Footer />*/}
     </>
   );
 };

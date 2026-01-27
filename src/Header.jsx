@@ -210,7 +210,7 @@ function Header({ variant = "default" }) {
                     <button
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
-                      onclick="#"
+                      onClick="#"
                     >
                       登入
                     </button>
@@ -222,7 +222,7 @@ function Header({ variant = "default" }) {
                     <button
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
-                      onclick="#"
+                      onClick="#"
                     >
                       註冊
                     </button>

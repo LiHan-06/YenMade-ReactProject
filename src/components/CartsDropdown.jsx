@@ -24,7 +24,7 @@ function CartsDropdown() {
                 <input
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
-                  value="1"
+                  defaultValue="1"
                   id="buyNumber"
                 />
                 <button type="button" className="btn border-0 p-9">
@@ -62,7 +62,7 @@ function CartsDropdown() {
                 <input
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
-                  value="1"
+                  defaultValue="1"
                   id="buyNumber"
                 />
                 <button type="button" className="btn border-0 p-9">
@@ -100,7 +100,7 @@ function CartsDropdown() {
                 <input
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
-                  value="2"
+                  defaultValue="2"
                   id="buyNumber"
                 />
                 <button type="button" className="btn border-0 p-9">
@@ -144,3 +144,4 @@ function CartsDropdown() {
     </>
   );
 }
+export default CartsDropdown;
