@@ -56,6 +56,17 @@ function App() {
 
   const reviewPages = chunk(reviews, 3);
 
+  const [ctaBg, setCtaBg] = useState(finalCtaMobile);
+  useEffect(() => {
+    const handleResize = () => {
+      setCtaBg(window.innerWidth >= 768 ? finalCtaDesktop : finalCtaMobile);
+    };
+    handleResize(); // 初始化
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  
   return (
     <>
     {/* Section / Hero */}
@@ -464,20 +475,20 @@ function App() {
       </div>
     </section>
     {/* Section / FinalCTA */}
-    <section className="position-relative">
-      <img
-        src={window.innerWidth >= 576 ? finalCtaDesktop : finalCtaMobile}
-        alt="Final CTA"
-        className="w-100 h-100"
-        style={{ objectFit: "cover" }}
-      />
-      <div className="text-center position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+    <section
+      className="shopping-bg shopping-bg-height d-flex justify-content-center align-items-center"
+      style={{ backgroundImage: `url(${ctaBg})` }}
+    >
+      <div className="text-center pb-8 pb-sm-0">
         <h2 className="fs-3 fs-md-2">買的不是食物</h2>
         <h2 className="fs-3 fs-md-2 mb-4">是替日常留點餘裕</h2>
         <h5 className="fs-0 fs-md-5 fw-semibold text-neutral-600 mb-4">
           把時間留給重要的人，晚餐交給我們
         </h5>
-        <a href="#" className="btn btn-outline-secondary-600 btn-sm">
+        <a
+          href="../pages/allproducts.html"
+          className="btn btn-outline-secondary-600 btn-sm mb-5 mb-sm-0"
+        >
           <span className="fs-0">挑一味</span>
         </a>
       </div>
@@ -486,4 +497,4 @@ function App() {
   )
 } 
 
-export default App
+export default App;

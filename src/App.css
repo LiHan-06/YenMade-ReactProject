@@ -49,51 +49,69 @@
     }
 /* Section Features Stop*/
 
-.review-card {
-  width: 100%;
-  max-width: 416px;
-  aspect-ratio: 400 / 380;
-  margin: 0 auto;
-  position: relative;  /* meta-box 絕對定位 */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  padding: 2px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
+/*Section Testimonials Start*/
+  .review-card {
+    width: 100%;
+    max-width: 416px;
+    aspect-ratio: 400 / 380;
+    margin: 0 auto;
+    position: relative;  /* meta-box 絕對定位 */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 2px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
 
-.review-text {
-  width: 230px;          /* 設計稿文字寬度 */
-  height: 100px;         /* 設計稿文字高度 */
-  word-break: break-word;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
+  .review-text {
+    width: 230px;          /* 設計稿文字寬度 */
+    height: 100px;         /* 設計稿文字高度 */
+    word-break: break-word;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 
-.review-text p {
-  font-size: 0.5rem;
-  line-height: 1.4;
-}
+  .review-text p {
+    font-size: 0.5rem;
+    line-height: 1.4;
+  }
 
-/* meta-box 右上 */
-.meta-box {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  text-align: center;
-}
+  /* meta-box 右上 */
+  .meta-box {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    text-align: center;
+  }
 
-.meta-box img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-}
+  .meta-box img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 
-.meta-box .role,
-.meta-box .name {
-  display: block;
-}
+  .meta-box .role,
+  .meta-box .name {
+    display: block;
+  }
+/*Section Testimonials Stop*/
+
+/* Section FinalCTA Start*/
+  .shopping-bg {
+    background-size: cover;      
+    background-position: center;  
+    background-repeat: no-repeat; 
+  }
+
+  .shopping-bg-height {
+    height: calc(100vh - 44px); 
+
+    @media (min-width: 768px) {
+      height: calc(100vh - 288px); 
+    }
+  }
+/* Section FinalCTA Stop*/
