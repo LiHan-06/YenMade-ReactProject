@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import './App.css'
 
+import heroBg from './assets/images/Hero_bg_pc.png';
 import NewArrivalsbg from './assets/images/New_bg_img.jpg';
 import finalCtaMobile from './assets/images/FinalCTA_bg_mobile.png';
 import finalCtaDesktop from './assets/images/FinalCTA_bg_img.jpg';
@@ -58,9 +59,32 @@ function App() {
   return (
     <>
     {/* Section / Hero */}
-    <div className='container-fluid p-0'>
-      <img src="./src/assets/images/Hero_bg_pc.png" alt="Hero picture" className="w-100 d-block"/>
-    </div>
+    <section 
+    className="hero vh-100 position-relative"
+    style={{
+    backgroundImage: `url(${heroBg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  }}
+    >
+      <div className="container col-lg-6  text-white text-center">
+        <h1 className="fs-1 text-white d-inline-block mb-2 px-4 py-9 ">
+        把家的味道<span className="d-none d-sm-inline">，</span>
+        <span className="d-block d-sm-inline">醃進日常</span>
+        </h1>
+        <h3 className="fs-3 text-white d-block px-2 pb-5 mb-100 text-nowrap">
+          一口熟悉的味道，是最溫柔的陪伴
+        </h3>
+        <a href="#" className="btn border btn-font-lg text-white px-4 py-9 mb-224"
+          >立即選購，醃起你的餐桌日常</a>
+
+        <div className="position-absolute scroll-indicator text-white d-flex flex-column align-items-center">
+          <p className="mb-2 px-2 py-3">Scroll</p>
+          <i className="bi bi-arrow-down"></i>
+        </div>
+      </div>
+    </section>
     {/* Section / NewArrivals */}
     <div style={{ height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}>
       {/* 上方 65% 背景區 */}
@@ -174,7 +198,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="./src/assets/images/Vector-green.svg" alt="#" />
+                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
                   <span
                     className="position-absolute top-50 start-50 translate-middle h4 text-white">01</span>
                 </div>
@@ -193,13 +217,13 @@ function App() {
               <div className="col-7 position-relative d-flex align-items-end">
                 <div className="carrot-img-wrap ms-auto">
                 <img
-                  src="./src/assets/images/Feature-img.jpg"
+                  src="/src/assets/images/Feature-img.jpg"
                   alt="蔬果圖片"
                   className="w-100 carrot-img"
                 />
                 </div>
                 <img
-                  src="./src/assets/images/illustration/Illustration_salt.svg"
+                  src="/src/assets/images/illustration/Illustration_salt.svg"
                   alt="灑鹽插圖"
                   className="illustration-salt"
                 />
@@ -211,13 +235,13 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="pickled-img-wrap ms-auto">
                 <img
-                  src="./src/assets/images/Feature-img-1.jpg"
+                  src="/src/assets/images/Feature-img-1.jpg"
                   alt="醃製過程圖"
                   className="w-100 main-img pickled-img"
                 />
                 </div>
                 <img
-                  src="./src/assets/images/illustration/Illustration_cut.svg"
+                  src="/src/assets/images/illustration/Illustration_cut.svg"
                   alt="切菜插圖"
                   className="illustration-cut"
                 />
@@ -225,7 +249,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="./src/assets/images/Vector-orange.svg" alt="#" />
+                  <img src="/src/assets/images/Vector-orange.svg" alt="#" />
                   <span
                     className="position-absolute top-50 start-50 translate-middle h4 text-white">02</span>
                 </div>
@@ -245,7 +269,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="./src/assets/images/Vector-green.svg" alt="#" />
+                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
                   <span
                     className="position-absolute top-50 start-50 translate-middle h4 text-white">03</span>
                 </div>
@@ -263,12 +287,12 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="cut-img-wrap ms-auto">
                 <img
-                  src="./src/assets/images/Feature-img-2.jpg"
+                  src="/src/assets/images/Feature-img-2.jpg"
                   alt="切菜圖"
                   className="w-100 main-img cut-img"/>
                 </div>
                 <img
-                  src="./src/assets/images/illustration/Illustration_glass_jam.svg"
+                  src="/src/assets/images/illustration/Illustration_glass_jam.svg"
                   alt="瓶罐插圖"
                   className="illustration-glass"
                 />
@@ -280,7 +304,7 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="can-img-wrap ms-auto">
                 <img
-                  src="./src/assets/images/Feature-img-3.jpg"
+                  src="/src/assets/images/Feature-img-3.jpg"
                   alt="罐裝醃製瓶罐圖"
                   className="w-100 can-img"/>
                 </div>
@@ -288,7 +312,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="./src/assets/images/Vector-orange.svg" alt="#" />
+                  <img src="/src/assets/images/Vector-orange.svg" alt="#" />
                   <span
                     className="position-absolute top-50 start-50 translate-middle h4 text-white">04</span>
                 </div>
@@ -308,7 +332,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="./src/assets/images/Vector-green.svg" alt="#" />
+                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
                   <span
                     className="position-absolute top-50 start-50 translate-middle h4 text-white">05</span>
                 </div>
@@ -326,13 +350,13 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
               <div className="rice-img-wrap ms-auto">
                 <img
-                  src="./src/assets/images/Feature-img-4.jpg"
+                  src="/src/assets/images/Feature-img-4.jpg"
                   alt="醃漬物配飯糰"
                   className="w-100 main-img rice-img"/>
               </div>
               </div>
                 <img
-                  src="./src/assets/images/illustration/Illustration_plate.svg"
+                  src="/src/assets/images/illustration/Illustration_plate.svg"
                   alt="盤子插圖"
                   className="illustration-plate"
                 />
