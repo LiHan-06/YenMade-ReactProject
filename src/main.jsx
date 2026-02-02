@@ -13,8 +13,8 @@ import AllProducts from "./AllProducts";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* 元件首頁用 */}
-    <Header variant="home" />
+    {/* 元件首頁用 <Header variant="home" /> */}
+
     {/* 其他頁面使用 */}
     <Header />
     <AllProducts />
