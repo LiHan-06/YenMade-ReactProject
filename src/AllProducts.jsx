@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { getProductsApi } from "./api/products";
+import { useState, useEffect } from "react";
+import { getProductsApi } from "./api/products.js";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
-  const [currentTab, setCurrentTab] = useState("所有商品"); // 預設值改為中文
+  const [currentTab, setCurrentTab] = useState("所有商品");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getProductsApi();
-        // 檢查 res.data 是否存在
-        setProducts(res.data || []);
+        const data = await getProductsApi();
+        setProducts(data || []);
       } catch (err) {
         console.error("API 請求出錯:", err);
       } finally {
@@ -21,7 +20,6 @@ const AllProducts = () => {
     fetchData();
   }, []);
 
-  // 篩選邏輯：對齊 API 的中文分類名稱
   const filteredProducts =
     currentTab === "所有商品"
       ? products
@@ -31,18 +29,59 @@ const AllProducts = () => {
 
   return (
     <div className="all-products-page">
-      {/* Banner 區域 */}
+      {/* Desktop Banner（原 HTML） */}
       <div className="mt-104 d-none d-lg-block">
         <img
-          src="src/assets/images/第二階段更新/img/Banner_allproducts.png"
+          src="/src/assets/images/第二階段更新/img/Banner_allproducts.png"
           alt="banner"
           className="img-fluid w-100"
         />
       </div>
 
+      {/* Mobile Banner（原 HTML） */}
+      <div className="mt-104 d-lg-none">
+        <img
+          src="/src/assets/images/第二階段更新/img/Banner_allproducts_mobile.png"
+          alt="mobile banner"
+          className="img-fluid w-100"
+        />
+      </div>
+
+      {/* breadcrumb（原 HTML） */}
+      <div className="d-none d-sm-block ms-3">
+        <div className="px-0 px-md-4 px-lg-6 py-3">
+          <nav
+            style={{ "--bs-breadcrumb-divider": "'〉'" }}
+            aria-label="breadcrumb"
+          >
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item breadcrumb-link">
+                <a
+                  href="/yenmade/pages/index.html"
+                  className="text-decoration-none py-9"
+                >
+                  <i className="bi bi-house-door fs-8"></i>
+                </a>
+              </li>
+              <li
+                className="breadcrumb-item breadcrumb-link active"
+                aria-current="page"
+              >
+                <a
+                  href="/yenmade/pages/allproducts.html"
+                  className="text-decoration-none fs-8 py-9"
+                >
+                  所有商品
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
       <main className="container mb-160">
         <div className="row justify-content-center">
-          {/* 左側分類選單：ID 必須與 API 的 category 欄位字串完全一致 */}
+          {/* 左側分類選單 */}
           <div className="col-md-3">
             <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile">
               {[
@@ -54,6 +93,7 @@ const AllProducts = () => {
               ].map((tab) => (
                 <li key={tab.id} className="nav-item border-bottom mb-md-2">
                   <button
+                    type="button"
                     className={`nav-link border-0 nav-item-base ${currentTab === tab.id ? "active" : ""}`}
                     onClick={() => setCurrentTab(tab.id)}
                   >
@@ -71,7 +111,6 @@ const AllProducts = () => {
                 filteredProducts.map((product) => (
                   <div className="col-6 col-md-4" key={product.id}>
                     <div className="card mb-3 mb-md-4 border-0 position-relative product-hover-card">
-                      {/* 使用 API 欄位: image_url */}
                       <img
                         src={product.image_url}
                         alt={product.title}
@@ -96,14 +135,14 @@ const AllProducts = () => {
                               <p className="mb-0">{product.title}</p>
                               <p className="mb-0">${product.price}</p>
                             </div>
-                            <i className="bi bi-cart3 text-white fs-4"></i>
+                            <i className="bi bi-cart3 text-white fs-4" />
                           </div>
                         </div>
                       </div>
                       <a
                         href={`#/product/${product.id}`}
                         className="stretched-link"
-                      ></a>
+                      />
                     </div>
                   </div>
                 ))
@@ -111,6 +150,7 @@ const AllProducts = () => {
                 <div className="col-12 text-center py-5">
                   <p>該分類目前沒有商品，來看看其他的吧！</p>
                   <button
+                    type="button"
                     onClick={() => setCurrentTab("所有商品")}
                     className="btn btn-outline-primary"
                   >
