@@ -207,25 +207,25 @@ function Header({ variant = "default" }) {
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
                   <li>
-                    <button
+                    <div
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
-                      onclick="#"
                     >
                       登入
-                    </button>
+                      {/* <Link to="SignIn">登入</Link> */}
+                    </div>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />
                   </li>
                   <li>
-                    <button
+                    <div
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
-                      onclick="#"
                     >
                       註冊
-                    </button>
+                      {/* <Link to="SignUp">註冊</Link> */}
+                    </div>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />

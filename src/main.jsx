@@ -9,13 +9,15 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./assets/scss/all.scss";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
+import AProduct from "./AProduct.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* 元件首頁用 */}
-    <Header variant="home" />
+    {/* <Header variant="home" /> */}
     {/* 其他頁面使用 */}
     <Header />
+    <AProduct />
     <Footer />
   </StrictMode>,
 );

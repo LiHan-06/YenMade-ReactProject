@@ -71,3 +71,15 @@
 // .card-body-hover {
 //   height: 80px;
 // }
+
+.variantBtn {
+  &:active {
+    color: white !important;
+  }
+  &:hover {
+    color: white;
+  }
+  &:focus {
+    color: white;
+  }
+}

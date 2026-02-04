@@ -25,7 +25,8 @@ function CartsDropdown() {
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
                   value="1"
-                  id="buyNumber"
+                  name="buyNumber"
+                  readOnly
                 />
                 <button type="button" className="btn border-0 p-9">
                   <i className="bi bi-plus-lg fs-6"></i>
@@ -63,7 +64,8 @@ function CartsDropdown() {
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
                   value="1"
-                  id="buyNumber"
+                  name="buyNumber"
+                  readOnly
                 />
                 <button type="button" className="btn border-0 p-9">
                   <i className="bi bi-plus-lg fs-6"></i>
@@ -101,7 +103,8 @@ function CartsDropdown() {
                   type="text"
                   className="form-control border-0 text-center text-dark fw-semibold p-0"
                   value="2"
-                  id="buyNumber"
+                  name="buyNumber"
+                  readOnly
                 />
                 <button type="button" className="btn border-0 p-9">
                   <i className="bi bi-plus-lg fs-6"></i>
@@ -135,7 +138,6 @@ function CartsDropdown() {
           <button
             className="dropdown-item btn-font-lg text-center py-3"
             type="button"
-            onclick="location.href='../pages/member-checkout.html'"
           >
             前往結帳
           </button>
