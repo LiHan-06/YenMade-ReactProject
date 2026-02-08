@@ -101,4 +101,7 @@ function Footer() {
 }
 
 export default Footer;
+<<<<<<< HEAD
 
+=======
+>>>>>>> feature/HeaderFooter
