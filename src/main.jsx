@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
@@ -15,12 +16,15 @@ import Header from './Header';
 import SignUp from './SignUp.jsx';
 import Footer from './Footer';  
 import SignIn from './SignIn.jsx';
+import OrderSuccess from './OrderSuccess.jsx';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* 統一在此管理全域佈局 */}
+    <BrowserRouter> 
     <Header />
-    <SignUp />
+    <SignIn />
     <Footer />
+    </BrowserRouter>
   </StrictMode>
 );
