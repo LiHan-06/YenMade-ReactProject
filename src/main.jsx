@@ -10,6 +10,8 @@ import "./assets/scss/all.scss";
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import AProduct from "./AProduct.jsx";
+import CheckOut from "./CheckOut.jsx";
+// import CartStepOne from "./CartStepOne.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,7 +19,6 @@ createRoot(document.getElementById("root")).render(
     {/* <Header variant="home" /> */}
     {/* 其他頁面使用 */}
     <Header />
-    <AProduct />
     <Footer />
   </StrictMode>,
 );
