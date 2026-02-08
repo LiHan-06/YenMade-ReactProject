@@ -6,7 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
+import './index.css'
+import OrderReview from './OrderReview.jsx'
 
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
 import "./assets/scss/all.scss";
