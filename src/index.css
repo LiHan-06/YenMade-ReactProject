@@ -1,8 +1,4 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -32,10 +28,10 @@ a:hover {
 
 body {
   margin: 0;
-  display: block;      /* 確保內容是由上而下排列，而不是橫向排列 */
+  display: block; /* 確保內容是由上而下排列，而不是橫向排列 */
   width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;  /* 防止出現橫向滾動條 */
+  overflow-x: hidden; /* 防止出現橫向滾動條 */
 }
 
 h1 {

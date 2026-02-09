@@ -7,6 +7,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
+import OrderReview from "./OrderReview.jsx";
 
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
 import "./assets/scss/all.scss";
@@ -19,6 +20,7 @@ import SignIn from "./SignIn.jsx";
 import OrderSuccess from "./OrderSuccess.jsx";
 import AProduct from "./AProduct.jsx";
 import CheckOut from "./CheckOut.jsx";
+import AllProducts from "./AllProducts.jsx";
 // import CartStepOne from "./CartStepOne.jsx";
 
 createRoot(document.getElementById("root")).render(
