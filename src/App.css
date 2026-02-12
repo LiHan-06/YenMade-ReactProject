@@ -38,6 +38,12 @@
     opacity: 1;
     margin-left: 4px;
     }
+
+    @media (max-width: 768px) {
+    .flavors-heading {
+      margin-top: 120px;
+    }
+  }
 /* Section NewArrivals Stop*/
 
 /* Section Features Start*/
@@ -98,6 +104,40 @@
   .meta-box .name {
     display: block;
   }
+
+  @media (max-width: 768px) {
+
+    .review-card {
+      max-width: 320px;
+    }
+
+    .review-text {
+      width: 200px;
+    }
+
+    .review-text p {
+      font-size: 0.3rem;
+    }
+
+    .meta-box {
+      top: 6px;
+      right: 12px;
+    }
+
+    .meta-box img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .meta-box .name {
+      font-size: 0.75rem;
+    }
+
+    .meta-box .role {
+      font-size: 0.65rem;
+    }
+
+}
 /*Section Testimonials Stop*/
 
 /* Section FinalCTA Start*/
