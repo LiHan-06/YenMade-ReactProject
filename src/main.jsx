@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       {/* <Header variant="home" /> */}
       <Header />
-      <App />
+      <OrderReview />
       <Footer />
     </BrowserRouter>
   </StrictMode>,
