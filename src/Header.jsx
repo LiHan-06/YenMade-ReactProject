@@ -89,7 +89,7 @@ function Header({ variant = "default" }) {
                     <a
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       aria-current="page"
-                      href="#"
+                      href="../pages/allproducts.html"
                     >
                       <span className="btn-font-lg">所有商品</span>
                     </a>
@@ -99,7 +99,7 @@ function Header({ variant = "default" }) {
                   >
                     <a
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      href="../pages/about.html"
                     >
                       <span className="btn-font-lg">關於我們</span>
                     </a>
@@ -109,7 +109,7 @@ function Header({ variant = "default" }) {
                   >
                     <a
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      href="../pages/blog.html"
                     >
                       <span className="btn-font-lg">部落格</span>
                     </a>
@@ -119,7 +119,7 @@ function Header({ variant = "default" }) {
                   >
                     <a
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      href="../pages/faq.html"
                     >
                       <span className="btn-font-lg">常見問題</span>
                     </a>
@@ -139,7 +139,7 @@ function Header({ variant = "default" }) {
                   >
                     <a
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      href="../pages/member-center.html"
                     >
                       <span className="btn-font-lg">訂單追蹤</span>
                     </a>
@@ -152,14 +152,14 @@ function Header({ variant = "default" }) {
                 <div className="d-flex justify-content-between mt-auto nav-btn">
                   <a
                     className="btn btn-outline-light border-0 border-end btn-font-lg w-50 px-3 py-2"
-                    href="#"
+                    href="/yenmade/pages/finished-checkout.html"
                   >
                     <i className="bi bi-person-circle me-2"></i>
                     <span>登入</span>
                   </a>
                   <a
                     className="btn btn-outline-light border-0 btn-font-lg w-50 px-3 py-2"
-                    href="#"
+                    href="/yenmade/pages/member-checkout.html"
                   >
                     <i className="bi bi-cart3 me-2"></i>
                     <span>購物車</span>
@@ -207,25 +207,25 @@ function Header({ variant = "default" }) {
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
                   <li>
-                    <div
+                    <button
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
+                      onClick="#"
                     >
                       登入
-                      {/* <Link to="SignIn">登入</Link> */}
-                    </div>
+                    </button>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />
                   </li>
                   <li>
-                    <div
+                    <button
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
+                      onClick="#"
                     >
                       註冊
-                      {/* <Link to="SignUp">註冊</Link> */}
-                    </div>
+                    </button>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />
@@ -242,6 +242,7 @@ function Header({ variant = "default" }) {
                 >
                   <i className={`bi bi-cart3 fs-5 ${style.icon}`}></i>
                 </button>
+                <CartsDropdown />
               </div>
             </div>
           </div>
