@@ -1,5 +1,8 @@
 // header
-import CartsDropdown from "./components/CartsDropdown.jsx";
+import { NavLink } from "react-router";
+import { useState, useEffect } from "react";
+import { getCartsApi, useCart } from "./api/carts.jsx";
+
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
 
 // style 對照表
@@ -25,19 +28,37 @@ const headerVariant = {
 function Header({ variant = "default" }) {
   const style = headerVariant[variant];
 
+  // 購物車 api
+  const [cart, setCart] = useState([]);
+
+  useEffect(() => {
+    getCartsApi()
+      .then((data) => {
+        console.log("完整 API 回傳:", data);
+        setCart(data);
+      })
+      .catch((error) => {
+        console.error("取得購物車失敗", error);
+      });
+  }, []);
+
+  // badge
+  // 只要 cart 改變，cartCount 就會重新計算。
+  const { cartCount } = useCart();
+
   return (
     <header>
       <nav
         className={`navbar navbar-expand-lg navbar-dark pageScroll py-5 ${style.navbar}`}
       >
         <div className="container px-4">
-          <a className="navbar-brand p-0 me-lg-45" href="index.html">
+          <NavLink className="navbar-brand p-0 me-lg-45" to="/">
             <img
               className={`${style.logo} logo-size`}
               src={Logo_Horizontal}
               alt="yenmade's logo"
             />
-          </a>
+          </NavLink>
           <button
             className={`navbar-toggler border-0 py-2 ${style.toggler}`}
             type="button"
@@ -86,63 +107,63 @@ function Header({ variant = "default" }) {
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       aria-current="page"
-                      href="#"
+                      to="/AllProducts"
                     >
                       <span className="btn-font-lg">所有商品</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      to="/About"
                     >
                       <span className="btn-font-lg">關於我們</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      to="/Blog"
                     >
                       <span className="btn-font-lg">部落格</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      to="/FAQ"
                     >
                       <span className="btn-font-lg">常見問題</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      to="/SignIn"
                     >
                       <span className="btn-font-lg">會員專區</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="#"
+                      to="/SignIn"
                     >
                       <span className="btn-font-lg">訂單追蹤</span>
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -150,20 +171,20 @@ function Header({ variant = "default" }) {
             <div className="offcanvas-footer d-lg-none">
               <div className="container mb-6">
                 <div className="d-flex justify-content-between mt-auto nav-btn">
-                  <a
+                  <NavLink
                     className="btn btn-outline-light border-0 border-end btn-font-lg w-50 px-3 py-2"
-                    href="#"
+                    to="/SignIn"
                   >
                     <i className="bi bi-person-circle me-2"></i>
                     <span>登入</span>
-                  </a>
-                  <a
+                  </NavLink>
+                  <NavLink
                     className="btn btn-outline-light border-0 btn-font-lg w-50 px-3 py-2"
-                    href="#"
+                    to="/CheckOut"
                   >
                     <i className="bi bi-cart3 me-2"></i>
                     <span>購物車</span>
-                  </a>
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -196,10 +217,10 @@ function Header({ variant = "default" }) {
                 ></i>
               </button>
               {/* <!-- 會員頭像 --> */}
-              <div className="btn-group ms-3">
+              <div className="btn-group ms-2">
                 <button
                   type="button"
-                  className="d-none d-lg-inline dropdown-toggle bg-transparent border-0 p-2"
+                  className="d-none d-lg-inline bg-transparent border-0 p-2"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
@@ -211,8 +232,9 @@ function Header({ variant = "default" }) {
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
                     >
-                      登入
-                      {/* <Link to="SignIn">登入</Link> */}
+                      <NavLink to="SignIn" className="text-decoration-none">
+                        登入
+                      </NavLink>
                     </div>
                   </li>
                   <li>
@@ -223,8 +245,9 @@ function Header({ variant = "default" }) {
                       className="dropdown-item btn-font-lg text-center py-3"
                       type="button"
                     >
-                      註冊
-                      {/* <Link to="SignUp">註冊</Link> */}
+                      <NavLink to="SignUp" className="text-decoration-none">
+                        註冊
+                      </NavLink>
                     </div>
                   </li>
                   <li>
@@ -233,15 +256,20 @@ function Header({ variant = "default" }) {
                 </ul>
               </div>
               {/* <!-- 購物車 --> */}
-              <div className="btn-group ms-3 d-none d-lg-block">
-                <button
-                  type="button"
-                  className="d-none d-lg-inline dropdown-toggle bg-transparent border-0 p-2"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+              <div className="btn-group ms-2 d-none d-lg-block">
+                <NavLink
+                  className="d-none d-lg-inline bg-transparent border-0 p-2"
+                  to="CheckOut"
                 >
                   <i className={`bi bi-cart3 fs-5 ${style.icon}`}></i>
-                </button>
+
+                  {/* 商品數量 badge */}
+                  {cartCount > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {cartCount > 99 ? "99+" : cartCount}
+                    </span>
+                  )}
+                </NavLink>
               </div>
             </div>
           </div>

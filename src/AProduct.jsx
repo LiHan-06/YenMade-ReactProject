@@ -2,12 +2,12 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { supabase } from "./lib/supabase.js";
-
+import { addToCartApi, useCart } from "./api/carts.jsx";
 import Breadcrumb from "./components/BreadCrumb";
 
 function AProduct() {
-  // const { id } = useParams();
-  const id = "23d5e2f5-1bfb-4a3e-9348-dbc1c2a23b59";
+  const { id } = useParams();
+  // const id = "23d5e2f5-1bfb-4a3e-9348-dbc1c2a23b59";
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -17,6 +17,7 @@ function AProduct() {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
+    // 取得單一產品 api
     const fetchProduct = async () => {
       const { data, error } = await supabase
         .from("products")
@@ -26,7 +27,6 @@ function AProduct() {
         .single(); // 只拿一筆,加上 .single() 會直接回傳物件而非陣列
 
       if (!error && data) {
-        // console.log("成功抓到資料:", data); // Debug 用
         setProduct(data);
         // 預設選取第一個規格
         // 確保 API 回傳後立即設定初始規格
@@ -41,17 +41,6 @@ function AProduct() {
 
     fetchProduct();
   }, [id]);
-
-  //切換規格，存取購買數量
-  //購買時只能選擇一種規格設定購買數量
-  const handleVariantSelect = (variant) => {
-    setSelectedVariant(variant);
-    if (quantity > variant.stock) {
-      setQuantity(variant.stock);
-    } else if (variant.stock > 0 && quantity === 0) {
-      setQuantity(1);
-    }
-  };
 
   // 控制購買數量
   // 數量增加
@@ -68,12 +57,36 @@ function AProduct() {
     }
   };
 
+  // 加入購物車
+  const { addToCart } = useCart();
+  const handleAddToCart = async () => {
+    try {
+      setLoading(true);
+      addToCart({
+        product_id: product.id,
+        variant_id: selectedVariant.id,
+        quantity: quantity,
+      });
+      // await addToCartApi({
+      //   product_id: product.id,
+      //   variant_id: selectedVariant.id,
+      //   quantity: quantity,
+      // });
+      alert("成功加入購物車");
+    } catch (error) {
+      console.log(error);
+      alert("加入購物車失敗");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) return <p>載入中...</p>;
   if (!product) return <p>找不到商品</p>;
 
   return (
     <main className="container">
-      <Breadcrumb />
+      <Breadcrumb product={product} />
       {/* <!-- 商品簡介 --> */}
       <div className="row justify-content-center">
         <div className="col-md-5 d-none d-md-block">
@@ -105,7 +118,7 @@ function AProduct() {
                 >
                   <div className="text-center">
                     <p className="btn-font-lg ls-10 mb-0">
-                      {variant.size}
+                      {/* {variant.size} */}
                       <span className="d-md-inline-block">{variant.name}</span>
                     </p>
                     <p className="btn-font-sm ls-10 mb-0">
@@ -115,32 +128,7 @@ function AProduct() {
                 </button>
               </div>
             ))}
-            {/* <div className="col-6">
-              <button
-                type="button"
-                className="w-100 border-1 border-primary-600 bg-white py-2 px-9"
-              >
-                <div className="text-center text-primary-600">
-                  <p className="btn-font-lg ls-10 mb-0">
-                    200ml <span className="d-md-inline-block">慢醃迷你</span>
-                  </p>
-                  <p className="btn-font-sm ls-10 mb-0">NTD$300</p>
-                </div>
-              </button>
-            </div>
-            <div className="col-6">
-              <button
-                type="button"
-                className="w-100 border-1 border-primary-600 bg-white py-2 px-9"
-              >
-                <div className="text-center text-primary-600">
-                  <p className="btn-font-lg ls-10 mb-0">
-                    500ml <span className="d-md-inline-block">慢醃大罐</span>
-                  </p>
-                  <p className="btn-font-sm ls-10 mb-0">NTD$500</p>
-                </div>
-              </button>
-            </div> */}
+
             {/* <!-- 購買數量的控制按鈕 --> */}
             <div className="col-12 my-9">
               <div className="input-group btn border-1 border-primary-600 bg-white p-2">
@@ -186,7 +174,11 @@ function AProduct() {
             </div>
             {/* <!-- 加入購物車 --> */}
             <div className="col-12">
-              <button type="button" className="btn btn-dark w-100 py-3">
+              <button
+                type="button"
+                className="btn btn-dark w-100 py-3"
+                onClick={handleAddToCart}
+              >
                 <p className="m-auto ls-10">
                   NTD$<span>${(selectedVariant?.price || 0) * quantity}</span>
                   <span className="mx-3">－</span>
@@ -225,32 +217,6 @@ function AProduct() {
           </div>
         ))}
 
-        {/* <div className="col-5">
-          <button
-            type="button"
-            className="btn btn-outline-primary w-100 py-2 px-9"
-          >
-            <div className="text-center text-primary-600">
-              <p className="btn-font-lg ls-10 mb-0">
-                200ml <span className="d-md-inline-block">慢醃迷你</span>
-              </p>
-              <p className="btn-font-sm ls-10 mb-0">NTD$300</p>
-            </div>
-          </button>
-        </div>
-        <div className="col-5">
-          <button
-            type="button"
-            className="btn btn-outline-primary w-100 py-2 px-9"
-          >
-            <div className="text-center text-primary-600">
-              <p className="btn-font-lg ls-10 mb-0">
-                500ml <span className="d-md-inline-block">慢醃大罐</span>
-              </p>
-              <p className="btn-font-sm ls-10 mb-0">NTD$500</p>
-            </div>
-          </button>
-        </div> */}
         {/* <!-- 購買數量的控制按鈕 --> */}
         <div className="col-10 my-9">
           <div className="input-group btn border-1 border-primary-600 bg-white p-2">
@@ -353,7 +319,7 @@ function AProduct() {
                   <ul className="fs-8 fw-bold ls-10 text-neutral-600">
                     {Object.keys(product.origin).map((key) => (
                       <li className="mb-2" key={key}>
-                        {key}:{product.origin[key]}
+                        {product.origin[key]}
                       </li>
                     ))}
                   </ul>
