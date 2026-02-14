@@ -1,21 +1,16 @@
+// auth.js
 import { supabase } from '../lib/supabase';
+import bcrypt from 'bcryptjs';
 
-// 登入功能：對應測試帳號 ym2026@gmail.com
-export const signIn = async (email, password) => {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  if (error) throw error;
-  return data; // 回傳包含 session 與 user 資訊
-};
+export const signUp = async (email, password, full_name) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-// ✅ 新增：註冊功能
-export const signUp = async (email, password) => {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+  const { data, error } = await supabase
+    .from('users')
+    .insert([{ email, password: hashedPassword, full_name }]);
+
   if (error) throw error;
   return data;
 };
+
+  
