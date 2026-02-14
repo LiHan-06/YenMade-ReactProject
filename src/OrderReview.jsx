@@ -66,22 +66,32 @@ function OrderReview() {
                 {/* 收件資訊 */}
                 <div className="col-12 col-md-6">
                     <div className="card mb-3">
-                    <div className="card-header">確認收件資訊</div>
-                    <div className="card-body">
-                        {[
-                        ["收件者姓名", "王小明"],
-                        ["手機號碼", "0912345678"],
-                        ["電子郵件", "yenmade@gmail.com"],
-                        ["收貨地址", "高雄市鹽埕區七賢三路123號2樓"],
-                        ["發票類型", "列印發票"],
-                        ["備註", "可以直接管理室代收，早上9點到晚上10點都有人員在，謝謝。"],
-                        ].map(([label, value], idx) => (
-                        <div className="row align-items-center mb-2" key={idx}>
-                            <p className="col-4">{label}</p>
-                            <p className="col-8">{value}</p>
+                        <p className="card-header">確認收件資訊</p>
+                        <div className="card-body">
+                            {[
+                            ["收件者姓名", "王小明"],
+                            ["手機號碼", "0912345678"],
+                            ["電子郵件", "yenmade@gmail.com"],
+                            ["收貨地址", "高雄市鹽埕區七賢三路123號2樓"],
+                            ["發票類型", "列印發票"],
+                            ["備註", "可以直接管理室代收，早上9點到晚上10點都有人員在，謝謝。"],
+                            ].map(([label, value], idx) => (
+                            <div className="row align-items-center mb-2" key={idx}>
+                                <p className="col-4">{label}</p>
+                                <p className="col-8">{value}</p>
+                            </div>
+                            ))}
+                            <div className="notice-box my-4">
+                                <div className="d-flex align-items-center justify-content-start text-start mb-2">
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span className="fw-bold">說明</span>
+                                </div>
+                            <ul>
+                                <li>當商品送達您指定地址時，請確認商品是否正確。</li>
+                                <li>當務必確認收件時段，多加留意陌生電話，以便物流順利將商品送到您手中。</li>
+                            </ul>
+                            </div>
                         </div>
-                        ))}
-                    </div>
                     </div>
                 </div>
                 </div>
@@ -98,9 +108,9 @@ function OrderReview() {
                         <p>NTD$1,000</p>
                         </div>
                         <div className="d-flex align-items-center mb-2">
-                        <div>運費</div>
-                        <i className="bi bi-info-circle ms-1"></i>
-                        <div className="ms-auto">NTD$300</div>
+                            <p>運費</p>
+                            <i className="bi bi-info-circle ms-1"></i>
+                            <p className="ms-auto">NTD$300</p>
                         </div>
                         <div className="d-flex justify-content-between border-bottom mb-2">
                         <p>優惠卷折扣</p>
@@ -118,17 +128,24 @@ function OrderReview() {
                 <div className="col-12 col-md-6">
                     <div className="card mb-3">
                     <div className="card-header">確認付款資訊</div>
-                    <div className="card-body">
-                        <div className="row align-items-center mb-2">
-                        <p className="col-4">付款方式</p>
-                        <p className="col-8">信用卡</p>
-                        </div>
-                        <div className="row align-items-center mb-2">
-                        <p className="col-4">卡號</p>
-                        <div className="col-8 d-flex align-items-center">
-                            <img src="#" alt="#" className="me-2" />
-                            <p className="mb-0">**** 1212</p>
-                        </div>
+                        <div className="card-body">
+                            <div className="row align-items-center mb-2">
+                            <p className="col-4">付款方式</p>
+                            <p className="col-8">信用卡</p>
+                            </div>
+                            <div className="row align-items-center mb-2">
+                            <p className="col-4">卡號</p>
+                            <div className="col-8 d-flex align-items-center">
+                                <img src="#" alt="#" className="me-2" />
+                                <p className="mb-0">**** 1212</p>
+                            </div>
+                            <div className="notice-box my-4">
+                                <div className="d-flex align-items-center justify-content-start text-start mb-2">
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <span className="fw-bold">注意事項</span>
+                                </div>
+                                <p className="mb-0">送出訂單後將立即進行信用卡扣款</p>
+                            </div>
                         </div>
                     </div>
                     </div>
