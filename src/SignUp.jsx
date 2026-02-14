@@ -1,68 +1,91 @@
-// 註冊頁
 import React, { useState } from 'react';
-import logoImg from './assets/images/logo/Type=Logo_Horizontal.svg';
+import { useNavigate, Link } from 'react-router-dom';
 import AuthLayout from './components/AuthLayout';
-import InputGroup from './components/InputGroup';
 import SocialButton from './components/SocialButton';
+import InputGroup from './components/InputGroup';
+import { signUp } from './api/auth'; 
 
 const SignUp = () => {
-  // 處理表單狀態管理初始化設定
   const [showPassword, setShowPassword] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState({
-    password: '',
-    password_confirm: ''
-  });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // 處理輸入變更 (為了比對兩次密碼)
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  // 表單送出處理
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const form = event.currentTarget;
-    const isPasswordMatch = formData.password === formData.password_confirm;
 
-    if (form.checkValidity() === false || !isPasswordMatch) {
-      event.preventDefault();
+    if (form.checkValidity() === false) {
       event.stopPropagation();
+      setValidated(true);
+      return;
     }
-    
+
     setValidated(true);
+    setLoading(true);
+
+    const formData = new FormData(form);
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const fullName = formData.get('fullName');
+
+    try {
+      // ✅ 呼叫 Supabase 註冊，並存入使用者姓名
+      await signUp(email, password, { full_name: fullName });
+      
+      alert('註冊成功！如果沒收到信，請檢查垃圾信箱或是在 Supabase 後台關閉 Email 驗證。');
+      navigate('/signin'); // 註冊完跳轉到登入頁
+      
+    } catch (error) {
+      alert('註冊失敗：' + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
- 
   return (
-          <AuthLayout title="加入 YenMade">
-            {/* 左：一般註冊 */}
-            <section className="col-lg-6">
-              <div className="card brand-card h-100">
-                <div className="card-body">
-                  <h3 className="h5 text-center fw-semibold mb-3">一般註冊</h3>
+    <AuthLayout title="加入 YenMade">
+      {/* 左側：一般註冊 */}
+      <section className="col-lg-6">
+        <div className="card brand-card h-100">
+          <div className="card-body">
+            <h3 className="h5 fw-semibold mb-3">帳號註冊</h3>
 
-                  <form 
-                    className={`row g-3 ${validated ? 'was-validated' : ''}`} 
-                    noValidate 
-                    onSubmit={handleSubmit}
-                  >
-                {/* ✅ 使用 InputGroup 元件簡化代碼 */}
-              <InputGroup label="姓名" name="full_name" placeholder="請輸入姓名" required feedback="請填寫姓名" />
-              <InputGroup label="手機號碼" name="phone" type="tel" placeholder="請輸入手機" pattern="[0-9+\-\s]{8,}" required feedback="請輸入有效手機號碼" />
-              <InputGroup label="電子郵件" name="email" type="email" placeholder="請輸入 Email" required feedback="請輸入有效 Email" />
+            <form 
+              className={`row g-3 ${validated ? 'was-validated' : ''}`} 
+              noValidate 
+              onSubmit={handleSubmit}
+            >
+              {/* 姓名欄位 */}
+              <InputGroup 
+                label="真實姓名" 
+                name="fullName" 
+                placeholder="請輸入您的姓名" 
+                required 
+                feedback="請輸入您的姓名" 
+              />
 
-              {/* ✅ 密碼欄位：手動撰寫以保留切換顯示邏輯 */}
+              {/* Email 欄位 */}
+              <InputGroup 
+                label="電子郵件" 
+                name="email" 
+                type="email"
+                placeholder="example@gmail.com" 
+                required 
+                feedback="請輸入有效的 Email 地址" 
+              />
+
+              {/* 密碼欄位 */}
               <div className="col-12">
-                <label className="form-label">密碼</label>
+                <label className="form-label">設定密碼</label>
                 <div className="input-group">
                   <input 
                     name="password" 
                     type={showPassword ? "text" : "password"} 
                     className="form-control"
-                    placeholder="請輸入密碼" 
-                    minLength="8"
-                    onChange={handleChange}
+                    placeholder="至少 6 位字元" 
                     required 
+                    minLength="6"
                   />
                   <button 
                     className="btn btn-outline-secondary" 
@@ -72,37 +95,40 @@ const SignUp = () => {
                     {showPassword ? '隱藏' : '顯示'}
                   </button>
                 </div>
-                <div className="invalid-feedback">請輸入至少 8 碼密碼</div>
+                <div className="invalid-feedback">密碼長度至少需 6 位</div>
               </div>
 
-              {/* ✅ 再次確認密碼 */}
+
               <div className="col-12">
-                <label className="form-label">再次輸入密碼</label>
-                <input 
-                  name="password_confirm" 
-                  type={showPassword ? "text" : "password"} 
-                  className={`form-control ${validated && formData.password !== formData.password_confirm ? 'is-invalid' : ''}`}
-                  placeholder="請再次輸入密碼" 
-                  onChange={handleChange}
-                  required 
-                />
-                <div className="invalid-feedback">
-                  {formData.password !== formData.password_confirm ? '兩次密碼需一致' : '請再次輸入密碼'}
+                <div className="form-check">
+                  <input className="form-check-input" type="checkbox" id="terms" required />
+                  <label className="form-check-label small" htmlFor="terms">
+                    我已閱讀並同意 <a href="#">服務條款</a> 與 <a href="#">隱私政策</a>
+                  </label>
+                  <div className="invalid-feedback">您必須同意條款後才能註冊</div>
                 </div>
               </div>
 
-              <div className="col-12 mt-4">
-                <button className="btn btn-color btn-lg w-100" type="submit">註冊</button>
+              <div className="col-12 d-flex gap-2">
+                <button 
+                  className="btn btn-color flex-fill" 
+                  type="submit" 
+                  disabled={loading}
+                >
+                  {loading ? '註冊中...' : '立即註冊'}
+                </button>
+                <Link className="btn btn-outline-secondary flex-fill" to="/signin">已有帳號？登入</Link>
               </div>
             </form>
           </div>
         </div>
       </section>
 
+      {/* 右側：社群註冊 */}
       <aside className="col-lg-6">
         <div className="card brand-card h-100">
           <div className="card-body">
-            <h3 className="h5 text-center fw-semibold mb-5">社群註冊</h3>
+            <h3 className="h5 fw-semibold mb-3">快速註冊</h3>
             <div className="vstack social-list">
               <SocialButton provider="facebook" text="使用 Facebook 註冊" />
               <SocialButton provider="line" text="使用 LINE 註冊" />
@@ -111,7 +137,7 @@ const SignUp = () => {
             </div>
           </div>
         </div>
-      </aside>
+      </aside> 
     </AuthLayout>
   );
 };

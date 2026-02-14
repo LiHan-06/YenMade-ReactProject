@@ -29,6 +29,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       {/* <Header variant="home" /> */}
       <Header />
+      <SignUp/>
       <Footer />
     </BrowserRouter>
   </StrictMode>,

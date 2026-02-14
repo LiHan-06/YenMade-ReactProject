@@ -1,6 +1,7 @@
 // header
 import CartsDropdown from "./components/CartsDropdown.jsx";
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
+import { Link } from "react-router-dom"; // ✅ 引入 Link
 
 // style 對照表
 const headerVariant = {
@@ -207,25 +208,23 @@ function Header({ variant = "default" }) {
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
                   <li>
-                    <button
+                    <Link
                       className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                      onClick="#"
+                      to="/signin" // ✅ 指向你在 main.jsx 設定的路徑
                     >
-                      登入
-                    </button>
+                    登入
+                    </Link>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />
                   </li>
                   <li>
-                    <button
-                      className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                      onClick="#"
+                    <Link
+                    className="dropdown-item btn-font-lg text-center py-3"
+                    to="/signup" // ✅ 指向註冊頁面
                     >
-                      註冊
-                    </button>
+                    註冊
+                    </Link>
                   </li>
                   <li>
                     <hr className="dropdown-divider m-auto" />
