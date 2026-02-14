@@ -136,7 +136,7 @@ function OrderReview() {
             </div>
 
             {/* 按鈕 */}
-            <div className="row mt-5 mb-5 gx-1"> 
+            <div className="row mt-5 mb-5 gx-1 justify-content-between"> 
                 <div className="col-12 col-md-2 px-1 mb-3">
                     <button type="button" className="btn btn-outline-dark w-100">返回上一步</button>
                 </div>
