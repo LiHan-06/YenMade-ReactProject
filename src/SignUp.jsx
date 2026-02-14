@@ -31,17 +31,17 @@ const SignUp = () => {
 
     try {
       // ✅ 呼叫 Supabase 註冊，並存入使用者姓名
-      await signUp(email, password, { full_name: fullName });
-      
-      alert('註冊成功！');
-      navigate('/signin'); // 註冊完跳轉到登入頁
-      
-    } catch (error) {
-      alert('註冊失敗：' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    await signUp(email, password, { full_name: fullName });
+    
+        alert('註冊成功！');
+        navigate('/signin'); // 註冊完跳轉到登入頁
+        
+  } catch (error) {
+    alert('註冊失敗：' + error.message);
+      } finally {
+        setLoading(false);
+  }
+    };
 
   return (
     <AuthLayout title="加入 YenMade">
