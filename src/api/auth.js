@@ -11,13 +11,10 @@ export const signIn = async (email, password) => {
 };
 
 // ✅ 新增：註冊功能
-export const signUp = async (email, password, metadata) => {
+export const signUp = async (email, password) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: metadata, // 這裡可以存使用者的姓名、電話等
-    },
   });
   if (error) throw error;
   return data;

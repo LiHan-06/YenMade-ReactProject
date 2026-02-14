@@ -33,7 +33,7 @@ const SignUp = () => {
       // ✅ 呼叫 Supabase 註冊，並存入使用者姓名
       await signUp(email, password, { full_name: fullName });
       
-      alert('註冊成功！如果沒收到信，請檢查垃圾信箱或是在 Supabase 後台關閉 Email 驗證。');
+      alert('註冊成功！');
       navigate('/signin'); // 註冊完跳轉到登入頁
       
     } catch (error) {
