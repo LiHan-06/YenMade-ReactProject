@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getCartsApi, useCart } from "./api/carts.jsx";
 
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
+import { Link } from "react-router-dom"; // ✅ 引入 Link
 
 // style 對照表
 const headerVariant = {

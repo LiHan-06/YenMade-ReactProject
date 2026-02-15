@@ -7,11 +7,12 @@ import heroBg from './assets/images/Hero_bg_pc.png';
 import NewArrivalsbg from './assets/images/New_bg_img.jpg';
 import finalCtaMobile from './assets/images/FinalCTA_bg_mobile.png';
 import finalCtaDesktop from './assets/images/FinalCTA_bg_img.jpg';
+
 // import './index.css'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 function App() {
   const [products, setProducts] = useState([]);
