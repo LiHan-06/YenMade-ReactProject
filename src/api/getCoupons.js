@@ -29,7 +29,7 @@ export async function applyCouponApi({ user_id, coupon_code }) {
       coupon_code,
     });
     if (error) {
-      console.error("套用 api 提醒", error);
+      console.error("套用優惠券失敗", error);
       return 0;
     }
     const discountAmount = data.discount_amount || 0;

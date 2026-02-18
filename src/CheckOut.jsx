@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase.js";
+import { useNavigate } from "react-router";
 
 // images
 import line from "./assets/images/checkOut/Line 1.png";
@@ -10,6 +11,28 @@ import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
 import { Outlet } from "react-router";
 
 function CheckOut() {
+  // 使用購物車先登入
+  const navigate = useNavigate(); // ✅ 初始化跳轉工具
+  const [userId, setUserId] = useState(null);
+
+  // 將 User ID 存入狀態（State）。
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const {
+  //       data: { user },
+  //       error: authError,
+  //     } = await supabase.auth.getUser();
+  //     // 驗證
+  //     if (authError || !user) {
+  //       console.log("請先登入！");
+  //       navigate("/signin");
+  //     } else {
+  //       console.log("已登入！");
+  //       setUserId(user.id);
+  //     }
+  //   };
+  //   fetchUser();
+  // }, []);
   return (
     <main className="container pt-8">
       <section>
@@ -42,7 +65,7 @@ function CheckOut() {
           </li>
         </ul>
       </section>
-      <Outlet />
+      <Outlet userId={userId} />
     </main>
   );
 }

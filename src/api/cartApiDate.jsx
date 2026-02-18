@@ -3,6 +3,11 @@ import { supabase } from "../lib/supabase";
 
 // 取得購物車
 export async function getCartsApi(user_id) {
+  // 強制檢查：如果是 undefined 或 null，直接攔截，不要去煩資料庫
+  if (!user_id || user_id === "undefined") {
+    console.warn("[getCartsApi] 攔截到無效的 UUID:", user_id);
+    // return [];
+  }
   const { data, error } = await supabase
     .from("carts")
     .select(
@@ -26,7 +31,7 @@ export async function addToCartApi({
   variant_id,
   quantity,
 }) {
-  // 要先登入
+  // 驗證登入
   const {
     data: { user },
     error: authError,
@@ -36,7 +41,6 @@ export async function addToCartApi({
     console.log("請先登入！");
     return;
   }
-
   const { data, error } = await supabase
     .from("carts")
     .insert({
@@ -87,34 +91,40 @@ export async function clearCartApi(user_id) {
 
 // 建立 CartContext
 const CartContext = createContext();
-
+// 負責資料來源
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
   const fetchCart = async (user_id) => {
-    console.log("取得 user_id 的購物車", user_id);
+    // console.log("取得 user_id 的購物車", user_id);
     try {
       const cartData = await getCartsApi(user_id);
+      console.log("取得購物車成功", cartData);
       setCart(cartData || []);
     } catch (error) {
       console.error("抓取購物車失敗:", error.message);
     }
   };
-
-  const addToCart = (product) => {
-    setCart((prev) => {
-      const existingProduct = prev.find(
-        (item) => item.variant_id === product.variant_id,
-      );
-      if (existingProduct) {
-        return prev.map((item) =>
-          item.variant_id === product.variant_id
-            ? { ...item, quantity: item.quantity + product.quantity }
-            : item,
-        );
-      }
-      return [...prev, product];
-    });
+  // 未串接 api 版
+  // const addToCart = (product) => {
+  //   setCart((prev) => {
+  //     const existingProduct = prev.find(
+  //       (item) => item.variant_id === product.variant_id,
+  //     );
+  //     if (existingProduct) {
+  //       return prev.map((item) =>
+  //         item.variant_id === product.variant_id
+  //           ? { ...item, quantity: item.quantity + product.quantity }
+  //           : item,
+  //       );
+  //     }
+  //     return [...prev, product];
+  //   });
+  // };
+  // 串接 api 版：未成功
+  const addToCart = async (payload) => {
+    await addToCartApi(payload);
+    fetchCart(); //抓取購物車失敗: invalid input syntax for type uuid: "undefined"
   };
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);

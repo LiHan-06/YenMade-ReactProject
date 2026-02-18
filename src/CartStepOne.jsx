@@ -1,23 +1,22 @@
 import { useState, useEffect } from "react";
-import { supabase } from "./lib/supabase.js";
 import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
 import {
-  getCartsApi,
   updateCartQuantityApi,
   deleteCartItemApi,
   clearCartApi,
   useCart,
 } from "./api/cartApiDate.jsx";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
 import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 
-function CartStepOne() {
+function CartStepOne(userId) {
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [discountAmount, setDiscountAmount] = useState();
 
-  const { cart, fetchCart, updateQuantity, removeFromCart } = useCart();
+  const { cart, fetchCart, cartCount, updateQuantity, removeFromCart } =
+    useCart();
   useEffect(() => {
     fetchCart();
     const fetchCoupons = async () => {
@@ -39,7 +38,7 @@ function CartStepOne() {
     radios.forEach((radio) => {
       radio.addEventListener("change", async (e) => {
         const coupon_code = e.target.value;
-        const user_id = "current-user-id";
+        const user_id = userId;
         const setDiscountAmount = await applyCouponApi(user_id, coupon_code);
         // const discount = parseInt(e.target.dataset.discount) || 0;
         console.log("優惠券 事件監聽", setDiscountAmount);
