@@ -21,6 +21,9 @@ import OrderSuccess from "./OrderSuccess.jsx";
 import AProduct from "./AProduct.jsx";
 import CheckOut from "./CheckOut.jsx";
 import AllProducts from "./AllProducts.jsx";
+import About from "./About.jsx";
+import Blog from "./Blog.jsx";
+import FAQ from "./FAQ.jsx";
 // import CartStepOne from "./CartStepOne.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -29,6 +32,7 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       {/* <Header variant="home" /> */}
       <Header />
+      <FAQ />
       <Footer />
     </BrowserRouter>
   </StrictMode>,
