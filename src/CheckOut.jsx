@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase.js";
 
-import CartStepOne from "./CartStepOne.jsx";
-
 // images
 import line from "./assets/images/checkOut/Line 1.png";
 import GreenOnm from "./assets/images/checkOut/Feature-number (1).png";
 import outLineTwo from "./assets/images/checkOut/Feature-number (2).png";
 import outLineThree from "./assets/images/checkOut/Feature-number (3).png";
 import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
+import { Outlet } from "react-router";
 
 function CheckOut() {
   return (
@@ -43,7 +42,7 @@ function CheckOut() {
           </li>
         </ul>
       </section>
-      <CartStepOne />
+      <Outlet />
     </main>
   );
 }

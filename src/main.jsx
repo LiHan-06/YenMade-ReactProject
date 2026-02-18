@@ -11,7 +11,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
 import "./assets/scss/all.scss";
-import { CartProvider } from "./api/carts";
+import { CartProvider } from "./api/cartApiDate";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -1,10 +1,10 @@
 // header
 import { NavLink } from "react-router";
 import { useState, useEffect } from "react";
-import { getCartsApi, useCart } from "./api/carts.jsx";
+import { useCart } from "./api/cartApiDate";
+// import { useSelector } from "react-redux";
 
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
-import { Link } from "react-router-dom"; // ✅ 引入 Link
 
 // style 對照表
 const headerVariant = {
@@ -29,23 +29,17 @@ const headerVariant = {
 function Header({ variant = "default" }) {
   const style = headerVariant[variant];
 
-  // 購物車 api
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
-    getCartsApi()
-      .then((data) => {
-        console.log("完整 API 回傳:", data);
-        setCart(data);
-      })
-      .catch((error) => {
-        console.error("取得購物車失敗", error);
-      });
-  }, []);
-
   // badge
   // 只要 cart 改變，cartCount 就會重新計算。
-  const { cartCount } = useCart();
+  const { cartCount, fetchCart } = useCart();
+  useEffect(() => {
+    // 從 localStorage 拿到登入時存的 user_info
+    const savedData = localStorage.getItem("user_info");
+    if (savedData) {
+      const user = JSON.parse(savedData);
+      fetchCart(user.id); // 畫面載入時，去資料庫同步數字
+    }
+  }, []);
 
   return (
     <header>

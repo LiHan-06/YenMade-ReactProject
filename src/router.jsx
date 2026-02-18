@@ -55,7 +55,7 @@ export const router = createBrowserRouter([
         element: <CheckOut />,
         children: [
           {
-            path: "CartStepOne",
+            index: true,
             element: <CartStepOne />,
           },
           {

@@ -1,20 +1,29 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
 import { supabase } from "./lib/supabase.js";
-import { addToCartApi, useCart } from "./api/carts.jsx";
+import { addToCartApi, useCart } from "./api/cartApiDate.jsx";
 import Breadcrumb from "./components/BreadCrumb";
+
+// import { getCartAsync, addToCartAsync } from "./slices/cartSlice.js";
+// import { useDispatch } from "react-redux";
 
 function AProduct() {
   const { id } = useParams();
-  // const id = "23d5e2f5-1bfb-4a3e-9348-dbc1c2a23b59";
+  const navigate = useNavigate(); // ✅ 修正 2: 初始化 navigate
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // const useDispatch = useDispatch();
 
   // 儲存選擇的商品規格
   const [selectedVariant, setSelectedVariant] = useState(null);
   // 儲存目前的購買數量 (預設為1)
   const [quantity, setQuantity] = useState(1);
+
+  // async function addToCart(product_id, quantity) {
+  //   const data = (product_id, quantity);
+  // }
 
   useEffect(() => {
     // 取得單一產品 api
@@ -46,35 +55,48 @@ function AProduct() {
   // 數量增加
   const plusNum = () => {
     if (selectedVariant && quantity < selectedVariant?.stock) {
-      console.log("成功加入");
       setQuantity((prev) => prev + 1);
     }
   };
   const minusNum = () => {
     if (selectedVariant && quantity > 1) {
-      console.log("成功減少");
       setQuantity((prev) => prev - 1);
     }
   };
 
   // 加入購物車
+  // 先有使用者資料才能操作購物車功能
+  const getUserInfo = () => {
+    const savedData = localStorage.getItem("user_info");
+    return savedData ? JSON.parse(savedData) : null;
+  };
+
   const { addToCart } = useCart();
+
   const handleAddToCart = async () => {
+    // 先確認登入狀態
+    const user = getUserInfo();
+
     try {
-      setLoading(true);
-      addToCart({
+      // 購物車 api 的 data
+      const cartInput = {
+        user_id: user.id, // 這裡就能拿到全域的使用者 ID 了
+        guest_id: null,
         product_id: product.id,
         variant_id: selectedVariant.id,
         quantity: quantity,
-      });
-      // await addToCartApi({
-      //   product_id: product.id,
-      //   variant_id: selectedVariant.id,
-      //   quantity: quantity,
-      // });
+      };
+
+      // 執行加入購物車
+      await addToCartApi(cartInput);
+      // 更新前端 cartContext 狀態
+      addToCart(cartInput);
+
+      console.log("成功加入購物車", cartInput);
       alert("成功加入購物車");
     } catch (error) {
-      console.log(error);
+      console.error("錯誤代碼:", error.code);
+      console.error("錯誤訊息:", error.message);
       alert("加入購物車失敗");
     } finally {
       setLoading(false);
@@ -252,7 +274,11 @@ function AProduct() {
           </div>
         </div>
         <div className="col-10">
-          <button type="button" className="btn btn-dark w-100 py-3">
+          <button
+            type="button"
+            className="btn btn-dark w-100 py-3"
+            onClick={handleAddToCart}
+          >
             <p className="m-auto ls-10">
               NTD$<span>${(selectedVariant?.price || 0) * quantity}</span>
               <span className="mx-3">－</span>

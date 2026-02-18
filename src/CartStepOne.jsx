@@ -1,13 +1,52 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase.js";
-import { useCart, clearCartApi } from "./api/carts.jsx";
-import { Link, NavLink } from "react-router";
+import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
+import {
+  getCartsApi,
+  updateCartQuantityApi,
+  deleteCartItemApi,
+  clearCartApi,
+  useCart,
+} from "./api/cartApiDate.jsx";
+import { Link, useNavigate } from "react-router";
 
 import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 
 function CartStepOne() {
-  const { cart, updateQuantity, removeFromCart } = useCart();
-  console.log(cart);
+  const [coupons, setCoupons] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState();
+
+  const { cart, fetchCart, updateQuantity, removeFromCart } = useCart();
+  useEffect(() => {
+    fetchCart();
+    const fetchCoupons = async () => {
+      try {
+        const couponData = await getCouponsApi();
+        setCoupons(couponData || []);
+        console.log("取得優惠券成功", coupons);
+      } catch (error) {
+        console.error("取得優惠券失敗", err);
+      }
+    };
+    fetchCoupons();
+  }, []);
+
+  // 優惠券 事件監聽
+  function changeCoupon() {
+    const radios = document.querySelectorAll(".coupon-radio");
+
+    radios.forEach((radio) => {
+      radio.addEventListener("change", async (e) => {
+        const coupon_code = e.target.value;
+        const user_id = "current-user-id";
+        const setDiscountAmount = await applyCouponApi(user_id, coupon_code);
+        // const discount = parseInt(e.target.dataset.discount) || 0;
+        console.log("優惠券 事件監聽", setDiscountAmount);
+      });
+    });
+  }
+
   // 商品總金額
   const totalPrice = cart.reduce((sum, cartItem) => sum + cartItem.subtotal, 0);
   // 運費
@@ -37,14 +76,12 @@ function CartStepOne() {
                 <p className="mb-4">購物車目前是空的</p>
               </div>
               <div className="col-12 col-md-6 col-lg-4 px-4">
-                <button
-                  type="button"
+                <Link
+                  to="/allproducts"
                   className="btn btn-lg btn-dark py-3 px-auto w-100"
                 >
-                  <Link to="AllProduct" className="fs-0">
-                    繼續逛逛
-                  </Link>
-                </button>
+                  <p className="fs-0 mb-0">繼續逛逛</p>
+                </Link>
               </div>
             </div>
           ) : (
@@ -154,12 +191,12 @@ function CartStepOne() {
               </ul>
               <div className="row justify-content-between p-3 py-lg-3 px-lg-4">
                 <div className="col-12 col-lg-4 mb-9 mb-lg-0">
-                  <button
-                    type="button"
+                  <Link
+                    to="/allproducts"
                     className="btn btn-lg btn-outline-dark py-3 px-auto w-100"
                   >
-                    <span className="fs-0">繼續逛逛</span>
-                  </button>
+                    <p className="fs-0 mb-0">繼續逛逛</p>
+                  </Link>
                 </div>
                 <div className="col-12 col-lg-4">
                   <button
@@ -196,64 +233,39 @@ function CartStepOne() {
                 </div>
               </label>
               <input
-                className="list-group-item-check"
+                className="list-group-item-check coupon-radio"
                 type="radio"
                 name="listGroupCheckableRadios"
                 id="listGroupCheckableRadios1"
-                value=""
+                value="noneToUse"
+                data-discount="0"
+                onChange={(e) => changeCoupon()}
               />
             </li>
-            <li className="list-group-item border-1 d-flex justify-content-between mb-9">
-              <label className=" py-3" htmlFor="listGroupCheckableRadios2">
-                <div>
-                  <p className="mb-0">新會員限定｜開張好滋味</p>
-                </div>
-                <span className="d-block small opacity-50">
-                  消費滿399，折抵99元
-                </span>
-              </label>
-              <input
-                className="list-group-item-check"
-                type="radio"
-                name="listGroupCheckableRadios"
-                id="listGroupCheckableRadios2"
-                value=""
-              />
-            </li>
-            <li className="list-group-item border-1 d-flex justify-content-between mb-9">
-              <label className=" py-3" htmlFor="listGroupCheckableRadios2">
-                <div>
-                  <p className="mb-0">新會員限定｜開張好滋味</p>
-                </div>
-                <span className="d-block small opacity-50">
-                  消費滿399，折抵99元
-                </span>
-              </label>
-              <input
-                className="list-group-item-check"
-                type="radio"
-                name="listGroupCheckableRadios"
-                id="listGroupCheckableRadios2"
-                value=""
-              />
-            </li>
-            <li className="list-group-item border-1 d-flex justify-content-between mb-9">
-              <label className=" py-3" htmlFor="listGroupCheckableRadios2">
-                <div>
-                  <p className="mb-0">新會員限定｜開張好滋味</p>
-                </div>
-                <span className="d-block small opacity-50">
-                  消費滿399，折抵99元
-                </span>
-              </label>
-              <input
-                className="list-group-item-check"
-                type="radio"
-                name="listGroupCheckableRadios"
-                id="listGroupCheckableRadios2"
-                value=""
-              />
-            </li>
+            {coupons.map((item) => (
+              <li
+                className="list-group-item border-1 d-flex justify-content-between mb-9"
+                key={item.id}
+              >
+                <label className=" py-3" htmlFor={item.code}>
+                  <div>
+                    <p className="mb-0">{item.title}</p>
+                  </div>
+                  <span className="d-block small opacity-50">
+                    {item.description}
+                  </span>
+                </label>
+                <input
+                  className="list-group-item-check coupon-radio"
+                  type="radio"
+                  name="listGroupCheckableRadios"
+                  id={item.code}
+                  value={item.code}
+                  data-discount={item.discount_amount}
+                  onChange={(e) => changeCoupon()}
+                />
+              </li>
+            ))}
           </ul>
         </div>
         {/* 訂單金額 box */}
@@ -264,17 +276,17 @@ function CartStepOne() {
           <ul className="list-unstyled mb-0 p-3 p-lg-4">
             <li className="d-flex justify-content-between py-2 mb-9">
               <p className="mb-0">商品總金額</p>
-              <p className="mb-0">{`NTD$ ${totalPrice}`}</p>
+              <p className="mb-0">NTD$ ${totalPrice}</p>
             </li>
             <li className="d-flex justify-content-between py-2 mb-9">
               <p className="mb-0">
                 運費<i className="bi bi-info-circle ms-9"></i>
               </p>
-              <p className="mb-0">{`NTD$ ${deliveryFee}`}</p>
+              <p className="mb-0">NTD$ ${deliveryFee}</p>
             </li>
             <li className="d-flex justify-content-between py-2 mb-9">
               <p className="mb-0">優惠券折扣</p>
-              <p className="mb-0">-NTD$ {"99"}</p>
+              {/* <p className="mb-0">-NTD$ ${discount}</p> */}
             </li>
             <li className="d-flex justify-content-between py-4 border-top">
               <h6 className="mb-0">總計</h6>
