@@ -1,5 +1,5 @@
 import { supabase } from "../lib/supabase";
-import bcrypt from "bcryptjs";
+//import bcrypt from "bcryptjs";
 
 // 註冊
 export const signUp = async (email, password, full_name) => {

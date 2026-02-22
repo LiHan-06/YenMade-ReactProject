@@ -23,7 +23,7 @@ createRoot(document.getElementById("root")).render(
     {/* <App /> */}
     {/* </BrowserRouter> */}
     <CartProvider>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
     </CartProvider>
   </StrictMode>,
 );
