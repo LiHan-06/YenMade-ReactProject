@@ -9,6 +9,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import OrderReview from "./OrderReview.jsx";
 
+
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
 import "./assets/scss/all.scss";
 
@@ -24,7 +25,9 @@ import AllProducts from "./AllProducts.jsx";
 import About from "./About.jsx";
 import Blog from "./Blog.jsx";
 import FAQ from "./FAQ.jsx";
-// import CartStepOne from "./CartStepOne.jsx";
+import CartOrderForm from "./CartOrderForm.jsx";
+import CartStepOne from "./CartStepOne.jsx";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -32,7 +35,12 @@ createRoot(document.getElementById("root")).render(
     <BrowserRouter>
       {/* <Header variant="home" /> */}
       <Header />
-      <FAQ />
+      {/* <CartStepOne/> */}
+      <CartOrderForm />
+      {/* <OrderReview /> */}
+      {/* <OrderSuccess /> */}
+      {/* <CheckOut/> */}
+      
       <Footer />
     </BrowserRouter>
   </StrictMode>,
