@@ -65,7 +65,7 @@ const SignIn = () => {
                 label="電子郵件"
                 name="login_id"
                 type="email" // 指定 email 格式
-                placeholder="請輸入 Email (ym2026@gmail.com)"
+                placeholder="請輸入 Email"
                 required
                 feedback="請輸入有效的 Email"
               />

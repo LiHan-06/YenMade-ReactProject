@@ -1,51 +1,25 @@
 import { useState, useContext, createContext } from "react";
 import { supabase } from "../lib/supabase";
 
-// 取得購物車
-export async function getCartsApi(user_id) {
-  // 強制檢查：如果是 undefined 或 null，直接攔截，不要去煩資料庫
-  if (!user_id || user_id === "undefined") {
-    console.warn("[getCartsApi] 攔截到無效的 UUID:", user_id);
-    // return [];
-  }
-  const { data, error } = await supabase
-    .from("carts")
-    .select(
-      `
-      *,
-      product:products (*),
-      variant:product_variants (*)
-    `,
-    )
-    .eq("user_id", user_id);
-
-  if (error) throw error;
-  return data || [];
+/* =========================
+   取得目前登入使用者
+========================= */
+async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) throw new Error("使用者尚未登入");
+  return data.user;
 }
 
-// 加入購物車
-export async function addToCartApi({
-  user_id,
-  guest_id,
-  product_id,
-  variant_id,
-  quantity,
-}) {
-  // 驗證登入
-  const {
-    data: { user },
-    error: authError,
-  } = await supabase.auth.getUser();
+/* =========================
+   加入購物車
+========================= */
+export async function addToCartApi({ product_id, variant_id, quantity }) {
+  const user = await getCurrentUser();
 
-  if (authError || !user) {
-    console.log("請先登入！");
-    return;
-  }
   const { data, error } = await supabase
     .from("carts")
     .insert({
-      user_id,
-      guest_id,
+      user_id: user.id,
       product_id,
       variant_id,
       quantity,
@@ -57,7 +31,9 @@ export async function addToCartApi({
   return data;
 }
 
-// 更新購物車商品數量
+/* =========================
+   更新商品數量
+========================= */
 export async function updateCartQuantityApi(id, quantity) {
   const { data, error } = await supabase
     .from("carts")
@@ -70,67 +46,97 @@ export async function updateCartQuantityApi(id, quantity) {
   return data;
 }
 
-// 刪除單筆商品
+/* =========================
+   刪除單筆商品
+========================= */
 export async function deleteCartItemApi(id) {
   const { error } = await supabase.from("carts").delete().eq("id", id);
-
   if (error) throw error;
 }
 
-// 清空購物車
-export async function clearCartApi(user_id) {
-  // if (!user_id) return;
-  const { error } = await supabase
-    .from("carts")
-    .delete()
-    .eq("user_id", user_id);
-  console.log("執行清空購物車");
-  getCartsApi();
+/* =========================
+   清空購物車
+========================= */
+export async function clearCartApi() {
+  const user = await getCurrentUser();
+  const { error } = await supabase.from("carts").delete().eq("user_id", user.id);
   if (error) throw error;
 }
 
-// 建立 CartContext
+/* =========================
+   Cart Context
+========================= */
 const CartContext = createContext();
-// 負責資料來源
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  const fetchCart = async (user_id) => {
-    // console.log("取得 user_id 的購物車", user_id);
+  const fetchCart = async () => {
     try {
-      const cartData = await getCartsApi(user_id);
-      console.log("取得購物車成功", cartData);
-      setCart(cartData || []);
+      const user = await getCurrentUser();
+      const { data, error } = await supabase
+        .from("carts")
+        .select("*")
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+      setCart(data);
     } catch (error) {
-      console.error("抓取購物車失敗:", error.message);
+      console.warn("fetchCart:", error.message);
+      setCart([]);
     }
   };
-  // 未串接 api 版
-  // const addToCart = (product) => {
-  //   setCart((prev) => {
-  //     const existingProduct = prev.find(
-  //       (item) => item.variant_id === product.variant_id,
-  //     );
-  //     if (existingProduct) {
-  //       return prev.map((item) =>
-  //         item.variant_id === product.variant_id
-  //           ? { ...item, quantity: item.quantity + product.quantity }
-  //           : item,
-  //       );
-  //     }
-  //     return [...prev, product];
-  //   });
-  // };
-  // 串接 api 版：未成功
+
   const addToCart = async (payload) => {
-    await addToCartApi(payload);
-    fetchCart(); //抓取購物車失敗: invalid input syntax for type uuid: "undefined"
+    try {
+      await addToCartApi(payload);
+      await fetchCart();
+    } catch (error) {
+      console.error("加入購物車失敗:", error.message);
+    }
+  };
+
+  const updateQuantity = async (id, quantity) => {
+    try {
+      await updateCartQuantityApi(id, quantity);
+      await fetchCart();
+    } catch (error) {
+      console.error("更新數量失敗:", error.message);
+    }
+  };
+
+  const removeItem = async (id) => {
+    try {
+      await deleteCartItemApi(id);
+      await fetchCart();
+    } catch (error) {
+      console.error("刪除商品失敗:", error.message);
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      await clearCartApi();
+      setCart([]);
+    } catch (error) {
+      console.error("清空購物車失敗:", error.message);
+    }
   };
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ cart, cartCount, addToCart, fetchCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        cartCount,
+        fetchCart,
+        addToCart,
+        updateQuantity,
+        removeItem,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

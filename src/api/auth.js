@@ -1,44 +1,33 @@
+// auth.js
 import { supabase } from "../lib/supabase";
-import bcrypt from "bcryptjs";
 
 // 註冊
-export const signUp = async (email, password, full_name) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const { data, error } = await supabase
-    .from("users")
-    .insert([{ email, password: hashedPassword, full_name }]);
-
+export const signUp = async (email, password) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
   if (error) throw error;
   return data;
 };
 
 // 登入
 export const signIn = async (email, password) => {
-  const { data, error } = await supabase
-    .from("users")
-    .select("*")
-    .eq("email", email)
-    .single();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) throw error;
-
-  const match = await bcrypt.compare(password, data.password);
-  if (!match) throw new Error("密碼錯誤");
-
-  // 同步呼叫官方登入
-  const { data: authData, error: authError } =
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-  if (authError) {
-    console.error(
-      "Auth 系統登入失敗 (可能是 Auth 中沒這帳號):",
-      authError.message,
-    );
-  }
-
-  // console.log(data);
-  return data;
+  return data; // 包含 user 與 session
 };
+
+// 登出
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+  return true;
+};
+
+// 取得目前使用者資訊
+export const getUser = () => supabase.auth.getUser();
