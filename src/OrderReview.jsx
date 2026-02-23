@@ -1,110 +1,205 @@
+// OrderReview.jsx
+import React, { useEffect } from "react";
 import './OrderReview.css';
-//確認訂單頁
+import { Link } from "react-router-dom";
+import { Tooltip } from "bootstrap";
+
+const mockCart = [
+  {
+    id: 1,
+    quantity: 1,
+    product: {
+      title: "檸檬老醬蘿蔔",
+      price: 500,
+      image_url: "/src/assets/images/product/檸檬老醬蘿蔔.png",
+    },
+    variant: { name: "500ml 慢醃大罐", stock: 10 },
+  },
+  {
+    id: 2,
+    quantity: 2,
+    product: {
+      title: "煙燻蒜香小黃瓜",
+      price: 250,
+      image_url: "/src/assets/images/product/煙燻蒜香小黃瓜.png",
+    },
+    variant: { name: "200ml 慢醃迷你", stock: 5 },
+  },
+];
+
+const totalPrice = mockCart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+const deliveryFee = 60;
+const discountAmount = 100;
+const orderTotal = totalPrice + deliveryFee - discountAmount;
+
 function OrderReview() {
-    return(
-        <>
-        <div className="container">
-            <h1 className="text-center mt-80">購物車</h1>
-                {/* 訂單進度 */} {/*需調整：更改部分圖片，增加箭頭*/}
-                <div className="mt-64 mb-64 d-flex justify-content-evenly">
-                    <div className="step">
-                        <img src="/src/assets/images/Vector-green.svg" alt="" className='mb-2'/>
-                        <span className="step-number text-white h4"><i class="bi bi-check"></i></span>
-                        <p>加入商品</p>
-                    </div>
-                    <div className="step">
-                        <img src="/src/assets/images/Vector-green.svg" alt="" className='mb-2'/>
-                        <span className="step-number text-white h4"><i class="bi bi-check"></i></span>
-                        <p>填寫訂單</p>
-                    </div>
-                    <div className="step">
-                        <img src="/src/assets/images/Vector-green.svg" alt="" className='mb-2'/>
-                        <span className="step-number text-white h4">03</span>
-                        <p>確認訂單</p>
-                    </div>
-                    <div className="step">
-                        <img src="/src/assets/images/Vector-green.svg" alt="" className='mb-2'/>
-                        <span className="step-number text-white h4">04</span>
-                        <p>完成訂購</p>
-                    </div>
-                </div>
-                {/* 訂單資訊 */}
-                <div className="row">
-                    <div className="col-6">
-                        <div className="card mb-3">
-                        <div className='card-header'>訂單項目</div>
-                            <div className='card-body'>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item d-flex justify-content-between border-bottom">
-                                        <span className="text-muted">商品資訊</span>
-                                        <span className="text-muted">商品數量</span>
-                                        <span className="text-muted">小計</span>
-                                    </li>
-                                </ul>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item d-flex align-items-center justify-content-between border-bottom">
-                                            <img
-                                            src="src/assets/images/product/檸檬老醬蘿蔔.png"
-                                            alt="商品圖片"
-                                            className="product-img"
-                                            />
+  const cart = mockCart;
+  useEffect(() => {
+        const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(el => new Tooltip(el));
+    }, []);
 
-                                            <div className="d-flex flex-column">
-                                            <p className="mb-1 h6">檸檬老醬蘿蔔</p>
-                                            <p className="mb-0">500ml 慢醃大罐</p>
-                                            </div>
-
-                                            <div className="d-flex align-items-center">1</div>
-                                            <div className="d-flex align-items-center">NTD$500</div>
-                                        </li>
-                                    </ul>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item d-flex align-items-center justify-content-between">
-                                            <img
-                                            src="src/assets/images/product/煙燻蒜香小黃瓜.png"
-                                            alt="商品圖片"
-                                            className="product-img"
-                                            />
-
-                                            <div className="d-flex flex-column">
-                                            <p className="mb-1 h6">煙燻蒜香小黃瓜</p>
-                                            <p className="mb-0">200ml 慢醃迷你</p>
-                                            </div>
-
-                                            <div className="d-flex align-items-center">2</div>
-                                            <div className="d-flex align-items-center">NTD$500</div>
-                                        </li>
-                                    </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <div className="card">
-                        <div className="card-body">確認收件資訊</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-6">
-                        <div className="card">
-                        <div className="card-body">訂單總計</div>
-                        </div>
-                    </div>
-                    <div className="col-6">
-                        <div className="card">
-                        <div className="card-body">確認付款資訊</div>
-                        </div>
-                    </div>
-                </div>
-            {/* 按鈕 */}
-            <div className='d-flex justify-content-between row mt-3'>
-                <button type="button" className="btn btn-outline-dark col-2">返回上一步</button>
-                <button type="button" className="btn btn-dark col-6">送出訂單</button>
+  return (
+    <div className="container my-4">
+      <div className="row">
+        {/* 左側：訂單項目 + 訂單總計 */}
+        <div className="col-lg-6">
+          {/* 訂單項目 */}
+          <div className="border mb-4">
+            <div className="bg-neutral-100 py-3 ps-4 mb-0">
+              <p className="mb-0">{`訂單項目 (共 ${cart.length} 項)`}</p>
             </div>
+
+            {cart.length === 0 ? (
+              <div className="row justify-content-center py-8">
+                <div className="text-center">
+                  <img src="/src/assets/images/nullCart.png" alt="購物車目前是空的" className="mb-4" />
+                  <p className="mb-4">購物車目前是空的</p>
+                </div>
+                <div className="col-12 col-md-6 col-lg-4 px-4">
+                  <Link to="/allproducts" className="btn btn-lg btn-dark py-3 w-100">
+                    繼續逛逛
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="border-bottom border-neutral px-4 d-none d-md-block">
+                  <ul className="row list-unstyled mb-0">
+                    <li className="col-5 py-3">商品資訊</li>
+                    <li className="col-4 py-3">商品數量</li>
+                    <li className="col-3 py-3 text-end">小計</li>
+                  </ul>
+                </div>
+
+                <ul className="list-unstyled mb-0 px-3 px-md-9">
+                  {cart.map((cartItem) => (
+                    <li className="row py-3 py-lg-4 border-bottom border-neutral" key={cartItem.id}>
+                      <div className="col-12 col-md-5 d-flex align-items-center">
+                        <img
+                          src={cartItem.product.image_url}
+                          alt={cartItem.product.title}
+                          className="me-3"
+                          style={{ width: 80 }}
+                        />
+                        <div>
+                          <h6>{cartItem.product.title}</h6>
+                          <span className="d-block small opacity-50">{cartItem.variant.name}</span>
+                        </div>
+                      </div>
+
+                      <div className="col-8 col-md-4 my-auto text-center">
+                        {cartItem.quantity}
+                      </div>
+
+                      <div className="col-4 col-md-3 my-auto text-end">
+                        NTD$ {cartItem.product.price * cartItem.quantity}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+
+          {/* 訂單總計 */}
+          <div className="border mb-4">
+            <div className="bg-neutral-100 py-3 ps-4">訂單總計</div>
+            <ul className="list-unstyled mb-0 p-3 p-lg-4">
+              <li className="d-flex justify-content-between py-2">
+                <p>商品總金額</p>
+                <p>NTD$ {totalPrice}</p>
+              </li>
+              <li className="d-flex justify-content-between py-2">
+                <p>運費 <i className="bi bi-info-circle ms-2" data-bs-toggle="tooltip" title="為了把最新鮮的風味送到你手中，我們僅提供低溫宅配到府。"></i></p>
+                <p>NTD$ 300</p>
+              </li>
+              <li className="d-flex justify-content-between py-2">
+                <p>優惠券折扣</p>
+                <p>-NTD$ {discountAmount}</p>
+              </li>
+              <li className="d-flex justify-content-between py-4 border-top">
+                <h6>總計</h6>
+                <h6>NTD$ {orderTotal}</h6>
+              </li>
+            </ul>
+          </div>
         </div>
-        </>
-    )
+
+        {/* 右側：收件資訊 + 確認付款資訊 */}
+        <div className="col-lg-6">
+          {/* 收件資訊 */}
+            <div className="border mb-4">
+                <div className="bg-neutral-100 py-3 ps-4">確認收件資訊</div>
+                <div className="p-3 p-lg-4">
+                    {[
+                    ["收件者姓名", "王小明"],
+                    ["手機號碼", "0912345678"],
+                    ["電子郵件", "yenmade@gmail.com"],
+                    ["收貨地址", "高雄市鹽埕區七賢三路123號2樓"],
+                    ["發票類型", "列印發票"],
+                    ["備註", "可以直接管理室代收，早上9點到晚上10點都有人員在，謝謝。"],
+                    ].map(([label, value], idx) => (
+                    <div className="row align-items-center mb-2" key={idx}>
+                        <p className="col-4 mb-0">{label}</p>
+                        <p className="col-8 mb-0">{value}</p>
+                    </div>
+                    ))}
+
+                    {/* 收件說明 */}
+                        <div className="notice-box my-3">
+                            <div className="d-flex align-items-center mb-2">
+                                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                <span className="fw-bold">說明</span>
+                            </div>
+                            <ul className="mb-0 ps-3">
+                                <li>當商品送達您指定地址時，請確認商品是否正確。</li>
+                                <li>務必確認收件時段，多加留意陌生電話，以便物流順利將商品送到您手中。</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+
+          {/* 付款資訊 */}
+            <div className="border mb-4">
+                <div className="bg-neutral-100 py-3 ps-4">確認付款資訊</div>
+                <div className="p-3 p-lg-4">
+                    <div className="mb-2">
+                        <div className="row align-items-center mb-2">
+                            <p className="col-4">付款方式</p>
+                            <p className="col-8">信用卡</p>
+                        </div>
+                        <div className="row align-items-center mb-2">
+                            <p className="col-4">卡號</p>
+                            <p className="col-8">**** 1212</p>
+                        </div>
+                    </div>
+
+                    {/* 付款注意事項 */}
+                    <div className="notice-box my-3">
+                        <div className="d-flex align-items-center mb-2">
+                            <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                            <span className="fw-bold">注意事項</span>
+                        </div>
+                        <p className="mb-0">送出訂單後將立即進行信用卡扣款</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+      </div>
+
+      {/* 按鈕 */}
+      <div className="d-flex flex-column flex-md-row justify-content-between mt-3 mb-3 gap-2">
+        <Link to="CartStepOne" className="btn btn-outline-dark col-12 col-md-3">
+          返回上一步
+        </Link>
+        <Link to="OrderSuccess" className="btn btn-dark col-12 col-md-6">
+          送出訂單
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 export default OrderReview;
