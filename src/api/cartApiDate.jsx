@@ -1,10 +1,12 @@
+// src/api/cartApiDate.jsx
 import { useState, useContext, createContext } from "react";
 import { supabase } from "../lib/supabase";
+import { v4 as uuidv4 } from "uuid";
 
 /* =========================
    取得目前登入使用者
 ========================= */
-async function getCurrentUser() {
+export async function getCurrentUser() {
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) throw new Error("使用者尚未登入");
   return data.user;
@@ -13,22 +15,34 @@ async function getCurrentUser() {
 /* =========================
    加入購物車
 ========================= */
-export async function addToCartApi({ product_id, variant_id, quantity }) {
-  const user = await getCurrentUser();
+export async function addToCartApi({ product_id, variant_id, quantity, user_id, guest_id }) {
+  if (!user_id && !guest_id) {
+    guest_id = localStorage.getItem("guest_id");
+    if (!guest_id) {
+      guest_id = uuidv4();
+      localStorage.setItem("guest_id", guest_id);
+    }
+  }
 
-  const { data, error } = await supabase
+  const qty = quantity || 1;
+
+  // 1️⃣ 插入購物車
+  const { data: insertData, error: insertError } = await supabase
     .from("carts")
     .insert({
-      user_id: user.id,
       product_id,
       variant_id,
-      quantity,
+      quantity: qty,
+      user_id: user_id || null,
+      guest_id: guest_id || null,
     })
-    .select()
-    .single();
+    .select(); // select() 可以回傳剛插入的資料
 
-  if (error) throw error;
-  return data;
+  if (insertError) throw insertError;
+
+  // 2️⃣ 插入後回傳完整購物車
+  const fullCart = await fetchCartWithDetails(user_id, guest_id);
+  return fullCart;
 }
 
 /* =========================
@@ -58,9 +72,54 @@ export async function deleteCartItemApi(id) {
    清空購物車
 ========================= */
 export async function clearCartApi() {
-  const user = await getCurrentUser();
-  const { error } = await supabase.from("carts").delete().eq("user_id", user.id);
+  const user = await getCurrentUser().catch(() => null);
+  const guest_id = localStorage.getItem("guest_id");
+
+  if (!user && !guest_id) return;
+
+  const query = supabase.from("carts").delete();
+  if (user) query.eq("user_id", user.id);
+  else query.eq("guest_id", guest_id);
+
+  const { error } = await query;
   if (error) throw error;
+}
+
+/* =========================
+   抓完整購物車資訊（join products & variants）
+========================= */
+export async function fetchCartWithDetails(user_id, guest_id) {
+  let query = supabase
+    .from("carts")
+    .select(`
+      id,
+      quantity,
+      user_id,
+      guest_id,
+      product:products!carts_product_id_fkey (
+        id,
+        title,
+        price,
+        image_url
+      ),
+      variant:product_variants!carts_variant_id_fkey (
+        id,
+        name,
+        stock
+      )
+    `);
+
+  if (user_id) {
+    query = query.eq("user_id", user_id);
+  } else if (guest_id) {
+    query = query.eq("guest_id", guest_id);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+
+  return data;
 }
 
 /* =========================
@@ -73,24 +132,19 @@ export function CartProvider({ children }) {
 
   const fetchCart = async () => {
     try {
-      const user = await getCurrentUser();
-      const { data, error } = await supabase
-        .from("carts")
-        .select("*")
-        .eq("user_id", user.id);
-
-      if (error) throw error;
+      const user = await getCurrentUser().catch(() => null);
+      const guest_id = localStorage.getItem("guest_id");
+      const data = await fetchCartWithDetails(user?.id, guest_id);
       setCart(data);
     } catch (error) {
-      console.warn("fetchCart:", error.message);
-      setCart([]);
+      console.error("抓購物車失敗:", error);
     }
   };
 
   const addToCart = async (payload) => {
     try {
-      await addToCartApi(payload);
-      await fetchCart();
+      const updatedCart = await addToCartApi(payload);
+      setCart(updatedCart);
     } catch (error) {
       console.error("加入購物車失敗:", error.message);
     }

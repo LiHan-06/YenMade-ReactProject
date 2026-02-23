@@ -15,8 +15,14 @@
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     const [discountAmount, setDiscountAmount] = useState(0);
 
-    const { cart, fetchCart, cartCount, updateQuantity, removeFromCart } =
-      useCart();
+    const { 
+      cart, 
+      fetchCart, 
+      cartCount, 
+      updateQuantity, 
+      removeFromCart, 
+      clearCart 
+    } = useCart();
     useEffect(() => {
       fetchCart();
       const fetchCoupons = async () => {
@@ -65,12 +71,17 @@
       };
 
     // 商品總金額
-    const totalPrice = cart.reduce((sum, cartItem) => sum + cartItem.subtotal, 0);
+    const totalPrice = cart.reduce(
+      (sum, item) =>
+        sum +
+        (Number(item.product?.price) || 0) * Number(item.quantity),
+      0
+    );
     // 運費
     const deliveryFee = 300;
     // 訂單總金額
     const orderTotal = totalPrice + deliveryFee - discountAmount;
-
+    console.log(cart);
     return (
       <section className="row" id="stepOne">
         {/* 購買清單 */}
@@ -121,90 +132,93 @@
                   {/* 商品規則 */}
 
                   {cart.map((cartItem) => (
-                    <li
-                      className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral"
-                      key={cartItem.id}
-                    >
-                      <div className="col-12 col-md-5 d-flex align-items-center justify-content-start">
-                        <img
-                          src={cartItem.image_url}
-                          alt={cartItem.title}
-                          className="col-4 me-9 me-lg-3"
-                          style={{ width: 80 }}
-                        />
-                        <div className="col-8">
-                          <h6>{cartItem.title}</h6>
-                          <span className="d-block small opacity-50">
-                            {cartItem.variant_name}
-                          </span>
+                      <li
+                        className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral"
+                        key={cartItem.id}
+                      >
+                        {/* 商品圖片與資訊 */}
+                        <div className="col-12 col-md-5 d-flex align-items-center">
+                          <img
+                            src={cartItem.product?.image_url}
+                            alt={cartItem.product?.title}
+                            className="me-3"
+                            style={{ width: 80 }}
+                          />
+                          <div>
+                            <h6>{cartItem.product?.title}</h6>
+                            <span className="d-block small opacity-50">
+                              {cartItem.variant?.name}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      {/* 商品數量 */}
-                      <div className="col-8 col-md-4 my-auto">
-                        <div className="input-group btn border-1 border-primary-600 bg-white p-2">
-                          <div className="d-flex justify-content-between">
-                            {/* 減號按鈕 */}
+
+                        {/* 商品數量 */}
+                        <div className="col-8 col-md-4 my-auto">
+                          <div className="input-group border border-primary-600 bg-white p-2">
                             <button
                               type="button"
-                              className="btn border-0 p-9"
+                              className="btn border-0"
                               onClick={() =>
                                 updateQuantity(cartItem.id, cartItem.quantity - 1)
                               }
                               disabled={cartItem.quantity <= 1}
                             >
-                              <i className="bi bi-dash-lg fs-6"></i>
+                              <i className="bi bi-dash-lg"></i>
                             </button>
+
                             <div className="d-flex flex-column justify-content-center">
                               <input
                                 type="text"
-                                className="form-control border-0 text-center text-dark fw-semibold p-0"
+                                className="form-control border-0 text-center fw-semibold"
                                 value={cartItem.quantity}
-                                name="buyNumber"
+                                readOnly
                               />
 
-                              {/* 動態顯示庫存狀態 */}
-                              <p className="form-text text-center fs-9 ls-10 m-0">
-                                {cartItem.stock >= 10
+                              <p className="form-text text-center small m-0">
+                                {cartItem.variant?.stock >= 10
                                   ? "數量充足"
-                                  : cartItem.stock >= 1
-                                    ? `剩最後 ${cartItem.stock} 件`
-                                    : "暫無庫存"}
+                                  : cartItem.variant?.stock >= 1
+                                  ? `剩最後 ${cartItem.variant?.stock} 件`
+                                  : "暫無庫存"}
                               </p>
                             </div>
-                            {/* 加號按鈕 */}
+
                             <button
                               type="button"
-                              className="btn border-0 p-9"
+                              className="btn border-0"
                               onClick={() =>
                                 updateQuantity(cartItem.id, cartItem.quantity + 1)
                               }
-                              disabled={cartItem.quantity >= cartItem.stock}
+                              disabled={cartItem.quantity >= cartItem.variant?.stock}
                             >
-                              <i className="bi bi-plus-lg fs-6"></i>
+                              <i className="bi bi-plus-lg"></i>
                             </button>
                           </div>
                         </div>
-                      </div>
-                      {/* 小計 */}
-                      <div className="col-4 col-md-3 my-auto">
-                        <p className="fs-8 text-end mb-0">
-                          NTD$
-                          <span className="fs-6">{cartItem.subtotal}</span>
-                        </p>
-                      </div>
-                      {/* 刪除按鈕 */}
-                      <div className="col-12 d-md-none">
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger w-100"
-                          onClick={() => removeFromCart(cartItem.id)}
-                        >
-                          <i className="bi bi-trash3 me-2"></i>
-                          移除
-                        </button>
-                      </div>
-                    </li>
-                  ))}
+
+                        {/* 小計 */}
+                        <div className="col-4 col-md-3 my-auto text-end">
+                          <p className="mb-0">
+                            NTD$
+                            <span className="fs-6">
+                              {(Number(cartItem.product?.price) || 0) * cartItem.quantity}
+                            </span>
+                          </p>
+                        </div>
+
+                        {/* 手機版刪除按鈕 */}
+                        <div className="col-12 d-md-none mt-2">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger w-100"
+                            onClick={() => removeFromCart(cartItem.id)}
+                          >
+                            <i className="bi bi-trash3 me-2"></i>
+                            移除
+                          </button>
+                        </div>
+                      </li>
+                    ))}
                 </ul>
                 <div className="row justify-content-between p-3 py-lg-3 px-lg-4">
                   <div className="col-12 col-lg-4 mb-9 mb-lg-0">
@@ -218,13 +232,11 @@
                   <div className="col-12 col-lg-4">
                     <button
                       type="button"
-                      className="btn btn-lg btn-outline-dark border-0 py-3 px-auto  w-100"
-                      onClick={() => {
-                        clearCartApi(cart.user_id);
-                      }}
+                      className="btn btn-lg btn-outline-dark border-0 py-3 w-100"
+                      onClick={clearCart}
                     >
                       <i className="bi bi-trash3 me-2"></i>
-                      <span className="fs-0">清空購物車</span>
+                      清空購物車
                     </button>
                   </div>
                 </div>

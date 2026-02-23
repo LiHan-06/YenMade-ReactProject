@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import { useCart } from "./api/cartApiDate";
 // import { useSelector } from "react-redux";
 
+import { useAuth } from "./context/AuthContext";
+import { supabase } from "./lib/supabase";
+
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
 
 // style 對照表
@@ -28,18 +31,15 @@ const headerVariant = {
 
 function Header({ variant = "default" }) {
   const style = headerVariant[variant];
-
+  const { user } = useAuth();
   // badge
   // 只要 cart 改變，cartCount 就會重新計算。
   const { cartCount, fetchCart } = useCart();
-  useEffect(() => {
-    // 從 localStorage 拿到登入時存的 user_info
-    const savedData = localStorage.getItem("user_info");
-    if (savedData) {
-      const user = JSON.parse(savedData);
-      fetchCart(user.id); // 畫面載入時，去資料庫同步數字
+    useEffect(() => {
+    if (user) {
+      fetchCart(user.id);
     }
-  }, []);
+  }, [user]);
 
   return (
     <header>
@@ -222,32 +222,46 @@ function Header({ variant = "default" }) {
                   <i className={`bi bi-person-circle fs-5 ${style.icon}`}></i>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
-                  <li>
-                    <div
-                      className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                    >
-                      <NavLink to="SignIn" className="text-decoration-none">
-                        登入
-                      </NavLink>
-                    </div>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider m-auto" />
-                  </li>
-                  <li>
-                    <div
-                      className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                    >
-                      <NavLink to="SignUp" className="text-decoration-none">
-                        註冊
-                      </NavLink>
-                    </div>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider m-auto" />
-                  </li>
+
+                  {user ? (
+                    <>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          {user.email}
+                        </div>
+                      </li>
+                      <li><hr className="dropdown-divider m-auto" /></li>
+                      <li>
+                        <button
+                          className="dropdown-item text-center py-3"
+                          onClick={async () => {
+                            await supabase.auth.signOut();
+                          }}
+                        >
+                          登出
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          <NavLink to="SignIn" className="text-decoration-none">
+                            登入
+                          </NavLink>
+                        </div>
+                      </li>
+                      <li><hr className="dropdown-divider m-auto" /></li>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          <NavLink to="SignUp" className="text-decoration-none">
+                            註冊
+                          </NavLink>
+                        </div>
+                      </li>
+                    </>
+                  )}
+
                 </ul>
               </div>
               {/* <!-- 購物車 --> */}

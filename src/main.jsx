@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, RouterProvider } from "react-router-dom";
 import { router } from "./router";
 
+import { AuthProvider } from "./context/AuthContext";
+
 // 1. 先引入基礎樣式
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -22,8 +24,10 @@ createRoot(document.getElementById("root")).render(
     {/* <Footer /> */}
     {/* <App /> */}
     {/* </BrowserRouter> */}
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
   </StrictMode>,
 );

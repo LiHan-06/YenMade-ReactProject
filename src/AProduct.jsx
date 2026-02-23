@@ -13,7 +13,7 @@ function AProduct() {
   const navigate = useNavigate(); // ✅ 修正 2: 初始化 navigate
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const { fetchCart } = useCart();
   // const useDispatch = useDispatch();
 
   // 儲存選擇的商品規格
@@ -73,35 +73,41 @@ function AProduct() {
 
   const { addToCart } = useCart();
 
-  const handleAddToCart = async () => {
-    // 先確認登入狀態
-    const user = getUserInfo();
+const handleAddToCart = async () => {
+  const user = getUserInfo();
+  let guest_id = localStorage.getItem("guest_id");
 
-    try {
-      // 購物車 api 的 data
-      const cartInput = {
-        user_id: user.id, // 這裡就能拿到全域的使用者 ID 了
-        guest_id: null,
-        product_id: product.id,
-        variant_id: selectedVariant.id,
-        quantity: quantity,
-      };
+  if (!user && !guest_id) {
+    guest_id = uuidv4();
+    localStorage.setItem("guest_id", guest_id);
+  }
 
-      // 執行加入購物車
-      await addToCartApi(cartInput);
-      // 更新前端 cartContext 狀態
-      addToCart(cartInput);
+  if (!selectedVariant) {
+    alert("請先選擇商品規格");
+    return;
+  }
 
-      console.log("成功加入購物車", cartInput);
-      alert("成功加入購物車");
-    } catch (error) {
-      console.error("錯誤代碼:", error.code);
-      console.error("錯誤訊息:", error.message);
-      alert("加入購物車失敗");
-    } finally {
-      setLoading(false);
-    }
+  const cartInput = {
+    user_id: user?.id || null,
+    guest_id: guest_id || null,
+    product_id: product.id,
+    variant_id: selectedVariant?.id,
+    quantity: quantity,
   };
+
+  console.log("要送出的購物車資料:", cartInput);
+
+  try {
+    // ✅ 透過 hook 方法加入購物車並更新 UI
+    await addToCart(cartInput);
+
+    console.log("成功加入購物車", cartInput);
+    alert("成功加入購物車");
+  } catch (error) {
+    console.error("加入購物車失敗:", error.message || error);
+    alert("加入購物車失敗");
+  }
+};
 
   if (loading) return <p>載入中...</p>;
   if (!product) return <p>找不到商品</p>;
@@ -202,7 +208,7 @@ function AProduct() {
                 onClick={handleAddToCart}
               >
                 <p className="m-auto ls-10">
-                  NTD$<span>${(selectedVariant?.price || 0) * quantity}</span>
+                  NTD$<span>{(selectedVariant?.price || 0) * quantity}</span>
                   <span className="mx-3">－</span>
                   加入購物車
                 </p>
