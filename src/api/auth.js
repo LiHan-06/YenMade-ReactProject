@@ -2,11 +2,15 @@
 import { supabase } from "../lib/supabase";
 
 // 註冊
-export const signUp = async (email, password) => {
+export const signUp = async (email, password, metadata = {}) => {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: {
+      data: metadata,
+    },
   });
+
   if (error) throw error;
   return data;
 };

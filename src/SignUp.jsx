@@ -25,9 +25,9 @@ const SignUp = () => {
     setLoading(true);
 
     const formData = new FormData(form);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const fullName = formData.get("fullName");
+    const email = formData.get("email")?.toString().trim();
+    const password = formData.get("password")?.toString().trim();
+    const fullName = formData.get("fullName")?.toString().trim();
 
     try {
       await signUp(email, password, { full_name: fullName });

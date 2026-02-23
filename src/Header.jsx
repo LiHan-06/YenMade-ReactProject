@@ -227,7 +227,7 @@ function Header({ variant = "default" }) {
                     <>
                       <li>
                         <div className="dropdown-item text-center py-3">
-                          {user.email}
+                          {user?.user_metadata?.full_name || user?.email}
                         </div>
                       </li>
                       <li><hr className="dropdown-divider m-auto" /></li>
