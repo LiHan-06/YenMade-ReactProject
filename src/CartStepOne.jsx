@@ -1,5 +1,7 @@
   import { useState, useEffect } from "react";
   import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
+  import { useAuth } from "./context/AuthContext";
+  import { Tooltip } from "bootstrap";
   import {
     updateCartQuantityApi,
     deleteCartItemApi,
@@ -11,6 +13,7 @@
   import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 
   function CartStepOne(userId) {
+    const { user } = useAuth();
     const [coupons, setCoupons] = useState([]);
     const [selectedCoupon, setSelectedCoupon] = useState(null);
     const [discountAmount, setDiscountAmount] = useState(0);
@@ -25,17 +28,18 @@
     } = useCart();
     useEffect(() => {
       fetchCart();
+
+      if (!user) return; // 👈 沒登入就不要抓優惠券
+
       const fetchCoupons = async () => {
         try {
           const couponData = await getCouponsApi();
           setCoupons(couponData || []);
-          // console.log("取得優惠券成功", coupons);
-        } catch (error) {
-          // console.error("取得優惠券失敗", error);
-        }
+        } catch (error) {}
       };
+
       fetchCoupons();
-    }, []);
+    }, [user]);
 
     // 優惠券事件監聽
       const handleCouponChange = async (e) => {
@@ -57,7 +61,7 @@
         if (totalPrice >= coupon.minimum_amount) {
           // 如果達標，套用折扣
           const discount = await applyCouponApi({
-            user_id: cart?.[0]?.user_id,
+            user_id: user.id,
             coupon_code,
           });
 
@@ -82,6 +86,16 @@
     // 訂單總金額
     const orderTotal = totalPrice + deliveryFee - discountAmount;
     console.log(cart);
+
+    useEffect(() => {
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+
+      tooltipTriggerList.forEach((tooltipTriggerEl) => {
+        new Tooltip(tooltipTriggerEl);
+      });
+    }, []);
     return (
       <section className="row" id="stepOne">
         {/* 購買清單 */}
@@ -251,47 +265,58 @@
             <div className="bg-neutral-100 bg-gradient py-3 ps-4">
               <p className="mb-0">優惠券</p>
             </div>
-            <ul
-              className="list-group rounded-0 list-group-checkable overflow-auto p-4"
-              style={{ height: 382 }}
-            >
-              <li className="list-group-item border-1 d-flex justify-content-between mb-9">
-                <label className="py-3" htmlFor="listGroupCheckableRadios1">
-                  <div>
-                    <p className="mb-0">不使用優惠券</p>
-                  </div>
-                </label>
-                <input
-                  className="list-group-item-check coupon-radio"
-                  type="radio"
-                  name="listGroupCheckableRadios"
-                  value="noneToUse"
-                  onChange={handleCouponChange}
-                />
-              </li>
-              {coupons.map((item) => (
-                <li
-                  className="list-group-item border-1 d-flex justify-content-between mb-9"
-                  key={item.id}
-                >
-                  <label className=" py-3" htmlFor={item.code}>
+
+            {user ? (
+              <ul
+                className="list-group rounded-0 list-group-checkable overflow-auto p-4"
+                style={{ height: 382 }}
+              >
+                <li className="list-group-item border-1 d-flex justify-content-between mb-9">
+                  <label className="py-3">
                     <div>
-                      <p className="mb-0">{item.title}</p>
+                      <p className="mb-0">不使用優惠券</p>
                     </div>
-                    <span className="d-block small opacity-50">
-                      {item.description}
-                    </span>
                   </label>
                   <input
                     className="list-group-item-check coupon-radio"
                     type="radio"
                     name="listGroupCheckableRadios"
-                    value={item.code}
+                    value="noneToUse"
                     onChange={handleCouponChange}
                   />
                 </li>
-              ))}
-            </ul>
+
+                {coupons.map((item) => (
+                  <li
+                    className="list-group-item border-1 d-flex justify-content-between mb-9"
+                    key={item.id}
+                  >
+                    <label className="py-3">
+                      <div>
+                        <p className="mb-0">{item.title}</p>
+                      </div>
+                      <span className="d-block small opacity-50">
+                        {item.description}
+                      </span>
+                    </label>
+                    <input
+                      className="list-group-item-check coupon-radio"
+                      type="radio"
+                      name="listGroupCheckableRadios"
+                      value={item.code}
+                      onChange={handleCouponChange}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="p-4 text-center">
+                <p className="text-muted mb-3">請先登入才能使用優惠券</p>
+                <Link to="/SignIn" className="btn btn-outline-dark">
+                  立即登入
+                </Link>
+              </div>
+            )}
           </div>
           {/* 訂單金額 box */}
           <div className="border">
@@ -308,7 +333,13 @@
               {/* 運費 */}
               <li className="d-flex justify-content-between py-2 mb-9">
                 <p className="mb-0">
-                  運費<i className="bi bi-info-circle ms-9"></i>
+                  運費
+                  <i
+                    className="bi bi-info-circle ms-2"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="為了把最新鮮的風味送到你手中，我們僅提供低溫宅配到府。"
+                  ></i>
                 </p>
                 <p className="mb-0">NTD$ {deliveryFee}</p>
               </li>
