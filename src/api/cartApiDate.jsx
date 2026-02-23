@@ -1,22 +1,25 @@
-// src/api/cartApiDate.jsx
-import { useState, useContext, createContext } from "react";
+import { useState, useContext, createContext, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 import { v4 as uuidv4 } from "uuid";
+import { useAuth } from "../context/AuthContext";
 
 /* =========================
    取得目前登入使用者
 ========================= */
 export async function getCurrentUser() {
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) throw new Error("使用者尚未登入");
+  if (error || !data.user) return null;
   return data.user;
 }
 
 /* =========================
    加入購物車
 ========================= */
-export async function addToCartApi({ product_id, variant_id, quantity, user_id, guest_id }) {
-  if (!user_id && !guest_id) {
+export async function addToCartApi({ product_id, variant_id, quantity }) {
+  const user = await getCurrentUser();
+  let guest_id = null;
+
+  if (!user) {
     guest_id = localStorage.getItem("guest_id");
     if (!guest_id) {
       guest_id = uuidv4();
@@ -24,25 +27,21 @@ export async function addToCartApi({ product_id, variant_id, quantity, user_id, 
     }
   }
 
-  const qty = quantity || 1;
-
-  // 1️⃣ 插入購物車
   const { data: insertData, error: insertError } = await supabase
     .from("carts")
     .insert({
       product_id,
       variant_id,
-      quantity: qty,
-      user_id: user_id || null,
-      guest_id: guest_id || null,
+      quantity: quantity || 1,
+      user_id: user?.id || null,
+      guest_id: guest_id,
     })
-    .select(); // select() 可以回傳剛插入的資料
+    .select();
 
   if (insertError) throw insertError;
 
-  // 2️⃣ 插入後回傳完整購物車
-  const fullCart = await fetchCartWithDetails(user_id, guest_id);
-  return fullCart;
+  // 回傳最新購物車
+  return await fetchCartWithDetails(user?.id, guest_id);
 }
 
 /* =========================
@@ -72,7 +71,7 @@ export async function deleteCartItemApi(id) {
    清空購物車
 ========================= */
 export async function clearCartApi() {
-  const user = await getCurrentUser().catch(() => null);
+  const user = await getCurrentUser();
   const guest_id = localStorage.getItem("guest_id");
 
   if (!user && !guest_id) return;
@@ -109,11 +108,8 @@ export async function fetchCartWithDetails(user_id, guest_id) {
       )
     `);
 
-  if (user_id) {
-    query = query.eq("user_id", user_id);
-  } else if (guest_id) {
-    query = query.eq("guest_id", guest_id);
-  }
+  if (user_id) query = query.eq("user_id", user_id);
+  else if (guest_id) query = query.eq("guest_id", guest_id);
 
   const { data, error } = await query;
 
@@ -129,10 +125,23 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const { user } = useAuth();
+
+  // 登入後 merge guest cart
+  const mergeGuestCart = async () => {
+    const guest_id = localStorage.getItem("guest_id");
+    if (user && guest_id) {
+      await supabase
+        .from("carts")
+        .update({ user_id: user.id, guest_id: null })
+        .eq("guest_id", guest_id);
+      localStorage.removeItem("guest_id");
+    }
+  };
 
   const fetchCart = async () => {
     try {
-      const user = await getCurrentUser().catch(() => null);
+      await mergeGuestCart();
       const guest_id = localStorage.getItem("guest_id");
       const data = await fetchCartWithDetails(user?.id, guest_id);
       setCart(data);
@@ -178,6 +187,11 @@ export function CartProvider({ children }) {
   };
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+
+  // 初始抓購物車
+  useEffect(() => {
+    fetchCart();
+  }, [user]);
 
   return (
     <CartContext.Provider
