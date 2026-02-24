@@ -88,9 +88,7 @@ export async function clearCartApi() {
    抓完整購物車資訊（join products & variants）
 ========================= */
 export async function fetchCartWithDetails(user_id, guest_id) {
-  let query = supabase
-    .from("carts")
-    .select(`
+  let query = supabase.from("carts").select(`
       id,
       quantity,
       user_id,
@@ -187,6 +185,12 @@ export function CartProvider({ children }) {
   };
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (sum, item) =>
+      sum + (Number(item.product?.price) || 0) * Number(item.quantity),
+    0,
+  );
+  const deliveryFee = 300;
 
   // 初始抓購物車
   useEffect(() => {
@@ -203,6 +207,8 @@ export function CartProvider({ children }) {
         updateQuantity,
         removeItem,
         clearCart,
+        totalPrice,
+        deliveryFee,
       }}
     >
       {children}

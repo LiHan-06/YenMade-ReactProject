@@ -1,9 +1,8 @@
 // header
-import { NavLink } from "react-router";
-import { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "./api/cartApiDate";
-// import { useSelector } from "react-redux";
-
+import { Offcanvas } from "bootstrap";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
 
@@ -32,14 +31,41 @@ const headerVariant = {
 function Header({ variant = "default" }) {
   const style = headerVariant[variant];
   const { user } = useAuth();
-  // badge
   // 只要 cart 改變，cartCount 就會重新計算。
   const { cartCount, fetchCart } = useCart();
-    useEffect(() => {
+  // dropdown 狀態管理：控制選單是否顯示
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  // 切換選單開關
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  // 控制 offcanvas 開合
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const location = useLocation();
+
+  // 取得登入後的userId
+  useEffect(() => {
     if (user) {
       fetchCart(user.id);
     }
   }, [user]);
+  // 點擊外面自動關閉選單
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  // 點擊選單項目後自動關閉（例如點擊登入、註冊後）
+  const handleItemClick = () => setIsOpen(false);
+
+  // 控制 offcanvas 開合
 
   return (
     <header>
@@ -64,12 +90,13 @@ function Header({ variant = "default" }) {
             <i className={`bi bi-list fs-5 ${style.icon}`}></i>
           </button>
           <div
-            className="offcanvas offcanvas-end offcanvas-space offcanvas-bg"
+            className={`offcanvas offcanvas-end offcanvas-space offcanvas-bg`}
             tabIndex={-1}
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
             data-bs-scroll="true"
             data-bs-backdrop="false"
+            style={{ zIndex: 1050 }}
           >
             <div className="offcanvas-header px-4 py-5 mb-2">
               <button
@@ -142,22 +169,15 @@ function Header({ variant = "default" }) {
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
+                    style={{
+                      display: user ? "block" : "none",
+                    }}
                   >
                     <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       to="/SignIn"
                     >
                       <span className="btn-font-lg">會員專區</span>
-                    </NavLink>
-                  </li>
-                  <li
-                    className={`nav-item text-center border-md-bottom ${style.navLi}`}
-                  >
-                    <NavLink
-                      className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      to="/SignIn"
-                    >
-                      <span className="btn-font-lg">訂單追蹤</span>
                     </NavLink>
                   </li>
                 </ul>
@@ -169,6 +189,7 @@ function Header({ variant = "default" }) {
                   <NavLink
                     className="btn btn-outline-light border-0 border-end btn-font-lg w-50 px-3 py-2"
                     to="/SignIn"
+                    onClick={handleItemClick}
                   >
                     <i className="bi bi-person-circle me-2"></i>
                     <span>登入</span>
@@ -176,6 +197,7 @@ function Header({ variant = "default" }) {
                   <NavLink
                     className="btn btn-outline-light border-0 btn-font-lg w-50 px-3 py-2"
                     to="/CheckOut"
+                    onClick={handleItemClick}
                   >
                     <i className="bi bi-cart3 me-2"></i>
                     <span>購物車</span>
@@ -184,7 +206,6 @@ function Header({ variant = "default" }) {
               </div>
             </div>
           </div>
-
           {/* <!-- 搜尋/帳號/購物車按鈕 --> */}
           <div className="d-none d-lg-block position-relative">
             <div className="d-lg-flex align-items-lg-center">
@@ -212,17 +233,26 @@ function Header({ variant = "default" }) {
                 ></i>
               </button>
               {/* <!-- 會員頭像 --> */}
-              <div className="btn-group ms-2">
+              <div className="btn-group ms-2" ref={dropdownRef}>
                 <button
                   type="button"
                   className="d-none d-lg-inline bg-transparent border-0 p-2"
                   data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                  aria-expanded={isOpen}
+                  onClick={toggleDropdown}
                 >
                   <i className={`bi bi-person-circle fs-5 ${style.icon}`}></i>
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
-
+                {/* 下拉選單部分：透過 React 狀態控制 className 與 style */}
+                <ul
+                  className={`dropdown-menu dropdown-menu-end rounded-0 border-0 p-0 ${isOpen ? "show" : ""}`}
+                  style={{
+                    display: isOpen ? "block" : "none",
+                    position: "absolute",
+                    right: 0,
+                    top: "100%",
+                  }}
+                >
                   {user ? (
                     <>
                       <li>
@@ -230,11 +260,14 @@ function Header({ variant = "default" }) {
                           {user?.user_metadata?.full_name || user?.email}
                         </div>
                       </li>
-                      <li><hr className="dropdown-divider m-auto" /></li>
+                      <li>
+                        <hr className="dropdown-divider m-auto" />
+                      </li>
                       <li>
                         <button
                           className="dropdown-item text-center py-3"
                           onClick={async () => {
+                            handleItemClick();
                             await supabase.auth.signOut();
                           }}
                         >
@@ -246,22 +279,31 @@ function Header({ variant = "default" }) {
                     <>
                       <li>
                         <div className="dropdown-item text-center py-3">
-                          <NavLink to="SignIn" className="text-decoration-none">
+                          <NavLink
+                            to="SignIn"
+                            className="text-decoration-none"
+                            onClick={handleItemClick}
+                          >
                             登入
                           </NavLink>
                         </div>
                       </li>
-                      <li><hr className="dropdown-divider m-auto" /></li>
+                      <li>
+                        <hr className="dropdown-divider m-auto" />
+                      </li>
                       <li>
                         <div className="dropdown-item text-center py-3">
-                          <NavLink to="SignUp" className="text-decoration-none">
+                          <NavLink
+                            to="SignUp"
+                            className="text-decoration-none"
+                            onClick={handleItemClick}
+                          >
                             註冊
                           </NavLink>
                         </div>
                       </li>
                     </>
                   )}
-
                 </ul>
               </div>
               {/* <!-- 購物車 --> */}
