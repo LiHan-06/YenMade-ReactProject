@@ -95,9 +95,25 @@ export default function CartOrderForm({ onPrev, onNext }) {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const payload = { ...data, paymentMethod };
+    const {
+      cardNumber,
+      cvc,
+      expYear,
+      expMonth,
+      cardLastName,
+      cardFirstName,
+      ...safeData
+    } = data;
+    const maskedCard = cardNumber
+      ? `**** **** **** ${cardNumber.slice(-4)}`
+      : "";
+    const payload = {
+      ...safeData,
+      paymentMethod,
+      maskedCard,
+    };
     console.log("order form", payload);
-    navigate("/CheckOut/OrderReview"); // 對應你的路由路徑
+    navigate("/CheckOut/OrderReview", { state: payload }); // 對應你的路由路徑
   };
 
   return (

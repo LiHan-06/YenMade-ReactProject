@@ -1,7 +1,7 @@
 // OrderReview.jsx
 import React, { useState, useEffect } from "react";
 import "./OrderReview.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Tooltip } from "bootstrap";
 import { useCart } from "./api/cartApiDate";
 
@@ -55,6 +55,28 @@ function OrderReview() {
     tooltipTriggerList.forEach((el) => new Tooltip(el));
   }, []);
   const navigate = useNavigate();
+
+  const { state: orderData } = useLocation();
+
+  if (!orderData) {
+    navigate("/CheckOut/CartOrderForm");
+    return null;
+  }
+
+  const invoiceTypeMap = {
+    personal: "個人發票",
+    company: "公司發票",
+    // "": "未填寫",
+  };
+
+  const paymentMethodMap = {
+  "信用卡": "信用卡",
+  "貨到付款": "貨到付款",
+  "ATM轉帳": "ATM 轉帳",
+  "超商代碼繳費": "超商付款",
+};
+
+
   return (
     <>
       <ul className="row justify-content-center align-items-center gx-1 gx-lg-4 mx-0 px-0 mx-lg-8 px-lg-8 my-6 my-lg-5 py-lg-5 list-unstyled">
@@ -196,15 +218,16 @@ function OrderReview() {
               <div className="bg-neutral-100 py-3 ps-4">確認收件資訊</div>
               <div className="p-3 p-lg-4">
                 {[
-                  ["收件者姓名", "王小明"],
-                  ["手機號碼", "0912345678"],
-                  ["電子郵件", "yenmade@gmail.com"],
-                  ["收貨地址", "高雄市鹽埕區七賢三路123號2樓"],
-                  ["發票類型", "列印發票"],
+                  ["收件者姓名", orderData?.receiverName],
+                  ["手機號碼", orderData?.phone],
+                  ["電子郵件", orderData?.email],
+                  ["收貨地址", orderData?.address],
                   [
-                    "備註",
-                    "可以直接管理室代收，早上9點到晚上10點都有人員在，謝謝。",
+                    "發票類型",
+                    invoiceTypeMap[orderData?.invoiceType] ??
+                      orderData?.invoiceType,
                   ],
+                  ["備註", orderData?.note ?? "無"],
                 ].map(([label, value], idx) => (
                   <div className="row align-items-center mb-2" key={idx}>
                     <p className="col-4 mb-0">{label}</p>
@@ -235,12 +258,14 @@ function OrderReview() {
                 <div className="mb-2">
                   <div className="row align-items-center mb-2">
                     <p className="col-4">付款方式</p>
-                    <p className="col-8">信用卡</p>
+                    <p className="col-8">{paymentMethodMap[orderData?.paymentMethod] ?? orderData?.paymentMethod}</p>
                   </div>
-                  <div className="row align-items-center mb-2">
-                    <p className="col-4">卡號</p>
-                    <p className="col-8">**** 1212</p>
-                  </div>
+                  {orderData?.paymentMethod === "信用卡" && (
+                    <div className="row align-items-center mb-2">
+                      <p className="col-4">卡號</p>
+                      <p className="col-8">{orderData?.maskedCard}</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* 付款注意事項 */}
