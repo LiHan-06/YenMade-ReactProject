@@ -90,9 +90,7 @@ const SignUp = () => {
                     {showPassword ? "隱藏" : "顯示"}
                   </button>
                 </div>
-                <div className="invalid-feedback">
-                  密碼長度至少需 6 位
-                </div>
+                <div className="invalid-feedback">密碼長度至少需 6 位</div>
               </div>
 
               <div className="col-12">
@@ -104,8 +102,8 @@ const SignUp = () => {
                     required
                   />
                   <label className="form-check-label small" htmlFor="terms">
-                    我已閱讀並同意{" "}
-                    <a href="#">服務條款</a> 與 <a href="#">隱私政策</a>
+                    我已閱讀並同意 <a href="#">服務條款</a> 與{" "}
+                    <a href="#">隱私政策</a>
                   </label>
                   <div className="invalid-feedback">
                     您必須同意條款後才能註冊
@@ -121,7 +119,10 @@ const SignUp = () => {
                 >
                   {loading ? "註冊中..." : "立即註冊"}
                 </button>
-                <Link className="btn btn-outline-secondary flex-fill" to="/signin">
+                <Link
+                  className="btn btn-outline-secondary flex-fill"
+                  to="/signIn"
+                >
                   已有帳號？登入
                 </Link>
               </div>

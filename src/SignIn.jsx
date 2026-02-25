@@ -4,6 +4,7 @@ import AuthLayout from "./components/AuthLayout";
 import SocialButton from "./components/SocialButton";
 import InputGroup from "./components/InputGroup";
 import { signIn } from "./api/auth"; // ✅ 新增：引入你寫好的 API
+import { Link } from "react-router";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -116,12 +117,12 @@ const SignIn = () => {
                 >
                   {loading ? "登入中..." : "登入"}
                 </button>
-                <a
+                <Link
                   className="btn btn-outline-secondary flex-fill"
-                  href="/signup"
+                  to="/signUp"
                 >
                   註冊
-                </a>
+                </Link>
               </div>
             </form>
           </div>

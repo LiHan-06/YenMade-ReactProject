@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { getProductsApi } from "./api/products.js";
 import { Link } from "react-router";
 
+import Banner_allproducts from "./assets/images/第二階段更新/img/Banner_allproducts.png";
+import Banner_allproducts_mobile from "./assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
+
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [currentTab, setCurrentTab] = useState("所有商品");
@@ -33,7 +36,7 @@ const AllProducts = () => {
       {/* Desktop Banner（原 HTML） */}
       <div className="mt-104 d-none d-lg-block">
         <img
-          src="/src/assets/images/第二階段更新/img/Banner_allproducts.png"
+          src={Banner_allproducts}
           alt="banner"
           className="img-fluid w-100"
         />
@@ -42,7 +45,7 @@ const AllProducts = () => {
       {/* Mobile Banner（原 HTML） */}
       <div className="mt-104 d-lg-none">
         <img
-          src="/src/assets/images/第二階段更新/img/Banner_allproducts_mobile.png"
+          src={Banner_allproducts_mobile}
           alt="mobile banner"
           className="img-fluid w-100"
         />
@@ -50,27 +53,29 @@ const AllProducts = () => {
 
       {/* breadcrumb（原 HTML） */}
       <div className="d-none d-sm-block ms-3">
-        <div className="px-0 px-md-4 px-lg-6 py-3">
-          <nav
-            style={{ "--bs-breadcrumb-divider": "'〉'" }}
-            aria-label="breadcrumb"
-          >
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item breadcrumb-link">
-                <Link to="/" className="text-decoration-none py-9">
-                  <i className="bi bi-house-door fs-8"></i>
-                </Link>
-              </li>
-              <li
-                className="breadcrumb-item breadcrumb-link active"
-                aria-current="page"
-              >
-                <Link to="#" className="text-decoration-none fs-8 py-9">
-                  所有商品
-                </Link>
-              </li>
-            </ol>
-          </nav>
+        <div className="container-sm">
+          <div className="px-0 px-md-4 px-lg-6 py-3">
+            <nav
+              style={{ "--bs-breadcrumb-divider": "'〉'" }}
+              aria-label="breadcrumb"
+            >
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item breadcrumb-link">
+                  <Link to="/" className="text-decoration-none py-9">
+                    <i className="bi bi-house-door fs-8"></i>
+                  </Link>
+                </li>
+                <li
+                  className="breadcrumb-item breadcrumb-link active"
+                  aria-current="page"
+                >
+                  <Link to="#" className="text-decoration-none fs-8 py-9">
+                    所有商品
+                  </Link>
+                </li>
+              </ol>
+            </nav>
+          </div>
         </div>
       </div>
 
