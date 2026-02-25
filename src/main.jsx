@@ -11,7 +11,6 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 // import "./index.css";
 
-
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
 import "./assets/scss/all.scss";
 
@@ -42,7 +41,7 @@ createRoot(document.getElementById("root")).render(
     {/* </BrowserRouter> */}
     <AuthProvider>
       <CartProvider>
-        <RouterProvider router={router} />
+        <RouterProvider basename="/YenMade-ReactProject" router={router} />
       </CartProvider>
     </AuthProvider>
   </StrictMode>,
