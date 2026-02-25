@@ -1,0 +1,41 @@
+.mt-80{
+    margin-top: 80px;
+}
+
+.mt-64{
+    margin-top: 64px;
+}
+.mb-64{
+    margin-bottom: 64px;
+}   
+
+.step {
+  position: relative;
+  text-align: center;
+  width: 120px;
+}
+
+.step img {
+  display: block;
+  margin: 0 auto;
+}
+
+.step-number {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* 點擊穿透 */
+}
+
+.product-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;  /* 保持圖片比例裁切填滿 */
+}
+
+
+.notice-box {
+  background-color: #F2F3EF;
+  padding: 1rem; /* 保留內邊距 */
+}
