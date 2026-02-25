@@ -1,7 +1,9 @@
 // 常見問題
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
 
 export default function Faq() {
+  const [breadcrumbLabel, setBreadcrumbLabel] = useState("所有問題");
   const categories = useMemo(
     () => [
       {
@@ -89,17 +91,17 @@ export default function Faq() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb mb-0 small">
               <li className="breadcrumb-item">
-                <a href="./index.html" className="text-decoration-none">
-                  首頁
-                </a>
+                <Link to="/" aria-label="回首頁">
+                  <i className="bi bi-house-door" />
+                </Link>
               </li>
               <li className="breadcrumb-item">
-                <a href="./faq.html" className="text-decoration-none">
+                <Link to="#" className="text-decoration-none">
                   常見問題
-                </a>
+                </Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                所有問題
+                {breadcrumbLabel}
               </li>
             </ol>
           </nav>
@@ -150,6 +152,7 @@ export default function Faq() {
                   role="tab"
                   aria-controls={c.paneId}
                   aria-selected={c.active ? "true" : "false"}
+                  onClick={() => setBreadcrumbLabel(c.label)}
                 >
                   {c.label}
                 </button>

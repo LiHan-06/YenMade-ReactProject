@@ -86,6 +86,6 @@ export const router = createBrowserRouter(
     },
   ],
   {
-    basename: "/YenMade-ReactProject",
+    basename: import.meta.env.BASE_URL,
   },
 );

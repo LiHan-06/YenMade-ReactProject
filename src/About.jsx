@@ -1,6 +1,22 @@
 // 關於我們
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import Banner_about from "./assets/images/about/Banner_about.png";
+import VectorGreen from "./assets/images/Vector-green.svg";
+import VectorOrange from "./assets/images/Vector-orange.svg";
+import Brand_story from "./assets/images/about/Brand_story.png";
+import Brand_team from "./assets/images/about/Brand_team.png";
+import Brand_concept_bg from "./assets/images/about/Brand_concept_bg.png";
+import Brand_concept_bg_mobile from "./assets/images/about/Brand_concept_bg_mobile.png";
+import About_carousel_1 from "./assets/images/about/About_carousel_1.png";
+import About_carousel_2 from "./assets/images/about/About_carousel_2.png";
+import About_carousel_3 from "./assets/images/about/About_carousel_3.png";
+import About_carousel_4 from "./assets/images/about/About_carousel_4.png";
+import About_carousel_5 from "./assets/images/about/About_carousel_5.png";
+import About_carousel_6 from "./assets/images/about/About_carousel_6.png";
+
+import { Link } from "react-router";
+
 export default function About() {
   const scrollWrapperRef = useRef(null);
   const rafIdRef = useRef(null);
@@ -10,12 +26,12 @@ export default function About() {
 
   const carouselImages = useMemo(
     () => [
-      { src: "/src/assets/images/about/About_carousel_1.png", alt: "照片1" },
-      { src: "/src/assets/images/about/About_carousel_2.png", alt: "照片2" },
-      { src: "/src/assets/images/about/About_carousel_3.png", alt: "照片3" },
-      { src: "/src/assets/images/about/About_carousel_4.png", alt: "照片4" },
-      { src: "/src/assets/images/about/About_carousel_5.png", alt: "照片5" },
-      { src: "/src/assets/images/about/About_carousel_6.png", alt: "照片6" },
+      { src: About_carousel_1, alt: "照片1" },
+      { src: About_carousel_2, alt: "照片2" },
+      { src: About_carousel_3, alt: "照片3" },
+      { src: About_carousel_4, alt: "照片4" },
+      { src: About_carousel_5, alt: "照片5" },
+      { src: About_carousel_6, alt: "照片6" },
     ],
     [],
   );
@@ -57,11 +73,7 @@ export default function About() {
     <>
       {/* banner */}
       <div className="mb-5 about-banner">
-        <img
-          src="/src/assets/images/about/Banner_about.png"
-          alt="廚房圖片"
-          className="w-100"
-        />
+        <img src={Banner_about} alt="廚房圖片" className="w-100" />
       </div>
 
       <div className="container-sm">
@@ -73,9 +85,9 @@ export default function About() {
         >
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="./index.html" aria-label="回首頁">
+              <Link to="/" aria-label="回首頁">
                 <i className="bi bi-house-door" />
-              </a>
+              </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               關於我們
@@ -90,7 +102,7 @@ export default function About() {
               品牌故事
             </p>
             <img
-              src="/src/assets/images/Vector-green.svg"
+              src={VectorGreen}
               alt="裝飾圖"
               className="position-absolute"
               style={{
@@ -112,18 +124,14 @@ export default function About() {
             </p>
           </div>
           <div className="col-12 col-md-5 offset-md-0 order-2 order-md-2">
-            <img
-              src="/src/assets/images/about/Brand_story.png"
-              alt="#"
-              className="img-fluid"
-            />
+            <img src={Brand_story} alt="#" className="img-fluid" />
           </div>
         </div>
 
         {/* section2 PC */}
         <div className="position-relative mb-80 section2 d-none d-md-block">
           <img
-            src="/src/assets/images/about/Brand_concept_bg.png"
+            src={Brand_concept_bg}
             alt="切菜圖"
             className="w-100 section2-bg"
           />
@@ -132,11 +140,7 @@ export default function About() {
               <p className="p1 mb-3 position-relative" style={{ zIndex: 2 }}>
                 品牌理念
               </p>
-              <img
-                src="/src/assets/images/Vector-green.svg"
-                alt="裝飾圖"
-                className="decor-img"
-              />
+              <img src={VectorGreen} alt="裝飾圖" className="decor-img" />
             </div>
             <h6 className="h6 mb-4">
               我們相信，好味道
@@ -157,7 +161,7 @@ export default function About() {
         {/* section2 RWD */}
         <div className="position-relative mb-80 section2 d-block d-md-none">
           <img
-            src="/src/assets/images/about/Brand_concept_bg_mobile.png"
+            src={Brand_concept_bg_mobile}
             alt="切菜圖"
             className="w-100 section2-bg"
           />
@@ -169,11 +173,7 @@ export default function About() {
               <p className="p1 mb-3 position-relative" style={{ zIndex: 2 }}>
                 品牌理念
               </p>
-              <img
-                src="/src/assets/images/Vector-green.svg"
-                alt="裝飾圖"
-                className="decor-img"
-              />
+              <img src={VectorGreen} alt="裝飾圖" className="decor-img" />
             </div>
             <h6 className="h6 mb-3 text-nowrap">
               我們相信，好味道
@@ -198,7 +198,7 @@ export default function About() {
               我們的團隊
             </p>
             <img
-              src="/src/assets/images/Vector-orange.svg"
+              src={VectorOrange}
               alt="裝飾圖"
               className="position-absolute"
               style={{
@@ -219,7 +219,7 @@ export default function About() {
           </div>
           <div className="col-12 col-md-5 offset-md-1 order-2 order-md-2">
             <img
-              src="/src/assets/images/about/Brand_team.png"
+              src={Brand_team}
               alt="#"
               className="img-fluid d-none d-md-block"
             />

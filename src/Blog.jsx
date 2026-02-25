@@ -1,12 +1,18 @@
 // 部落格
 import { useMemo } from "react";
+import BlogImg1 from "./assets/images/1.jpg";
+import BlogImg2 from "./assets/images/2.jpeg";
+import BlogImg3 from "./assets/images/3.jpg";
+import BlogImg4 from "./assets/images/4.jpg";
+import BlogImg5 from "./assets/images/5.jpg";
+import BlogImg6 from "./assets/images/6.jpg";
 
 export default function Blog() {
   const posts = useMemo(
     () => [
       {
         id: 1,
-        imgSrc: "/src/assets/images/1.jpg",
+        imgSrc: BlogImg1,
         imgAlt: "小黃瓜",
         author: "王小明營養師",
         dateISO: "2025-10-05",
@@ -16,7 +22,7 @@ export default function Blog() {
       },
       {
         id: 2,
-        imgSrc: "/src/assets/images/2.jpeg",
+        imgSrc: BlogImg2,
         imgAlt: "小黃瓜",
         author: "陳美美主廚",
         dateISO: "2025-09-20",
@@ -26,7 +32,7 @@ export default function Blog() {
       },
       {
         id: 3,
-        imgSrc: "/src/assets/images/3.jpg",
+        imgSrc: BlogImg3,
         imgAlt: "小黃瓜",
         author: "林小菜營養師",
         dateISO: "2025-09-15",
@@ -36,7 +42,7 @@ export default function Blog() {
       },
       {
         id: 4,
-        imgSrc: "/src/assets/images/4.jpg",
+        imgSrc: BlogImg4,
         imgAlt: "小黃瓜",
         author: "張鹽鹽食品研師",
         dateISO: "2025-09-10",
@@ -46,7 +52,7 @@ export default function Blog() {
       },
       {
         id: 5,
-        imgSrc: "/src/assets/images/5.jpg",
+        imgSrc: BlogImg5,
         imgAlt: "小黃瓜",
         author: "李大傑主廚",
         dateISO: "2025-08-25",
@@ -56,7 +62,7 @@ export default function Blog() {
       },
       {
         id: 6,
-        imgSrc: "/src/assets/images/6.jpg",
+        imgSrc: BlogImg6,
         imgAlt: "小黃瓜",
         author: "醃造所前端團隊",
         dateISO: "2025-08-01",

@@ -8,6 +8,17 @@ import heroBg from "./assets/images/Hero_bg_pc.png";
 import NewArrivalsbg from "./assets/images/New_bg_img.jpg";
 import finalCtaMobile from "./assets/images/FinalCTA_bg_mobile.png";
 import finalCtaDesktop from "./assets/images/FinalCTA_bg_img.jpg";
+import VectorGreen from "./assets/images/Vector-green.svg";
+import FeatureImg from "./assets/images/Feature-img.jpg";
+import salt from "./assets/images/illustration/Illustration_salt.svg";
+import FeatureImg1 from "./assets/images/Feature-img-1.jpg";
+import FeatureImg2 from "./assets/images/Feature-img-2.jpg";
+import FeatureImg3 from "./assets/images/Feature-img-3.jpg";
+import FeatureImg4 from "./assets/images/Feature-img-4.jpg";
+import cut from "./assets/images/illustration/Illustration_cut.svg";
+import VectorOrange from "./assets/images/Vector-orange.svg";
+import plate from "./assets/images/illustration/Illustration_plate.svg";
+import glassJam from "./assets/images/illustration/Illustration_glass_jam.svg";
 import { Link } from "react-router";
 
 // import './index.css'
@@ -238,7 +249,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
+                  <img src={VectorGreen} alt="#" />
                   <span className="position-absolute top-50 start-50 translate-middle h4 text-white">
                     01
                   </span>
@@ -258,16 +269,12 @@ function App() {
               <div className="col-7 position-relative d-flex align-items-end">
                 <div className="carrot-img-wrap ms-auto">
                   <img
-                    src="/src/assets/images/Feature-img.jpg"
+                    src={FeatureImg}
                     alt="蔬果圖片"
                     className="w-100 carrot-img"
                   />
                 </div>
-                <img
-                  src="/src/assets/images/illustration/Illustration_salt.svg"
-                  alt="灑鹽插圖"
-                  className="illustration-salt"
-                />
+                <img src={salt} alt="灑鹽插圖" className="illustration-salt" />
               </div>
             </div>
             {/* 製作方法2 */}
@@ -276,21 +283,17 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="pickled-img-wrap ms-auto">
                   <img
-                    src="/src/assets/images/Feature-img-1.jpg"
+                    src={FeatureImg1}
                     alt="醃製過程圖"
                     className="w-100 main-img pickled-img"
                   />
                 </div>
-                <img
-                  src="/src/assets/images/illustration/Illustration_cut.svg"
-                  alt="切菜插圖"
-                  className="illustration-cut"
-                />
+                <img src={cut} alt="切菜插圖" className="illustration-cut" />
               </div>
               {/* 介紹 */}
               <div className="col-3 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="/src/assets/images/Vector-orange.svg" alt="#" />
+                  <img src={VectorOrange} alt="#" />
                   <span className="position-absolute top-50 start-50 translate-middle h4 text-white">
                     02
                   </span>
@@ -311,7 +314,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
+                  <img src={VectorGreen} alt="#" />
                   <span className="position-absolute top-50 start-50 translate-middle h4 text-white">
                     03
                   </span>
@@ -330,13 +333,13 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="cut-img-wrap ms-auto">
                   <img
-                    src="/src/assets/images/Feature-img-2.jpg"
+                    src={FeatureImg2}
                     alt="切菜圖"
                     className="w-100 main-img cut-img"
                   />
                 </div>
                 <img
-                  src="/src/assets/images/illustration/Illustration_glass_jam.svg"
+                  src={glassJam}
                   alt="瓶罐插圖"
                   className="illustration-glass"
                 />
@@ -348,7 +351,7 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="can-img-wrap ms-auto">
                   <img
-                    src="/src/assets/images/Feature-img-3.jpg"
+                    src={FeatureImg3}
                     alt="罐裝醃製瓶罐圖"
                     className="w-100 can-img"
                   />
@@ -357,7 +360,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="/src/assets/images/Vector-orange.svg" alt="#" />
+                  <img src={VectorOrange} alt="#" />
                   <span className="position-absolute top-50 start-50 translate-middle h4 text-white">
                     04
                   </span>
@@ -378,7 +381,7 @@ function App() {
               {/* 介紹 */}
               <div className="col-3 offset-1 text-center">
                 <div className="position-relative d-inline-block mb-3">
-                  <img src="/src/assets/images/Vector-green.svg" alt="#" />
+                  <img src={VectorGreen} alt="#" />
                   <span className="position-absolute top-50 start-50 translate-middle h4 text-white">
                     05
                   </span>
@@ -399,17 +402,13 @@ function App() {
               <div className="position-relative col-7 offset-1 d-flex align-items-end">
                 <div className="rice-img-wrap ms-auto">
                   <img
-                    src="/src/assets/images/Feature-img-4.jpg"
+                    src={FeatureImg4}
                     alt="醃漬物配飯糰"
                     className="w-100 main-img rice-img"
                   />
                 </div>
               </div>
-              <img
-                src="/src/assets/images/illustration/Illustration_plate.svg"
-                alt="盤子插圖"
-                className="illustration-plate"
-              />
+              <img src={plate} alt="盤子插圖" className="illustration-plate" />
             </div>
           </div>
         </div>
