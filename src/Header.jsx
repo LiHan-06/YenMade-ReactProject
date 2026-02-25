@@ -1,5 +1,11 @@
 // header
-import CartsDropdown from "./components/CartsDropdown.jsx";
+import { NavLink, useLocation } from "react-router";
+import { useState, useEffect, useRef } from "react";
+import { useCart } from "./api/cartApiDate";
+import { Offcanvas } from "bootstrap";
+import { useAuth } from "./context/AuthContext";
+import { supabase } from "./lib/supabase";
+
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
 
 // style 對照表
@@ -24,6 +30,42 @@ const headerVariant = {
 
 function Header({ variant = "default" }) {
   const style = headerVariant[variant];
+  const { user } = useAuth();
+  // 只要 cart 改變，cartCount 就會重新計算。
+  const { cartCount, fetchCart } = useCart();
+  // dropdown 狀態管理：控制選單是否顯示
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  // 切換選單開關
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  // 控制 offcanvas 開合
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const location = useLocation();
+
+  // 取得登入後的userId
+  useEffect(() => {
+    if (user) {
+      fetchCart(user.id);
+    }
+  }, [user]);
+  // 點擊外面自動關閉選單
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  // 點擊選單項目後自動關閉（例如點擊登入、註冊後）
+  const handleItemClick = () => setIsOpen(false);
+
+  // 控制 offcanvas 開合
 
   return (
     <header>
@@ -31,13 +73,13 @@ function Header({ variant = "default" }) {
         className={`navbar navbar-expand-lg navbar-dark pageScroll py-5 ${style.navbar}`}
       >
         <div className="container px-4">
-          <a className="navbar-brand p-0 me-lg-45" href="index.html">
+          <NavLink className="navbar-brand p-0 me-lg-45" to="/">
             <img
               className={`${style.logo} logo-size`}
               src={Logo_Horizontal}
               alt="yenmade's logo"
             />
-          </a>
+          </NavLink>
           <button
             className={`navbar-toggler border-0 py-2 ${style.toggler}`}
             type="button"
@@ -48,12 +90,13 @@ function Header({ variant = "default" }) {
             <i className={`bi bi-list fs-5 ${style.icon}`}></i>
           </button>
           <div
-            className="offcanvas offcanvas-end offcanvas-space offcanvas-bg"
+            className={`offcanvas offcanvas-end offcanvas-space offcanvas-bg`}
             tabIndex={-1}
             id="offcanvasNavbar"
             aria-labelledby="offcanvasNavbarLabel"
             data-bs-scroll="true"
             data-bs-backdrop="false"
+            style={{ zIndex: 1050 }}
           >
             <div className="offcanvas-header px-4 py-5 mb-2">
               <button
@@ -86,63 +129,56 @@ function Header({ variant = "default" }) {
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       aria-current="page"
-                      href="../pages/allproducts.html"
+                      to="/AllProducts"
                     >
                       <span className="btn-font-lg">所有商品</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="../pages/about.html"
+                      to="/About"
                     >
                       <span className="btn-font-lg">關於我們</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="../pages/blog.html"
+                      to="/Blog"
                     >
                       <span className="btn-font-lg">部落格</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="../pages/faq.html"
+                      to="/FAQ"
                     >
                       <span className="btn-font-lg">常見問題</span>
-                    </a>
+                    </NavLink>
                   </li>
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
+                    style={{
+                      display: user ? "block" : "none",
+                    }}
                   >
-                    <a
+                    <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="../pages/member-center.html"
+                      to="/SignIn"
                     >
                       <span className="btn-font-lg">會員專區</span>
-                    </a>
-                  </li>
-                  <li
-                    className={`nav-item text-center border-md-bottom ${style.navLi}`}
-                  >
-                    <a
-                      className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
-                      href="../pages/member-center.html"
-                    >
-                      <span className="btn-font-lg">訂單追蹤</span>
-                    </a>
+                    </NavLink>
                   </li>
                 </ul>
               </div>
@@ -150,25 +186,26 @@ function Header({ variant = "default" }) {
             <div className="offcanvas-footer d-lg-none">
               <div className="container mb-6">
                 <div className="d-flex justify-content-between mt-auto nav-btn">
-                  <a
+                  <NavLink
                     className="btn btn-outline-light border-0 border-end btn-font-lg w-50 px-3 py-2"
-                    href="/yenmade/pages/finished-checkout.html"
+                    to="/SignIn"
+                    onClick={handleItemClick}
                   >
                     <i className="bi bi-person-circle me-2"></i>
                     <span>登入</span>
-                  </a>
-                  <a
+                  </NavLink>
+                  <NavLink
                     className="btn btn-outline-light border-0 btn-font-lg w-50 px-3 py-2"
-                    href="/yenmade/pages/member-checkout.html"
+                    to="/CheckOut"
+                    onClick={handleItemClick}
                   >
                     <i className="bi bi-cart3 me-2"></i>
                     <span>購物車</span>
-                  </a>
+                  </NavLink>
                 </div>
               </div>
             </div>
           </div>
-
           {/* <!-- 搜尋/帳號/購物車按鈕 --> */}
           <div className="d-none d-lg-block position-relative">
             <div className="d-lg-flex align-items-lg-center">
@@ -196,53 +233,94 @@ function Header({ variant = "default" }) {
                 ></i>
               </button>
               {/* <!-- 會員頭像 --> */}
-              <div className="btn-group ms-3">
+              <div className="btn-group ms-2" ref={dropdownRef}>
                 <button
                   type="button"
-                  className="d-none d-lg-inline dropdown-toggle bg-transparent border-0 p-2"
+                  className="d-none d-lg-inline bg-transparent border-0 p-2"
                   data-bs-toggle="dropdown"
-                  aria-expanded="false"
+                  aria-expanded={isOpen}
+                  onClick={toggleDropdown}
                 >
                   <i className={`bi bi-person-circle fs-5 ${style.icon}`}></i>
                 </button>
-                <ul className="dropdown-menu dropdown-menu-end border-0 p-0">
-                  <li>
-                    <button
-                      className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                      onClick="#"
-                    >
-                      登入
-                    </button>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider m-auto" />
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item btn-font-lg text-center py-3"
-                      type="button"
-                      onClick="#"
-                    >
-                      註冊
-                    </button>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider m-auto" />
-                  </li>
+                {/* 下拉選單部分：透過 React 狀態控制 className 與 style */}
+                <ul
+                  className={`dropdown-menu dropdown-menu-end rounded-0 border-0 p-0 ${isOpen ? "show" : ""}`}
+                  style={{
+                    display: isOpen ? "block" : "none",
+                    position: "absolute",
+                    right: 0,
+                    top: "100%",
+                  }}
+                >
+                  {user ? (
+                    <>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          {user?.user_metadata?.full_name || user?.email}
+                        </div>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider m-auto" />
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-center py-3"
+                          onClick={async () => {
+                            handleItemClick();
+                            await supabase.auth.signOut();
+                          }}
+                        >
+                          登出
+                        </button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          <NavLink
+                            to="SignIn"
+                            className="text-decoration-none"
+                            onClick={handleItemClick}
+                          >
+                            登入
+                          </NavLink>
+                        </div>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider m-auto" />
+                      </li>
+                      <li>
+                        <div className="dropdown-item text-center py-3">
+                          <NavLink
+                            to="SignUp"
+                            className="text-decoration-none"
+                            onClick={handleItemClick}
+                          >
+                            註冊
+                          </NavLink>
+                        </div>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
               {/* <!-- 購物車 --> */}
-              <div className="btn-group ms-3 d-none d-lg-block">
-                <button
-                  type="button"
-                  className="d-none d-lg-inline dropdown-toggle bg-transparent border-0 p-2"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+              <div className="btn-group ms-2 d-none d-lg-block">
+                <NavLink
+                  className="d-none d-lg-inline bg-transparent border-0 p-2"
+                  to="CheckOut"
                 >
                   <i className={`bi bi-cart3 fs-5 ${style.icon}`}></i>
-                </button>
-                <CartsDropdown />
+
+                  {/* 商品數量 badge */}
+                  {cartCount > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {cartCount > 99 ? "99+" : cartCount}
+                    </span>
+                  )}
+                </NavLink>
               </div>
             </div>
           </div>

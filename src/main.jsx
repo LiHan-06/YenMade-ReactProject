@@ -1,13 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { router } from "./router";
+
+import { AuthProvider } from "./context/AuthContext";
+
 // 1. 先引入基礎樣式
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { BrowserRouter } from "react-router-dom";
-import "./index.css";
-import OrderReview from "./OrderReview.jsx";
+// import "./index.css";
 
 
 // 2. 再引入你的全域 SCSS (這樣你的自訂顏色才能蓋過 Bootstrap)
@@ -27,22 +29,21 @@ import Blog from "./Blog.jsx";
 import FAQ from "./FAQ.jsx";
 import CartOrderForm from "./CartOrderForm.jsx";
 import CartStepOne from "./CartStepOne.jsx";
-
+import { CartProvider } from "./api/cartApiDate";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* 統一在此管理全域佈局 */}
-    <BrowserRouter>
-      {/* <Header variant="home" /> */}
-      <Header />
-      {/* <CartStepOne/> */}
-      <CartOrderForm />
-      {/* <OrderReview /> */}
-      {/* <OrderSuccess /> */}
-      {/* <CheckOut/> */}
-      {/* <AllProducts /> */}
-      
-      <Footer />
-    </BrowserRouter>
+    {/* <BrowserRouter> */}
+    {/* <Header variant="home" /> */}
+    {/* <Header /> */}
+    {/* <Footer /> */}
+    {/* <App /> */}
+    {/* </BrowserRouter> */}
+    <AuthProvider>
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </AuthProvider>
   </StrictMode>,
 );

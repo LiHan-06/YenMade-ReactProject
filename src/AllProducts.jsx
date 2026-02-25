@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProductsApi } from "./api/products.js";
+import { Link } from "react-router";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
@@ -56,23 +57,17 @@ const AllProducts = () => {
           >
             <ol className="breadcrumb">
               <li className="breadcrumb-item breadcrumb-link">
-                <a
-                  href="/yenmade/pages/index.html"
-                  className="text-decoration-none py-9"
-                >
+                <Link to="/" className="text-decoration-none py-9">
                   <i className="bi bi-house-door fs-8"></i>
-                </a>
+                </Link>
               </li>
               <li
                 className="breadcrumb-item breadcrumb-link active"
                 aria-current="page"
               >
-                <a
-                  href="/yenmade/pages/allproducts.html"
-                  className="text-decoration-none fs-8 py-9"
-                >
+                <Link to="#" className="text-decoration-none fs-8 py-9">
                   所有商品
-                </a>
+                </Link>
               </li>
             </ol>
           </nav>
@@ -139,8 +134,8 @@ const AllProducts = () => {
                           </div>
                         </div>
                       </div>
-                      <a
-                        href={`#/product/${product.id}`}
+                      <Link
+                        to={`/product/${product.id}`}
                         className="stretched-link"
                       />
                     </div>
