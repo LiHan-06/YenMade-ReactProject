@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { getUserById } from "./api/users.js";
+import { Tooltip } from "bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const PAYMENT = {
   COD: "貨到付款",
@@ -90,31 +92,28 @@ export default function CartOrderForm({ onPrev, onNext }) {
   const labelBase = "form-label small text-dark fw-medium";
   const headerBar = "ps-4 py-3 fw-semibold bg-neutral-100 "; // 表頭灰底
 
+  const navigate = useNavigate();
+
   const onSubmit = (data) => {
-    // 這裡把 paymentMethod 一起帶出去
     const payload = { ...data, paymentMethod };
-
-    // 依你的流程：下一步（確認訂單）可用 props onNext
-    onNext?.(payload);
-
-    // 目前先 console 看結果
-    console.log("order form:", payload);
+    console.log("order form", payload);
+    navigate("/CheckOut/OrderReview"); // 對應你的路由路徑
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="container pb-4 px-md-6">
         <div className="text-center mb-5 d-none d-md-block">
-          <h1 className="text-center pb-5 pt-8 mb-0">購物車</h1>
+          {/* <h1 className="text-center pb-5 pt-8 mb-0">購物車</h1> */}
           <img
             src="/src/assets/images/Progress-Bar.svg"
-            className="mb-5 pt-5"
+            className="mb-5 pt-5 mt-4"
             alt=""
           />
         </div>
         {/* RWD：手機版進度條換圖，標題改小一點，並且整個區塊改為 d-md-none（md以下顯示） */}
         <div className="text-center mb-5 px-1 d-md-none d-block">
-          <h2 className="text-center pb-4 pt-5 mb-0">購物車</h2>
+          {/* <h2 className="text-center pb-4 pt-5 mb-0">購物車</h2> */}
           <img
             src="/src/assets/images/Progress-Bar-rwd.svg"
             className="img-fluid w-100"
@@ -527,7 +526,7 @@ export default function CartOrderForm({ onPrev, onNext }) {
               <button
                 type="button"
                 className="btn btn-outline-dark  px-4 py-3 fw-medium"
-                onClick={() => onPrev?.()}
+                onClick={() => navigate(-1)}
               >
                 返回上一步
               </button>

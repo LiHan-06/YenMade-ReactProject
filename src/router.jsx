@@ -16,6 +16,7 @@ import CheckOut from "./CheckOut";
 import CartStepOne from "./CartStepOne";
 import OrderReview from "./OrderReview";
 import OrderSuccess from "./OrderSuccess";
+import CartOrderForm from "./CartOrderForm";
 
 export const router = createBrowserRouter([
   {
@@ -58,10 +59,10 @@ export const router = createBrowserRouter([
             index: true,
             element: <CartStepOne />,
           },
-          // {
-          //   path: "CartOrderForm",
-          //   element: <CartOrderForm />,
-          // },
+          {
+            path: "CartOrderForm",
+            element: <CartOrderForm />,
+          },
           {
             path: "OrderReview",
             element: <OrderReview />,

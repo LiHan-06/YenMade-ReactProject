@@ -364,7 +364,7 @@ function CartStepOne() {
 
         {cart.length > 0 && (
           <div className="py-4">
-            <Link to="OrderReview" className="btn btn-dark w-100 py-3">
+            <Link to="CartOrderForm" className="btn btn-dark w-100 py-3">
               前往結帳 NTD$ {orderTotal}
             </Link>
           </div>
