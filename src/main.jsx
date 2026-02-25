@@ -40,6 +40,7 @@ createRoot(document.getElementById("root")).render(
       {/* <OrderReview /> */}
       {/* <OrderSuccess /> */}
       {/* <CheckOut/> */}
+      {/* <AllProducts /> */}
       
       <Footer />
     </BrowserRouter>

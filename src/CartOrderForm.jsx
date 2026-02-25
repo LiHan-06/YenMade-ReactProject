@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { getUserById } from "./api/users.js";
 
 const PAYMENT = {
   COD: "貨到付款",
@@ -24,7 +26,8 @@ export default function CartOrderForm({ onPrev, onNext }) {
   const {
     register,
     handleSubmit,
-    // watch,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onBlur",
@@ -48,7 +51,37 @@ export default function CartOrderForm({ onPrev, onNext }) {
     },
   });
 
-  //   const sameAsBuyer = watch("sameAsBuyer");
+  const sameAsBuyer = watch("sameAsBuyer");
+  // 勾選「同寄件人」時打 API
+  useEffect(() => {
+    if (!sameAsBuyer) {
+      // 取消勾選 → 清空欄位
+      setValue("receiverName", "");
+      setValue("phone", "");
+      setValue("email", "");
+      setValue("address", "");
+      return;
+    }
+
+    const fillBuyerData = async () => {
+      // 1. 從 Supabase 拿 user.id
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // 2. 打 API 拿會員資料
+      const profile = await getUserById(user.id);
+
+      // 3. 填入表單（對應你的欄位）
+      setValue("receiverName", profile.full_name ?? "");
+      setValue("phone", profile.phone ?? "");
+      setValue("email", profile.email ?? "");
+      setValue("address", profile.address ?? "");
+    };
+
+    fillBuyerData();
+  }, [sameAsBuyer]);
 
   const inputBase =
     "form-control border-0 p-3 bg-neutral-50 text-neutral-400 fs-8 fw-medium"; // 灰底 + 文字 muted
@@ -127,7 +160,6 @@ export default function CartOrderForm({ onPrev, onNext }) {
                     type="text"
                     className={`bg-secondary ${inputBase} ${errors.receiverName ? "is-invalid" : ""}`}
                     placeholder="請輸入姓名"
-                    // disabled={sameAsBuyer}
                     {...register("receiverName", {
                       required: "請輸入收件者姓名",
                       minLength: { value: 2, message: "姓名至少 2 個字" },
@@ -150,7 +182,6 @@ export default function CartOrderForm({ onPrev, onNext }) {
                     type="tel"
                     className={`${inputBase} ${errors.phone ? "is-invalid" : ""}`}
                     placeholder="請輸入手機號碼"
-                    // disabled={sameAsBuyer}
                     {...register("phone", {
                       required: "請輸入手機號碼",
                       pattern: {
@@ -176,7 +207,6 @@ export default function CartOrderForm({ onPrev, onNext }) {
                     type="email"
                     className={`${inputBase} ${errors.email ? "is-invalid" : ""}`}
                     placeholder="請輸入電子郵件"
-                    // disabled={sameAsBuyer}
                     {...register("email", {
                       required: "請輸入電子郵件",
                       pattern: {
@@ -202,7 +232,6 @@ export default function CartOrderForm({ onPrev, onNext }) {
                     type="text"
                     className={`${inputBase} ${errors.address ? "is-invalid" : ""}`}
                     placeholder="請輸入收件地址"
-                    // disabled={sameAsBuyer}
                     {...register("address", {
                       required: "請輸入收貨地址",
                       minLength: { value: 6, message: "地址太短" },
