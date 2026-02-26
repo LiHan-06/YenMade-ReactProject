@@ -6,6 +6,7 @@ function CheckOut() {
   const navigate = useNavigate();
   const location = useLocation();
   const [userId, setUserId] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
 
   // ✅ 定義路徑與文字的對應關係
   const getStepText = () => {
@@ -30,7 +31,11 @@ function CheckOut() {
         {getStepText()}
       </h1>
       
-      <Outlet userId={userId} />
+      <Outlet userId={userId} 
+      context={{
+          discountAmount,
+          setDiscountAmount,
+        }} />
     </main>
   );
 }
