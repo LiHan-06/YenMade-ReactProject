@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { getProductsApi } from "./api/products.js";
 import { Link } from "react-router";
 
+import Banner_allproducts from "./assets/images/第二階段更新/img/Banner_allproducts.png";
+import Banner_allproducts_mobile from "./assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
+
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [currentTab, setCurrentTab] = useState("所有商品");
@@ -33,7 +36,7 @@ const AllProducts = () => {
       {/* Desktop Banner（原 HTML） */}
       <div className="mt-104 d-none d-lg-block">
         <img
-          src="/src/assets/images/第二階段更新/img/Banner_allproducts.png"
+          src={Banner_allproducts}
           alt="banner"
           className="img-fluid w-100"
         />
@@ -42,7 +45,7 @@ const AllProducts = () => {
       {/* Mobile Banner（原 HTML） */}
       <div className="mt-104 d-lg-none">
         <img
-          src="/src/assets/images/第二階段更新/img/Banner_allproducts_mobile.png"
+          src={Banner_allproducts_mobile}
           alt="mobile banner"
           className="img-fluid w-100"
         />
@@ -79,8 +82,8 @@ const AllProducts = () => {
 
         <div className="row justify-content-center">
           {/* 左側分類選單 */}
-          <div className="col-md-3">
-            <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile">
+          <div className="col-md-3 ">
+            <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile flex-nowrap">
               {[
                 { id: "所有商品", label: "所有商品" },
                 { id: "熱門商品", label: "熱門商品" },
@@ -88,7 +91,7 @@ const AllProducts = () => {
                 { id: "清爽系列", label: "清爽系列" },
                 { id: "勁辣系列", label: "勁辣系列" },
               ].map((tab) => (
-                <li key={tab.id} className="nav-item border-bottom mb-md-2">
+                <li key={tab.id} className="nav-item flex-shrink-0">
                   <button
                     type="button"
                     className={`nav-link border-0 nav-item-base ${currentTab === tab.id ? "active" : ""}`}

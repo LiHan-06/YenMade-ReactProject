@@ -1,8 +1,9 @@
 // 常見問題
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
 
 export default function Faq() {
+  const [breadcrumbLabel, setBreadcrumbLabel] = useState("所有問題");
   const categories = useMemo(
     () => [
       {
@@ -100,7 +101,7 @@ export default function Faq() {
                 </Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                所有問題
+                {breadcrumbLabel}
               </li>
             </ol>
           </nav>
@@ -151,6 +152,7 @@ export default function Faq() {
                   role="tab"
                   aria-controls={c.paneId}
                   aria-selected={c.active ? "true" : "false"}
+                  onClick={() => setBreadcrumbLabel(c.label)}
                 >
                   {c.label}
                 </button>

@@ -6,6 +6,12 @@ import { Tooltip } from "bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 
+import ProgressBar from "./assets/images/Progress-Bar.svg";
+import ProgressBarRwd from "./assets/images/Progress-Bar-rwd.svg";
+import MasterCard from "./assets/images/creditCard/MasterCard.svg";
+import VISA from "./assets/images/creditCard/Visa.svg";
+import JCB from "./assets/images/creditCard/JCB.svg";
+
 const PAYMENT = {
   COD: "貨到付款",
   CREDIT: "信用卡",
@@ -123,20 +129,12 @@ export default function CartOrderForm({ onPrev, onNext }) {
       <div className="container pb-4 px-md-6">
         <div className="text-center mb-5 d-none d-md-block">
           {/* <h1 className="text-center pb-5 pt-8 mb-0">購物車</h1> */}
-          <img
-            src="/src/assets/images/Progress-Bar.svg"
-            className="mb-5 pt-5 mt-4"
-            alt=""
-          />
+          <img src={ProgressBar} className="mb-5 pt-5 mt-4" alt="" />
         </div>
         {/* RWD：手機版進度條換圖，標題改小一點，並且整個區塊改為 d-md-none（md以下顯示） */}
         <div className="text-center mb-5 px-1 d-md-none d-block">
           {/* <h2 className="text-center pb-4 pt-5 mb-0">購物車</h2> */}
-          <img
-            src="/src/assets/images/Progress-Bar-rwd.svg"
-            className="img-fluid w-100"
-            alt=""
-          />
+          <img src={ProgressBarRwd} className="img-fluid w-100" alt="" />
         </div>
         <div className="row g-4 bg-white mt-5">
           {/* 左：收件資訊 */}
@@ -368,21 +366,10 @@ export default function CartOrderForm({ onPrev, onNext }) {
                       支援卡片種類
                     </label>
                     <div className="mb-4">
-                      <img
-                        src="/src/assets/images/creditCard/MasterCard.svg"
-                        alt="MasterCard"
-                        className="pe-2"
-                      />
-                      <img
-                        src="/src/assets/images/creditCard/Visa.svg"
-                        alt="VISA"
-                        className="pe-2"
-                      />
+                      <img src={MasterCard} alt="MasterCard" className="pe-2" />
+                      <img src={VISA} alt="VISA" className="pe-2" />
 
-                      <img
-                        src="/src/assets/images/creditCard/JCB.svg"
-                        alt="JCB"
-                      />
+                      <img src={JCB} alt="JCB" />
                     </div>
 
                     <div className="mb-4">

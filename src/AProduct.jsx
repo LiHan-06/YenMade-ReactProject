@@ -2,8 +2,9 @@ import { useParams, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 
 import { supabase } from "./lib/supabase.js";
+import { v4 as uuidv4 } from "uuid";
 import { addToCartApi, useCart } from "./api/cartApiDate.jsx";
-import Breadcrumb from "./components/BreadCrumb";
+import Breadcrumb from "./components/BreadCrumb.jsx";
 
 // import { getCartAsync, addToCartAsync } from "./slices/cartSlice.js";
 // import { useDispatch } from "react-redux";
@@ -73,41 +74,41 @@ function AProduct() {
 
   const { addToCart } = useCart();
 
-const handleAddToCart = async () => {
-  const user = getUserInfo();
-  let guest_id = localStorage.getItem("guest_id");
+  const handleAddToCart = async () => {
+    const user = getUserInfo();
+    let guest_id = localStorage.getItem("guest_id");
 
-  if (!user && !guest_id) {
-    guest_id = uuidv4();
-    localStorage.setItem("guest_id", guest_id);
-  }
+    if (!user && !guest_id) {
+      guest_id = uuidv4();
+      localStorage.setItem("guest_id", guest_id);
+    }
 
-  if (!selectedVariant) {
-    alert("請先選擇商品規格");
-    return;
-  }
+    if (!selectedVariant) {
+      alert("請先選擇商品規格");
+      return;
+    }
 
-  const cartInput = {
-    user_id: user?.id || null,
-    guest_id: guest_id || null,
-    product_id: product.id,
-    variant_id: selectedVariant?.id,
-    quantity: quantity,
+    const cartInput = {
+      user_id: user?.id || null,
+      guest_id: guest_id || null,
+      product_id: product.id,
+      variant_id: selectedVariant?.id,
+      quantity: quantity,
+    };
+
+    console.log("要送出的購物車資料:", cartInput);
+
+    try {
+      // ✅ 透過 hook 方法加入購物車並更新 UI
+      await addToCart(cartInput);
+
+      console.log("成功加入購物車", cartInput);
+      alert("成功加入購物車");
+    } catch (error) {
+      console.error("加入購物車失敗:", error.message || error);
+      alert("加入購物車失敗");
+    }
   };
-
-  console.log("要送出的購物車資料:", cartInput);
-
-  try {
-    // ✅ 透過 hook 方法加入購物車並更新 UI
-    await addToCart(cartInput);
-
-    console.log("成功加入購物車", cartInput);
-    alert("成功加入購物車");
-  } catch (error) {
-    console.error("加入購物車失敗:", error.message || error);
-    alert("加入購物車失敗");
-  }
-};
 
   if (loading) return <p>載入中...</p>;
   if (!product) return <p>找不到商品</p>;
