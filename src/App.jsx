@@ -129,14 +129,14 @@ function App() {
             position: "relative",
           }}
         >
-          <div className="container position-relative z-1000 h-100 d-flex align-items-center">
+          <div className="container position-relative z-1000 d-flex align-items-center">
             <div
-              className="row justify-content-between align-items-center w-100"
-              style={{ paddingTop: "190px" }}
+              className="row justify-content-between align-items-center w-100 pt-5"
+             
             >
               {/* 左側文字 */}
-              <div className="col-5 col-lg-2 text-center text-lg-start">
-                <div className="flavors-heading mt-4 mt-lg-184 mb-4 mb-lg-6">
+              <div className="col col-lg-2 text-center text-lg-start">
+                <div className="flavors-heading mt-4 mt-lg-184 mb-4 mb-lg-64">
                   <h2 className="text-primary-600 mb-3 mb-lg-4 text-nowrap">
                     新味登場
                   </h2>
@@ -172,7 +172,7 @@ function App() {
 
                         return (
                           <div className="col" key={targetVariant.id}>
-                            <div className="card card-bg-no border-0 position-relative">
+                            <div className="card card-bg-no border-0 position-relative h-100">
                               {/* 圖片 */}
                               <div
                                 className="card-img-wrapper position-relative"

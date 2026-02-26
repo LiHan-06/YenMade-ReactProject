@@ -51,39 +51,39 @@ const AllProducts = () => {
         />
       </div>
 
-      {/* breadcrumb（原 HTML） */}
-      <div className="d-none d-sm-block ms-3">
-        <div className="container-sm">
-          <div className="px-0 px-md-4 px-lg-6 py-3">
-            <nav
-              style={{ "--bs-breadcrumb-divider": "'〉'" }}
-              aria-label="breadcrumb"
-            >
-              <ol className="breadcrumb">
-                <li className="breadcrumb-item breadcrumb-link">
-                  <Link to="/" className="text-decoration-none py-9">
-                    <i className="bi bi-house-door fs-8"></i>
-                  </Link>
-                </li>
-                <li
-                  className="breadcrumb-item breadcrumb-link active"
-                  aria-current="page"
-                >
-                  <Link to="#" className="text-decoration-none fs-8 py-9">
-                    所有商品
-                  </Link>
-                </li>
-              </ol>
-            </nav>
-          </div>
+     
+
+      <main className="container mb-160">
+         {/* breadcrumb（原 HTML） */}
+      <div className="d-none d-sm-block ">
+        <div className="px-0 px-md-4 px-lg-6 py-3">
+          <nav
+            style={{ "--bs-breadcrumb-divider": "'〉'" }}
+            aria-label="breadcrumb"
+          >
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item breadcrumb-link">
+                <Link to="/" className="text-decoration-none py-9">
+                  <i className="bi bi-house-door fs-8"></i>
+                </Link>
+              </li>
+              <li
+                className="breadcrumb-item breadcrumb-link active"
+                aria-current="page"
+              >
+                <Link to="/AllProducts" className="text-decoration-none fs-8 py-9">
+                  所有商品
+                </Link>
+              </li>
+            </ol>
+          </nav>
         </div>
       </div>
 
-      <main className="container mb-160">
         <div className="row justify-content-center">
           {/* 左側分類選單 */}
-          <div className="col-md-3">
-            <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile">
+          <div className="col-md-3 ">
+            <ul className="nav nav-tabs border-0 d-flex flex-md-column nav-scroll-mobile flex-nowrap">
               {[
                 { id: "所有商品", label: "所有商品" },
                 { id: "熱門商品", label: "熱門商品" },
@@ -91,7 +91,7 @@ const AllProducts = () => {
                 { id: "清爽系列", label: "清爽系列" },
                 { id: "勁辣系列", label: "勁辣系列" },
               ].map((tab) => (
-                <li key={tab.id} className="nav-item border-bottom mb-md-2">
+                <li key={tab.id} className="nav-item flex-shrink-0">
                   <button
                     type="button"
                     className={`nav-link border-0 nav-item-base ${currentTab === tab.id ? "active" : ""}`}

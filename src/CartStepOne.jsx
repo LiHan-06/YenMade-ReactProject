@@ -3,7 +3,7 @@ import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
 import { useCart } from "./api/cartApiDate.jsx";
 import { useAuth } from "./context/AuthContext";
 import { Tooltip } from "bootstrap";
-import { Link } from "react-router";
+import { Link,useOutletContext} from "react-router";
 // images
 import line from "./assets/images/checkOut/Line 1.png";
 import GreenOne from "./assets/images/checkOut/Feature-number (1).png";
@@ -16,7 +16,9 @@ function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
-  const [discountAmount, setDiscountAmount] = useState(0);
+  //const [discountAmount, setDiscountAmount] = useState(0);
+  const { discountAmount, setDiscountAmount } =
+    useOutletContext();
 
   const {
     cart,

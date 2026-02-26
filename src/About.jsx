@@ -1,5 +1,6 @@
 // 關於我們
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router";
 
 import Banner_about from "./assets/images/about/Banner_about.png";
 import VectorGreen from "./assets/images/Vector-green.svg";
@@ -15,7 +16,7 @@ import About_carousel_4 from "./assets/images/about/About_carousel_4.png";
 import About_carousel_5 from "./assets/images/about/About_carousel_5.png";
 import About_carousel_6 from "./assets/images/about/About_carousel_6.png";
 
-import { Link } from "react-router";
+
 
 export default function About() {
   const scrollWrapperRef = useRef(null);

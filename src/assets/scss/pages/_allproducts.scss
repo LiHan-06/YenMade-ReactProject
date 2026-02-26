@@ -233,6 +233,11 @@
     color: $neutral-400 !important;
     flex-wrap: nowrap;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap; /* 強制不換行 */
+  }
+  .nav-scroll-mobile::-webkit-scrollbar {
+    display: none; /* Chrome / Safari */
   }
 
   .nav-item-base {

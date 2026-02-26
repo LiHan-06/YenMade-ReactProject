@@ -91,12 +91,12 @@ export default function Faq() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb mb-0 small">
               <li className="breadcrumb-item">
-                <Link to="/" aria-label="回首頁">
-                  <i className="bi bi-house-door" />
+                <Link to="/" className="text-decoration-none">
+                  首頁
                 </Link>
               </li>
               <li className="breadcrumb-item">
-                <Link to="#" className="text-decoration-none">
+                <Link to="/FAQ" className="text-decoration-none">
                   常見問題
                 </Link>
               </li>
