@@ -1,5 +1,6 @@
 // 關於我們
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router";
 
 export default function About() {
   const scrollWrapperRef = useRef(null);
@@ -73,9 +74,9 @@ export default function About() {
         >
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="./index.html" aria-label="回首頁">
+              <Link to="/" aria-label="回首頁">
                 <i className="bi bi-house-door" />
-              </a>
+              </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               關於我們

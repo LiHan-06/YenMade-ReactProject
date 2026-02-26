@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { getUserById } from "./api/users.js";
 import { Tooltip } from "bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "./lib/supabase";
 
 const PAYMENT = {
   COD: "貨到付款",
@@ -70,11 +71,12 @@ export default function CartOrderForm({ onPrev, onNext }) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
+      console.log("user:", user); // 先確認有沒有拿到 user
       if (!user) return;
 
       // 2. 打 API 拿會員資料
       const profile = await getUserById(user.id);
-
+      console.log("profile:", profile); // ← 加這行，看實際回傳什麼欄位
       // 3. 填入表單（對應你的欄位）
       setValue("receiverName", profile.full_name ?? "");
       setValue("phone", profile.phone ?? "");
@@ -529,9 +531,17 @@ export default function CartOrderForm({ onPrev, onNext }) {
 
         {/* 分隔線：左右兩邊都往外擴展一點（-80px）讓它滿版一點 */}
         <div
-          className="border-top text-neutral-200"
-          style={{ marginLeft: "-150px", marginRight: "-150px" }}
-        />
+  className="border-top text-neutral-200 mx-100"
+  // style={{ 
+  //   width: "100vw", 
+  //   position: "relative",
+  //   left: "50%",
+  //   right: "50%",
+  //   marginLeft: "-50vw",
+  //   marginRight: "-50vw"
+  // }}
+  
+/>
 
         {/* 底部按鈕區 */}
         <div className=" pt-4 text-center bg-light">

@@ -48,8 +48,11 @@ const AllProducts = () => {
         />
       </div>
 
-      {/* breadcrumb（原 HTML） */}
-      <div className="d-none d-sm-block ms-3">
+     
+
+      <main className="container mb-160">
+         {/* breadcrumb（原 HTML） */}
+      <div className="d-none d-sm-block ">
         <div className="px-0 px-md-4 px-lg-6 py-3">
           <nav
             style={{ "--bs-breadcrumb-divider": "'〉'" }}
@@ -65,7 +68,7 @@ const AllProducts = () => {
                 className="breadcrumb-item breadcrumb-link active"
                 aria-current="page"
               >
-                <Link to="#" className="text-decoration-none fs-8 py-9">
+                <Link to="/AllProducts" className="text-decoration-none fs-8 py-9">
                   所有商品
                 </Link>
               </li>
@@ -74,7 +77,6 @@ const AllProducts = () => {
         </div>
       </div>
 
-      <main className="container mb-160">
         <div className="row justify-content-center">
           {/* 左側分類選單 */}
           <div className="col-md-3">

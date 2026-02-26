@@ -1,5 +1,6 @@
 // 常見問題
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 export default function Faq() {
   const categories = useMemo(
@@ -89,14 +90,14 @@ export default function Faq() {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb mb-0 small">
               <li className="breadcrumb-item">
-                <a href="./index.html" className="text-decoration-none">
+                <Link to="/" className="text-decoration-none">
                   首頁
-                </a>
+                </Link>
               </li>
               <li className="breadcrumb-item">
-                <a href="./faq.html" className="text-decoration-none">
+                <Link to="/FAQ" className="text-decoration-none">
                   常見問題
-                </a>
+                </Link>
               </li>
               <li className="breadcrumb-item active" aria-current="page">
                 所有問題
