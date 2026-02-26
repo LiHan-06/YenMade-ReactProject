@@ -19,23 +19,10 @@ import { CartProvider } from "./api/cartApiDate";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-<<<<<<< HEAD
     <AuthProvider>
       <CartProvider>
         <RouterProvider router={router} />
       </CartProvider>
     </AuthProvider>
-=======
-    {/* 統一在此管理全域佈局 */}
-    {/* <BrowserRouter> */}
-    {/* <Header variant="home" /> */}
-    {/* <Header /> */}
-    {/* <Footer /> */}
-    {/* <App /> */}
-    {/* </BrowserRouter> */}
-    <CartProvider>
-    <RouterProvider router={router} />
-    </CartProvider>
->>>>>>> feature/router
   </StrictMode>,
 );
