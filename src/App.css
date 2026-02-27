@@ -122,17 +122,3 @@
   }
 }
 /* Section FinalCTA Stop*/
-
-.text-truncate-container {
-  /* 基礎設定 */
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-
-  /* 設定行數 */
-  -webkit-line-clamp: 4;
-  line-clamp: 4; /* 新增標準屬性以獲得最佳相容性 */
-
-  /* 選配：確保高度穩定 */
-  margin-bottom: 1rem;
-}
