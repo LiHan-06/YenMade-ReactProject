@@ -153,7 +153,7 @@ function App() {
               </div>
               {/* 右側產品卡片 */}
               <div className="col-12 col-lg-9">
-                <div className="row my-4 my-lg-120 new-flavors-cards">
+                <div className="row my-4 my-lg-120 new-flavors-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
                   {products.length > 0 ? (
                     products
                       .filter((product) =>
