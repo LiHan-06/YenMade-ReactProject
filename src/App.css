@@ -136,3 +136,41 @@
   /* 選配：確保高度穩定 */
   margin-bottom: 1rem;
 }
+/* --- 針對 420px 以下：加大外框、固定長度、置中排列 --- */
+@media (max-width: 420px) {
+  /* 1. 加大外框並固定最小長度 */
+  .review-card {
+    display: flex;
+    flex-direction: column; 
+    width: 92% !important;   /* 讓外框在螢幕兩側留出一點餘裕即可，看起來更大 */
+    min-height: 420px !important; /* 固定長度，確保所有卡片一致 */
+    margin: 0 auto;         /* 確保卡片在手機版置中 */
+    padding: 2rem 1.5rem !important; /* 加大內距 */
+    aspect-ratio: auto;
+  }
+
+  /* 2. 頭像區塊樣式微調 */
+  .meta-box {
+    position: relative;
+    top: 0 !important;
+    right: 0 !important;
+    margin-bottom: 1.5rem; /* 增加與文字的間距 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100% !important;
+  }
+
+  /* 3. 文字區塊：確保文字有足夠呼吸空間 */
+  .review-text {
+    width: 100% !important;
+    height: auto !important;
+    padding-right: 0 !important;
+  }
+
+  .review-text p {
+    font-size: 0.95rem; /* 稍微放大一點點字體 */
+    line-height: 1.6;   /* 增加行高讓閱讀更舒服 */
+    text-align: justify; /* 讓文字左右對齊 */
+  }
+}
