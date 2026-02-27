@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 
 import HomeLayout from "./layout/HomeLayout";
 import DefaultLayout from "./layout/DefaultLayout";
@@ -18,7 +18,7 @@ import OrderReview from "./OrderReview";
 import OrderSuccess from "./OrderSuccess";
 import CartOrderForm from "./CartOrderForm";
 
-export const router = createBrowserRouter(
+export const router = createHashRouter(
   [
     {
       element: <HomeLayout />,
@@ -86,6 +86,6 @@ export const router = createBrowserRouter(
     },
   ],
   {
-    basename: import.meta.env.BASE_URL,
+    // basename: import.meta.env.BASE_URL,
   },
 );

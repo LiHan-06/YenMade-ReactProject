@@ -29,7 +29,12 @@ const AllProducts = () => {
       ? products
       : products.filter((p) => p.category === currentTab);
 
-  if (loading) return <div className="text-center mt-5">醃漬中...</div>;
+  if (loading)
+    return (
+      <div className="text-center mt-5" style={{ minHeight: 1000 }}>
+        <h3>醃漬中...</h3>
+      </div>
+    );
 
   return (
     <div className="all-products-page">
@@ -51,34 +56,35 @@ const AllProducts = () => {
         />
       </div>
 
-     
-
       <main className="container mb-160">
-         {/* breadcrumb（原 HTML） */}
-      <div className="d-none d-sm-block ">
-        <div className="px-0 px-md-4 px-lg-6 py-3">
-          <nav
-            style={{ "--bs-breadcrumb-divider": "'〉'" }}
-            aria-label="breadcrumb"
-          >
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item breadcrumb-link">
-                <Link to="/" className="text-decoration-none py-9">
-                  <i className="bi bi-house-door fs-8"></i>
-                </Link>
-              </li>
-              <li
-                className="breadcrumb-item breadcrumb-link active"
-                aria-current="page"
-              >
-                <Link to="/AllProducts" className="text-decoration-none fs-8 py-9">
-                  所有商品
-                </Link>
-              </li>
-            </ol>
-          </nav>
+        {/* breadcrumb（原 HTML） */}
+        <div className="d-none d-sm-block ">
+          <div className="px-0 px-md-4 px-lg-6 py-3">
+            <nav
+              style={{ "--bs-breadcrumb-divider": "'〉'" }}
+              aria-label="breadcrumb"
+            >
+              <ol className="breadcrumb">
+                <li className="breadcrumb-item breadcrumb-link">
+                  <Link to="/" className="text-decoration-none py-9">
+                    <i className="bi bi-house-door fs-8"></i>
+                  </Link>
+                </li>
+                <li
+                  className="breadcrumb-item breadcrumb-link active"
+                  aria-current="page"
+                >
+                  <Link
+                    to="/AllProducts"
+                    className="text-decoration-none fs-8 py-9"
+                  >
+                    所有商品
+                  </Link>
+                </li>
+              </ol>
+            </nav>
+          </div>
         </div>
-      </div>
 
         <div className="row justify-content-center">
           {/* 左側分類選單 */}
