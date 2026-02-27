@@ -130,10 +130,7 @@ function App() {
           }}
         >
           <div className="container position-relative z-1000 d-flex align-items-center">
-            <div
-              className="row justify-content-between align-items-center w-100 pt-5"
-             
-            >
+            <div className="row justify-content-between align-items-center w-100 pt-5">
               {/* 左側文字 */}
               <div className="col col-lg-2 text-center text-lg-start">
                 <div className="flavors-heading mt-4 mt-lg-184 mb-4 mb-lg-64">
@@ -185,15 +182,15 @@ function App() {
                                 />
                               </div>
                               {/* 文字內容 */}
-                              <div className="card-body bg-primary-100 pt-5">
+                              <div className="card-body bg-primary-100 pt-5 d-flex flex-column h-100">
                                 <h5 className="card-title pt-2 pb-1 text-center">
                                   {product.title}
                                 </h5>
-                                <p className="card-text text-neutral-600 justify-content-start mb-4">
+                                <p className="card-text text-neutral-600 justify-content-start mb-4 text-truncate-container">
                                   {product.description || ""}
                                 </p>
-                                <div className="d-flex justify-content-between align-items-center">
-                                  <button className="btn bg-neutral-300 btn-sm cart-btn">
+                                <div className="d-flex justify-content-between align-items-center mt-auto">
+                                  <button className="btn bg-neutral-300 btn-sm cart-btn ">
                                     <i className="bi bi-cart3"></i>
                                     <span className="btn-text">加入購物車</span>
                                   </button>
