@@ -174,3 +174,26 @@
     text-align: justify; /* 讓文字左右對齊 */
   }
 }
+
+/* 修正 Header 溢出問題 */
+.navbar {
+  /* 確保寬度計算包含 padding 與 border，防止溢出 */
+  box-sizing: border-box; 
+  width: 100vw; /* 或是 100% */
+  max-width: 100%;
+  overflow-x: hidden; /* 強制切除內部溢出的元件 */
+}
+
+/* 如果你的 navbar 內有 row，確保它不會產生負邊距溢出 */
+.navbar .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* 針對手機版 420px 以下進一步限縮 */
+@media (max-width: 420px) {
+  .navbar {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
