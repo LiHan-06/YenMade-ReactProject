@@ -39,15 +39,15 @@ function Header({ variant = "default" }) {
   // 切換選單開關
   const toggleDropdown = () => setIsOpen(!isOpen);
   // 控制 offcanvas 開合
-  const [showOffcanvas, setShowOffcanvas] = useState(false);
-  const location = useLocation();
+  const [_showOffcanvas, _setShowOffcanvas] = useState(false);
+  const _location = useLocation();
 
   // 取得登入後的userId
   useEffect(() => {
     if (user) {
       fetchCart(user.id);
     }
-  }, [user]);
+  }, [user, fetchCart]);
   // 點擊外面自動關閉選單
   useEffect(() => {
     const handleClickOutside = (event) => {

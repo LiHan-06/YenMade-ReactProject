@@ -31,31 +31,33 @@ function App() {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    async function getProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, variants:product_variants(*)"); // ✅抓 products + 變體
+
+      if (error) {
+        // console.error("Supabase GET error:", error);
+      } else {
+        setProducts(data);
+      }
+    }
+
+    async function getCustomerReviews() {
+      const { data, error } = await supabase
+        .from("customer_reviews")
+        .select("*");
+
+      if (error) {
+        // console.error("Customer reviews error:", error);
+      } else {
+        setReviews(data);
+      }
+    }
+
     getProducts();
     getCustomerReviews();
   }, []);
-
-  async function getProducts() {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*, variants:product_variants(*)"); // ✅抓 products + 變體
-
-    if (error) {
-      // console.error("Supabase GET error:", error);
-    } else {
-      setProducts(data);
-    }
-  }
-
-  async function getCustomerReviews() {
-    const { data, error } = await supabase.from("customer_reviews").select("*");
-
-    if (error) {
-      // console.error("Customer reviews error:", error);
-    } else {
-      setReviews(data);
-    }
-  }
 
   function chunk(array, size) {
     const result = [];
@@ -229,7 +231,7 @@ function App() {
         ></div>
       </div>
       {/*Section / Features*/}
-      <section>
+      <section className="overflow-hidden">
         <div className="container position-relative">
           {/* 我們怎麼醃出這一味 */}
           <div className="section-title3 d-flex align-items-center mb-96 mt-120">

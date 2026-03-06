@@ -1,7 +1,12 @@
 // OrderReview.jsx
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./OrderReview.css";
-import { Link, useNavigate, useLocation,useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useLocation,
+  useOutletContext,
+} from "react-router-dom";
 import { Tooltip } from "bootstrap";
 import { useCart } from "./api/cartApiDate";
 
@@ -44,11 +49,10 @@ import fullOk from "./assets/images/checkOut/Feature-number (ok).png";
 
 function OrderReview() {
   //const [discountAmount, setDiscountAmount] = useState(0);
-  const { cart, totalPrice, deliveryFee, clearCart} = useCart();
-  const { discountAmount, setDiscountAmount } =
-    useOutletContext();
+  const { cart, totalPrice, deliveryFee, clearCart } = useCart();
+  const { discountAmount, _setDiscountAmount } = useOutletContext();
   const orderTotal = totalPrice + deliveryFee - discountAmount;
-  
+
   // console.log(cart);
   // const cart = mockCart;
   useEffect(() => {
@@ -73,11 +77,11 @@ function OrderReview() {
   };
 
   const paymentMethodMap = {
-  "信用卡": "信用卡",
-  "貨到付款": "貨到付款",
-  "ATM轉帳": "ATM 轉帳",
-  "超商代碼繳費": "超商付款",
-};
+    信用卡: "信用卡",
+    貨到付款: "貨到付款",
+    ATM轉帳: "ATM 轉帳",
+    超商代碼繳費: "超商付款",
+  };
 
   return (
     <>
@@ -260,7 +264,10 @@ function OrderReview() {
                 <div className="mb-2">
                   <div className="row align-items-center mb-2">
                     <p className="col-4">付款方式</p>
-                    <p className="col-8">{paymentMethodMap[orderData?.paymentMethod] ?? orderData?.paymentMethod}</p>
+                    <p className="col-8">
+                      {paymentMethodMap[orderData?.paymentMethod] ??
+                        orderData?.paymentMethod}
+                    </p>
                   </div>
                   {orderData?.paymentMethod === "信用卡" && (
                     <div className="row align-items-center mb-2">
@@ -291,9 +298,13 @@ function OrderReview() {
           >
             返回上一步
           </button>
-          <Link to="../OrderSuccess" className="btn btn-dark col-12 col-md-6" onClick={() => {
-                        clearCart(cart.user_id);
-                      }} >
+          <Link
+            to="../OrderSuccess"
+            className="btn btn-dark col-12 col-md-6"
+            onClick={() => {
+              clearCart(cart.user_id);
+            }}
+          >
             送出訂單
           </Link>
         </div>

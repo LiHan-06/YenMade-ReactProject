@@ -1,9 +1,9 @@
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
 import { supabase } from "./lib/supabase.js";
 import { v4 as uuidv4 } from "uuid";
-import { addToCartApi, useCart } from "./api/cartApiDate.jsx";
+import { useCart } from "./api/cartApiDate.jsx";
 import Breadcrumb from "./components/BreadCrumb.jsx";
 
 // import { getCartAsync, addToCartAsync } from "./slices/cartSlice.js";
@@ -11,10 +11,10 @@ import Breadcrumb from "./components/BreadCrumb.jsx";
 
 function AProduct() {
   const { id } = useParams();
-  const navigate = useNavigate(); // ✅ 修正 2: 初始化 navigate
+  // const navigate = useNavigate(); // ✅ 修正 2: 初始化 navigate
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { fetchCart } = useCart();
+  // const { fetchCart } = useCart();
   // const useDispatch = useDispatch();
 
   // 儲存選擇的商品規格

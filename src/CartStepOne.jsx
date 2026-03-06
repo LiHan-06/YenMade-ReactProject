@@ -3,7 +3,7 @@ import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
 import { useCart } from "./api/cartApiDate.jsx";
 import { useAuth } from "./context/AuthContext";
 import { Tooltip } from "bootstrap";
-import { Link,useOutletContext} from "react-router";
+import { Link, useOutletContext } from "react-router";
 // images
 import line from "./assets/images/checkOut/Line 1.png";
 import GreenOne from "./assets/images/checkOut/Feature-number (1).png";
@@ -15,10 +15,9 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [setSelectedCoupon] = useState(null);
   //const [discountAmount, setDiscountAmount] = useState(0);
-  const { discountAmount, setDiscountAmount } =
-    useOutletContext();
+  const { discountAmount, setDiscountAmount } = useOutletContext();
 
   const {
     cart,
@@ -46,7 +45,7 @@ function CartStepOne() {
     };
 
     fetchCoupons();
-  }, [user]);
+  }, [user, fetchCart]);
 
   // const totalPrice = cart.reduce(
   //   (sum, item) =>
@@ -97,7 +96,7 @@ function CartStepOne() {
     );
   }, []);
 
-  const handleAddToCart = async (product_id, variant_id, quantity = 1) => {
+  const _handleAddToCart = async (product_id, variant_id, quantity = 1) => {
     try {
       await addToCart({ product_id, variant_id, quantity });
       fetchCart();
