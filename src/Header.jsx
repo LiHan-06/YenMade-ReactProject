@@ -40,7 +40,7 @@ function Header({ variant = "default" }) {
   // 切換選單開關
   const toggleDropdown = () => setIsOpen(!isOpen);
   // 控制 offcanvas 開合
-  const [_showOffcanvas, _setShowOffcanvas] = useState(false);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
   const _location = useLocation();
 
   // 取得登入後的userId
