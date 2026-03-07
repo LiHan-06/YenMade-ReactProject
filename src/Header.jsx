@@ -1,7 +1,8 @@
 // header
 import { NavLink, useLocation } from "react-router";
 import { useState, useEffect, useRef } from "react";
-import { useCart } from "./api/cartApiDate";
+// import { useCart } from "./api/cartApiDate";
+import { useCart } from "./context/CartContext";
 import { Offcanvas } from "bootstrap";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";

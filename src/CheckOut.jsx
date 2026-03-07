@@ -1,9 +1,7 @@
 import { useState } from "react";
-// import { supabase } from "./lib/supabase.js";
 import { useLocation, Outlet } from "react-router";
 
 function CheckOut() {
-  // const navigate = useNavigate();
   const location = useLocation();
   const [userId, _setUserId] = useState(null);
   const [discountAmount, setDiscountAmount] = useState(0);

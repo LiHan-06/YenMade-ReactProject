@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
-import { useCart } from "./api/cartApiDate.jsx";
+// import { useCart } from "./api/cartApiDate.jsx";
+import { useCart } from "./context/CartContext.jsx";
 import { useAuth } from "./context/AuthContext";
 import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
@@ -15,7 +16,7 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-  const [setSelectedCoupon] = useState(null);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
   //const [discountAmount, setDiscountAmount] = useState(0);
   const { discountAmount, setDiscountAmount } = useOutletContext();
 

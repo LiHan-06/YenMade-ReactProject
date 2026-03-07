@@ -15,7 +15,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./assets/scss/all.scss";
 
 // 3. 最後引入組件
-import { CartProvider } from "./api/cartApiDate";
+// import { CartProvider } from "./api/cartApiDate";
+import { CartProvider } from "./context/CartContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
