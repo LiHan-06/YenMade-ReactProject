@@ -5,6 +5,7 @@ import { useCart } from "./api/cartApiDate";
 import { Offcanvas } from "bootstrap";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./lib/supabase";
+import { createPortal } from "react-dom";
 
 import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
 
@@ -62,15 +63,37 @@ function Header({ variant = "default" }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
+  // 控制 Offcanvas 開
+  const openOffcanvas = () => {
+    const offcanvasEl = document.getElementById("offcanvasNavbar");
+    const bsOffcanvas = Offcanvas.getOrCreateInstance(offcanvasEl);
+    bsOffcanvas.show();
+    setShowOffcanvas(true);
+    // 禁止 y軸 滾動
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+  };
+  // 控制 Offcanvas 關
+  const closeOffcanvas = () => {
+    const offcanvasEl = document.getElementById("offcanvasNavbar");
+    const bsOffcanvas = Offcanvas.getInstance(offcanvasEl);
+    bsOffcanvas?.hide();
+    setShowOffcanvas(false);
+    // 開啟 y軸 滾動
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
+  };
+
   // 點擊選單項目後自動關閉（例如點擊登入、註冊後）
   const handleItemClick = () => setIsOpen(false);
 
-  // 控制 offcanvas 開合
-
   return (
-    <header>
+    <>
+      {showOffcanvas &&
+        createPortal(<div onClick={closeOffcanvas} />, document.body)}
       <nav
-        className={`navbar navbar-expand-lg navbar-dark pageScroll py-5 ${style.navbar}`}
+        className={`navbar navbar-expand-lg navbar-dark pageScroll py-5 z-1001 ${style.navbar}`}
       >
         <div className="container px-4">
           <NavLink className="navbar-brand p-0 me-lg-45" to="/">
@@ -83,9 +106,11 @@ function Header({ variant = "default" }) {
           <button
             className={`navbar-toggler border-0 py-2 ${style.toggler}`}
             type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar"
+            // data-bs-toggle="offcanvas"
+            // data-bs-target="#offcanvasNavbar"
+            // aria-controls="offcanvasNavbar"
+            // onClick={() => setShowOffcanvas(true)}
+            onClick={openOffcanvas}
           >
             <i className={`bi bi-list fs-5 ${style.icon}`}></i>
           </button>
@@ -93,17 +118,20 @@ function Header({ variant = "default" }) {
             className={`offcanvas offcanvas-end offcanvas-space offcanvas-bg`}
             tabIndex={-1}
             id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel"
-            data-bs-scroll="true"
-            data-bs-backdrop="false"
-            style={{ zIndex: 1050 }}
+            // aria-labelledby="offcanvasNavbarLabel"
+            // data-bs-scroll="false" // 禁止背景頁面滾動
+            // data-bs-backdrop="false"
+            style={{
+              zIndex: 1050,
+            }}
           >
             <div className="offcanvas-header px-4 py-5 mb-2">
               <button
                 type="button"
                 className="btn-close svg-white"
-                data-bs-dismiss="offcanvas"
+                // data-bs-dismiss="offcanvas"
                 aria-label="Close"
+                onClick={closeOffcanvas}
               ></button>
             </div>
             <div className="offcanvas-body px-6 px-md-8 px-lg-0">
@@ -133,6 +161,7 @@ function Header({ variant = "default" }) {
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       aria-current="page"
                       to="/AllProducts"
+                      onClick={closeOffcanvas}
                     >
                       <span className="btn-font-lg">所有商品</span>
                     </NavLink>
@@ -143,6 +172,7 @@ function Header({ variant = "default" }) {
                     <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       to="/About"
+                      onClick={closeOffcanvas}
                     >
                       <span className="btn-font-lg">關於我們</span>
                     </NavLink>
@@ -153,6 +183,7 @@ function Header({ variant = "default" }) {
                     <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       to="/Blog"
+                      onClick={closeOffcanvas}
                     >
                       <span className="btn-font-lg">部落格</span>
                     </NavLink>
@@ -163,6 +194,7 @@ function Header({ variant = "default" }) {
                     <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       to="/FAQ"
+                      onClick={closeOffcanvas}
                     >
                       <span className="btn-font-lg">常見問題</span>
                     </NavLink>
@@ -176,6 +208,7 @@ function Header({ variant = "default" }) {
                     <NavLink
                       className={`${style.navLink} nav-link py-3 py-lg-0 px-lg-4 active`}
                       to="/SignIn"
+                      onClick={closeOffcanvas}
                     >
                       <span className="btn-font-lg">會員專區</span>
                     </NavLink>
@@ -189,7 +222,7 @@ function Header({ variant = "default" }) {
                   <NavLink
                     className="btn btn-outline-light border-0 border-end btn-font-lg w-50 px-3 py-2"
                     to="/SignIn"
-                    onClick={handleItemClick}
+                    onClick={closeOffcanvas}
                   >
                     <i className="bi bi-person-circle me-2"></i>
                     <span>登入</span>
@@ -197,7 +230,7 @@ function Header({ variant = "default" }) {
                   <NavLink
                     className="btn btn-outline-light border-0 btn-font-lg w-50 px-3 py-2"
                     to="/CheckOut"
-                    onClick={handleItemClick}
+                    onClick={closeOffcanvas}
                   >
                     <i className="bi bi-cart3 me-2"></i>
                     <span>購物車</span>
@@ -311,6 +344,7 @@ function Header({ variant = "default" }) {
                 <NavLink
                   className="d-none d-lg-inline bg-transparent border-0 p-2"
                   to="CheckOut"
+                  onClick={closeOffcanvas}
                 >
                   <i className={`bi bi-cart3 fs-5 ${style.icon}`}></i>
 
@@ -326,7 +360,7 @@ function Header({ variant = "default" }) {
           </div>
         </div>
       </nav>
-    </header>
+    </>
   );
 }
 
