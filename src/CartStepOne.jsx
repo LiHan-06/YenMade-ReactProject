@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
-// import { useCart } from "./api/cartApiDate.jsx";
-import { useCart } from "./context/CartContext.jsx";
-import { useAuth } from "./context/AuthContext";
+import { useAuth, useCart } from "./hooks/useAppContext";
 import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
 // images
@@ -16,14 +14,12 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
-  //const [discountAmount, setDiscountAmount] = useState(0);
+  
   const { discountAmount, setDiscountAmount } = useOutletContext();
 
   const {
     cart,
     fetchCart,
-    addToCart,
     updateQuantity,
     removeItem,
     clearCart,
@@ -47,44 +43,39 @@ function CartStepOne() {
 
     fetchCoupons();
   }, [user, fetchCart]);
-
-  // const totalPrice = cart.reduce(
-  //   (sum, item) =>
-  //     sum + (Number(item.product?.price) || 0) * Number(item.quantity),
-  //   0,
-  // );
-  // const deliveryFee = 300;
-  const orderTotal = totalPrice + deliveryFee - discountAmount;
-
+  
+  const orderTotal = (Number(totalPrice) || 0) + (Number(deliveryFee) || 0) - (Number(discountAmount) || 0);
   // 套用優惠券
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
 
     if (coupon_code === "noneToUse") {
       setDiscountAmount(0);
-      setSelectedCoupon(null);
       return;
     }
 
     const coupon = coupons.find((c) => c.code === coupon_code);
     if (!coupon) return;
 
-    setSelectedCoupon(coupon);
-
     const minAmount = Number(coupon.min_purchase ?? 0);
 
     if (totalPrice >= minAmount) {
-      // 帶入 session 才能授權呼叫 Edge Function
-      const discount = await applyCouponApi({
-        user_id: user.id,
-        coupon_code,
-        session: user,
-      });
-      setDiscountAmount(discount || 0);
-      console.log("套用折扣:", discount);
+      try {
+        const discount = await applyCouponApi({
+          user_id: user.id,
+          coupon_code,
+          session: user,
+        });
+        setDiscountAmount(discount || 0);
+        console.log("套用折扣:", discount);
+      } catch (error) {
+        console.error("套用優惠券失敗", error);
+      }
     } else {
       setDiscountAmount(0);
       alert(`${coupon.title} 需滿 ${minAmount} 元才可使用`);
+      // 重置 radio 選項 (對使用者體驗較好)
+      e.target.checked = false;
     }
   };
 
@@ -92,19 +83,12 @@ function CartStepOne() {
     const tooltipTriggerList = document.querySelectorAll(
       '[data-bs-toggle="tooltip"]',
     );
-    tooltipTriggerList.forEach(
+    const tooltips = Array.from(tooltipTriggerList).map(
       (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl),
     );
+    // 清理 Tooltip 以免造成記憶體洩漏
+    return () => tooltips.forEach(t => t.dispose());
   }, []);
-
-  const _handleAddToCart = async (product_id, variant_id, quantity = 1) => {
-    try {
-      await addToCart({ product_id, variant_id, quantity });
-      fetchCart();
-    } catch (error) {
-      console.error("加入購物車失敗:", error.message);
-    }
-  };
 
   return (
     <>
@@ -190,10 +174,10 @@ function CartStepOne() {
 
                       <div className="col-8 col-md-4 my-auto">
                         <div className="input-group border border-primary-600 bg-white p-2">
-                          <div className="d-flex justify-content-between">
+                          <div className="d-flex justify-content-between w-100">
                             <button
                               type="button"
-                              className="btn border-0 p-9"
+                              className="btn border-0 p-1"
                               onClick={() =>
                                 updateQuantity(
                                   cartItem.id,
@@ -221,7 +205,7 @@ function CartStepOne() {
                             </div>
                             <button
                               type="button"
-                              className="btn border-0 p-9"
+                              className="btn border-0 p-1"
                               onClick={() =>
                                 updateQuantity(
                                   cartItem.id,
@@ -257,21 +241,19 @@ function CartStepOne() {
                   ))}
                 </ul>
                 <div className="row justify-content-between p-3 py-lg-3 px-lg-4">
-                  <div className="col-12 col-lg-4 mb-9 mb-lg-0">
+                  <div className="col-12 col-lg-4 mb-3 mb-lg-0">
                     <Link
                       to="/allproducts"
-                      className="btn btn-lg btn-outline-dark py-3 px-auto w-100"
+                      className="btn btn-lg btn-outline-dark py-3 w-100"
                     >
-                      <p className="fs-0 mb-0">繼續逛逛</p>
+                      <span className="fs-0">繼續逛逛</span>
                     </Link>
                   </div>
                   <div className="col-12 col-lg-4">
                     <button
                       type="button"
-                      className="btn btn-lg btn-outline-dark border-0 py-3 px-auto  w-100"
-                      onClick={() => {
-                        clearCart(cart.user_id);
-                      }}
+                      className="btn btn-lg btn-outline-dark border-0 py-3 w-100"
+                      onClick={() => clearCart()}
                     >
                       <i className="bi bi-trash3 me-2"></i>
                       <span className="fs-0">清空購物車</span>
@@ -285,42 +267,41 @@ function CartStepOne() {
 
         <div className="col-lg-4">
           <div className="border mb-4">
-            <div className="bg-neutral-100 bg-gradient py-3 ps-4">優惠券</div>
-
+            <div className="bg-neutral-100 py-3 ps-4">優惠券</div>
             {user ? (
               <ul
-                className="list-group rounded-0 list-group-checkable overflow-auto p-4"
-                style={{ height: 382 }}
+                className="list-group rounded-0 overflow-auto p-4"
+                style={{ maxHeight: 382 }}
               >
-                <li className="list-group-item border-1 d-flex justify-content-between mb-9">
-                  <label className="py-3">不使用優惠券</label>
-                  <input
-                    className="list-group-item-check coupon-radio"
-                    type="radio"
-                    name="listGroupCheckableRadios"
-                    value="noneToUse"
-                    onChange={handleCouponChange}
-                  />
+                <li className="list-group-item d-flex justify-content-between align-items-center mb-2">
+                  <label className="flex-grow-1 py-2 cursor-pointer">
+                    不使用優惠券
+                    <input
+                      className="form-check-input float-end"
+                      type="radio"
+                      name="couponGroup"
+                      value="noneToUse"
+                      onChange={handleCouponChange}
+                      defaultChecked
+                    />
+                  </label>
                 </li>
-
                 {coupons.map((item) => (
                   <li
-                    className="list-group-item border-1 d-flex justify-content-between mb-9"
+                    className="list-group-item d-flex justify-content-between align-items-center mb-2"
                     key={item.id}
                   >
-                    <label className="py-3">
-                      <p className="mb-0">{item.title}</p>
-                      <span className="d-block small opacity-50">
-                        {item.description}
-                      </span>
+                    <label className="flex-grow-1 py-2 cursor-pointer">
+                      <p className="mb-0 fw-bold">{item.title}</p>
+                      <small className="text-muted">{item.description}</small>
+                      <input
+                        className="form-check-input float-end"
+                        type="radio"
+                        name="couponGroup"
+                        value={item.code}
+                        onChange={handleCouponChange}
+                      />
                     </label>
-                    <input
-                      className="list-group-item-check coupon-radio"
-                      type="radio"
-                      name="listGroupCheckableRadios"
-                      value={item.code}
-                      onChange={handleCouponChange}
-                    />
                   </li>
                 ))}
               </ul>
@@ -335,30 +316,30 @@ function CartStepOne() {
           </div>
 
           <div className="border">
-            <div className="bg-neutral-100 bg-gradient py-3 ps-4">訂單金額</div>
+            <div className="bg-neutral-100 py-3 ps-4">訂單金額</div>
             <ul className="list-unstyled mb-0 p-3 p-lg-4">
-              <li className="d-flex justify-content-between py-2 mb-9">
-                <p>商品總金額</p>
-                <p>NTD$ {totalPrice}</p>
+              <li className="d-flex justify-content-between py-2">
+                <p className="mb-0">商品總金額</p>
+                <p className="mb-0">NTD$ {totalPrice}</p>
               </li>
-              <li className="d-flex justify-content-between py-2 mb-9">
-                <p>
+              <li className="d-flex justify-content-between py-2">
+                <p className="mb-0">
                   運費{" "}
                   <i
-                    className="bi bi-info-circle ms-2"
+                    className="bi bi-info-circle ms-1"
                     data-bs-toggle="tooltip"
                     title="為了把最新鮮的風味送到你手中，我們僅提供低溫宅配到府。"
                   ></i>
                 </p>
-                <p>NTD$ {deliveryFee}</p>
+                <p className="mb-0">NTD$ {deliveryFee}</p>
               </li>
-              <li className="d-flex justify-content-between py-2 mb-9">
-                <p>優惠券折扣</p>
-                <p>-NTD$ {discountAmount}</p>
+              <li className="d-flex justify-content-between py-2">
+                <p className="mb-0">優惠券折扣</p>
+                <p className="mb-0">-NTD$ {discountAmount}</p>
               </li>
-              <li className="d-flex justify-content-between py-4 border-top">
-                <h6>總計</h6>
-                <h6>NTD$ {orderTotal}</h6>
+              <li className="d-flex justify-content-between py-4 border-top mt-3">
+                <h6 className="mb-0">總計</h6>
+                <h6 className="mb-0 fw-bold">NTD$ {orderTotal}</h6>
               </li>
             </ul>
           </div>
@@ -366,7 +347,7 @@ function CartStepOne() {
 
         {cart.length > 0 && (
           <div className="py-4">
-            <Link to="CartOrderForm" className="btn btn-dark w-100 py-3">
+            <Link to="CartOrderForm" className="btn btn-dark w-100 py-3 fs-5">
               前往結帳 NTD$ {orderTotal}
             </Link>
           </div>

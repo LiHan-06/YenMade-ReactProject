@@ -8,8 +8,7 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { Tooltip } from "bootstrap";
-// import { useCart } from "./api/cartApiDate";
-import { useCart } from "./context/CartContext";
+import { useCart } from "./hooks/useAppContext";
 
 // images
 import line from "./assets/images/checkOut/Line 1.png";

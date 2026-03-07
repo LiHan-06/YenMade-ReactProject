@@ -1,114 +1,104 @@
-import { useState, useContext, createContext, useEffect } from "react";
-import { supabase } from "../lib/supabase";
-import { useAuth } from "./AuthContext";
-import {
-  addToCartApi,
-  updateCartQuantityApi,
-  deleteCartItemApi,
-  clearCartApi,
-  fetchCartWithDetails,
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { CartContext } from "./ContextDefinitions";
+import { useAuth } from "../hooks/useAppContext"; 
+import { 
+  fetchCartWithDetails, 
+  addToCartApi, 
+  updateCartQuantityApi, 
+  deleteCartItemApi, 
+  clearCartApi 
 } from "../api/carts";
-
-/* =========================
-   Cart Context
-========================= */
-const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const { user } = useAuth();
 
-  // 登入後 merge guest cart
-  const mergeGuestCart = async () => {
-    const guest_id = localStorage.getItem("guest_id");
-    if (user && guest_id) {
-      await supabase
-        .from("carts")
-        .update({ user_id: user.id, guest_id: null })
-        .eq("guest_id", guest_id);
-      localStorage.removeItem("guest_id");
-    }
-  };
 
-  const fetchCart = async () => {
+  const fetchCart = useCallback(async () => {
     try {
-      await mergeGuestCart();
-      const guest_id = localStorage.getItem("guest_id");
-      const data = await fetchCartWithDetails(user?.id, guest_id);
-      setCart(data);
+      const guestId = localStorage.getItem("guest_id");
+      const data = await fetchCartWithDetails(user?.id, guestId);
+      setCart(data || []);
     } catch (error) {
-      console.error("抓購物車失敗:", error);
+      console.error("Fetch cart error:", error);
+      setCart([]);
     }
-  };
+  }, [user]);
 
-  const addToCart = async (payload) => {
+  useEffect(() => {
+    let active = true;
+    const loadData = async () => {
+      if (active) await fetchCart();
+    };
+    loadData();
+    return () => { active = false; };
+  }, [fetchCart]);
+
+  const totalPrice = useMemo(() => {
+    return cart.reduce((acc, item) => {
+      const price = Number(item.product?.price) || 0;
+      return acc + price * (item.quantity || 0);
+    }, 0);
+  }, [cart]);
+
+  const cartCount = useMemo(() => {
+    return cart.reduce((acc, item) => acc + (item.quantity || 0), 0);
+  }, [cart]);
+
+  const deliveryFee = cart.length > 0 ? 300 : 0;
+
+  const addToCart = async (productId, variantId, quantity = 1) => {
     try {
-      const updatedCart = await addToCartApi(payload);
-      setCart(updatedCart);
+      await addToCartApi(user?.id, productId, variantId, quantity);
+      await fetchCart(); 
     } catch (error) {
-      console.error("加入購物車失敗:", error.message);
+      console.error("Add to cart error:", error);
     }
   };
 
-  const updateQuantity = async (id, quantity) => {
+  const updateQuantity = async (cartItemId, newQuantity) => {
+    if (newQuantity < 1) return;
     try {
-      await updateCartQuantityApi(id, quantity);
+      await updateCartQuantityApi(cartItemId, newQuantity);
       await fetchCart();
     } catch (error) {
-      console.error("更新數量失敗:", error.message);
+      console.error("Update quantity error:", error);
     }
   };
 
-  const removeItem = async (id) => {
+  const removeItem = async (cartItemId) => {
     try {
-      await deleteCartItemApi(id);
+      await deleteCartItemApi(cartItemId);
       await fetchCart();
     } catch (error) {
-      console.error("刪除商品失敗:", error.message);
+      console.error("Remove item error:", error);
     }
   };
 
   const clearCart = async () => {
     try {
-      await clearCartApi();
+      await clearCartApi(user?.id);
       setCart([]);
     } catch (error) {
-      console.error("清空購物車失敗:", error.message);
+      console.error("Clear cart error:", error);
     }
   };
 
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = cart.reduce(
-    (sum, item) =>
-      sum + (Number(item.product?.price) || 0) * Number(item.quantity),
-    0,
-  );
-  const deliveryFee = 300;
-
-  // 初始抓購物車
-  useEffect(() => {
-    fetchCart();
-  }, [user]);
-
   return (
-    <CartContext.Provider
-      value={{
-        cart,
-        cartCount,
-        fetchCart,
-        addToCart,
-        updateQuantity,
-        removeItem,
-        clearCart,
-        totalPrice,
-        deliveryFee,
+    <CartContext.Provider 
+      value={{ 
+        cart, 
+        cartCount, 
+        fetchCart, 
+        addToCart, 
+        updateQuantity, 
+        removeItem, 
+        clearCart, 
+        totalPrice, 
+        deliveryFee 
       }}
     >
       {children}
     </CartContext.Provider>
   );
-}
-
-export function useCart() {
-  return useContext(CartContext);
 }
