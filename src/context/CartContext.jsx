@@ -47,14 +47,17 @@ export function CartProvider({ children }) {
 
   const deliveryFee = cart.length > 0 ? 300 : 0;
 
-  const addToCart = async (productId, variantId, quantity = 1) => {
-    try {
-      await addToCartApi(user?.id, productId, variantId, quantity);
-      await fetchCart(); 
-    } catch (error) {
-      console.error("Add to cart error:", error);
-    }
-  };
+  // ✅ 改成這樣
+const addToCart = async (cartInput) => {
+  try {
+    await addToCartApi(cartInput)  // 直接把物件傳進去
+    await fetchCart()
+  } catch (error) {
+    console.error("Add to cart error:", error)
+    throw error  // ← 這行也要加！不然 AProduct 的 catch 收不到錯誤
+  }
+}
+;
 
   const updateQuantity = async (cartItemId, newQuantity) => {
     if (newQuantity < 1) return;
