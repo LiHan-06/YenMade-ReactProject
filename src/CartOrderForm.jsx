@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { getUserById } from "./api/users.js";
 import { Tooltip } from "bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ const PAYMENT = {
   CVS: "超商代碼繳費",
 };
 
-export default function CartOrderForm({ onPrev, onNext }) {
+export default function CartOrderForm() {
   const [paymentMethod, setPaymentMethod] = useState(PAYMENT.CREDIT);
 
   const years = useMemo(() => {
@@ -35,7 +34,7 @@ export default function CartOrderForm({ onPrev, onNext }) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -60,7 +59,10 @@ export default function CartOrderForm({ onPrev, onNext }) {
     },
   });
 
-  const sameAsBuyer = watch("sameAsBuyer");
+  const sameAsBuyer = useWatch({
+    name: "sameAsBuyer",
+    control,
+  });
   // 勾選「同寄件人」時打 API
   useEffect(() => {
     if (!sameAsBuyer) {
@@ -91,7 +93,7 @@ export default function CartOrderForm({ onPrev, onNext }) {
     };
 
     fillBuyerData();
-  }, [sameAsBuyer]);
+  }, [sameAsBuyer, setValue]);
 
   const inputBase =
     "form-control border-0 p-3 bg-neutral-50 text-neutral-400 fs-8 fw-medium"; // 灰底 + 文字 muted
@@ -103,15 +105,7 @@ export default function CartOrderForm({ onPrev, onNext }) {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const {
-      cardNumber,
-      cvc,
-      expYear,
-      expMonth,
-      cardLastName,
-      cardFirstName,
-      ...safeData
-    } = data;
+    const { cardNumber, ...safeData } = data;
     const maskedCard = cardNumber
       ? `**** **** **** ${cardNumber.slice(-4)}`
       : "";
@@ -518,17 +512,16 @@ export default function CartOrderForm({ onPrev, onNext }) {
 
         {/* 分隔線：左右兩邊都往外擴展一點（-80px）讓它滿版一點 */}
         <div
-  className="border-top text-neutral-200 mx-100"
-  // style={{ 
-  //   width: "100vw", 
-  //   position: "relative",
-  //   left: "50%",
-  //   right: "50%",
-  //   marginLeft: "-50vw",
-  //   marginRight: "-50vw"
-  // }}
-  
-/>
+          className="border-top text-neutral-200 mx-100"
+          // style={{
+          //   width: "100vw",
+          //   position: "relative",
+          //   left: "50%",
+          //   right: "50%",
+          //   marginLeft: "-50vw",
+          //   marginRight: "-50vw"
+          // }}
+        />
 
         {/* 底部按鈕區 */}
         <div className=" pt-4 text-center bg-light">

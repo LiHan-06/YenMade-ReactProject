@@ -17,7 +17,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba($dark, 0.8); // 黑色 + 60% 透明度
+    background: rgba($dark, 0.6); // 黑色 + 60% 透明度
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px); // Safari 支援
     z-index: -1; // 保證不會蓋到文字

@@ -141,10 +141,10 @@
   /* 1. 加大外框並固定最小長度 */
   .review-card {
     display: flex;
-    flex-direction: column; 
-    width: 92% !important;   /* 讓外框在螢幕兩側留出一點餘裕即可，看起來更大 */
+    flex-direction: column;
+    width: 92% !important; /* 讓外框在螢幕兩側留出一點餘裕即可，看起來更大 */
     min-height: 420px !important; /* 固定長度，確保所有卡片一致 */
-    margin: 0 auto;         /* 確保卡片在手機版置中 */
+    margin: 0 auto; /* 確保卡片在手機版置中 */
     padding: 2rem 1.5rem !important; /* 加大內距 */
     aspect-ratio: auto;
   }
@@ -170,7 +170,7 @@
 
   .review-text p {
     font-size: 0.95rem; /* 稍微放大一點點字體 */
-    line-height: 1.6;   /* 增加行高讓閱讀更舒服 */
+    line-height: 1.6; /* 增加行高讓閱讀更舒服 */
     text-align: justify; /* 讓文字左右對齊 */
   }
 }

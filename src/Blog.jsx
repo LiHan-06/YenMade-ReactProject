@@ -76,8 +76,8 @@ export default function Blog() {
 
   return (
     <>
-      <main className="container-md py-5 blog-page">
-        <h2 className="text-center fw-semibold mb-4 mt-120">部落格</h2>
+      <main className="container-md py-5 pt-lg-0 blog-page">
+        <h2 className="text-center fw-semibold mb-4 mt-6 mt-lg-8">部落格</h2>
 
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {posts.map((post) => (
