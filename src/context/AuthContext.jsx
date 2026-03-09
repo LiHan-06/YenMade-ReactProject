@@ -1,26 +1,25 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-
-const AuthContext = createContext();
+import { AuthContext } from "./ContextDefinitions";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // 取得當前登入
-    supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user);
+    let isMounted = true;
+    const getInitialUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (isMounted) setUser(data.user ?? null);
+    };
+    getInitialUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (isMounted) setUser(session?.user ?? null);
     });
 
-    // 監聽登入登出
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
     return () => {
-      listener.subscription.unsubscribe();
+      isMounted = false;
+      if (authListener?.subscription) authListener.subscription.unsubscribe();
     };
   }, []);
 
@@ -29,8 +28,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }

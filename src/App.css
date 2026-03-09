@@ -141,10 +141,10 @@
   /* 1. 加大外框並固定最小長度 */
   .review-card {
     display: flex;
-    flex-direction: column; 
-    width: 92% !important;   /* 讓外框在螢幕兩側留出一點餘裕即可，看起來更大 */
+    flex-direction: column;
+    width: 92% !important; /* 讓外框在螢幕兩側留出一點餘裕即可，看起來更大 */
     min-height: 420px !important; /* 固定長度，確保所有卡片一致 */
-    margin: 0 auto;         /* 確保卡片在手機版置中 */
+    margin: 0 auto; /* 確保卡片在手機版置中 */
     padding: 2rem 1.5rem !important; /* 加大內距 */
     aspect-ratio: auto;
   }
@@ -170,30 +170,7 @@
 
   .review-text p {
     font-size: 0.95rem; /* 稍微放大一點點字體 */
-    line-height: 1.6;   /* 增加行高讓閱讀更舒服 */
+    line-height: 1.6; /* 增加行高讓閱讀更舒服 */
     text-align: justify; /* 讓文字左右對齊 */
-  }
-}
-
-/* 修正 Header 溢出問題 */
-.navbar {
-  /* 確保寬度計算包含 padding 與 border，防止溢出 */
-  box-sizing: border-box; 
-  width: 100vw; /* 或是 100% */
-  max-width: 100%;
-  overflow-x: hidden; /* 強制切除內部溢出的元件 */
-}
-
-/* 如果你的 navbar 內有 row，確保它不會產生負邊距溢出 */
-.navbar .row {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-/* 針對手機版 420px 以下進一步限縮 */
-@media (max-width: 420px) {
-  .navbar {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
   }
 }

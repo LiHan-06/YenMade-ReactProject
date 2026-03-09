@@ -85,9 +85,9 @@ export default function Faq() {
 
   return (
     <>
-      <main className="container-md py-5 faq-page">
+      <main className="container-md py-5 pt-lg-0 faq-page">
         {/* 麵包屑與搜尋 */}
-        <div className="d-flex align-items-center justify-content-between mb-3 mt-120">
+        <div className="d-flex align-items-center justify-content-between mb-3 mt-6 mt-lg-8">
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb mb-0 small">
               <li className="breadcrumb-item">
