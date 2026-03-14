@@ -528,7 +528,7 @@ export default function CartOrderForm() {
           <div className="row  ">
             {/* 左：返回上一步 */}
             {/* 手機：排序用 order，lg 以上回到左邊 */}
-            <div className="col-12 col-lg d-flex justify-content-start align-items-end order-3 order-lg-1 mt-3 mt-lg-0">
+            <div className=" col-lg d-flex justify-content-start align-items-end order-3 order-lg-1 mt-3 mt-lg-0">
               <button
                 type="button"
                 className="btn btn-outline-dark  px-4 py-3 fw-medium"
@@ -539,7 +539,7 @@ export default function CartOrderForm() {
             </div>
 
             {/* 右：checkbox + 下一步 */}
-            <div className="col-12 col-lg d-flex flex-column align-items-start gap-3 order-1 order-lg-2">
+            <div className=" col-lg d-flex flex-column align-items-start gap-3 order-1 order-lg-2">
               {/* 同意條款 checkbox */}
               <div className="form-check m-0 fs-8 fw-medium py-2">
                 <input

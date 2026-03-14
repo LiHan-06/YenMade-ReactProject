@@ -92,7 +92,7 @@ const SignIn = () => {
                 <div className="invalid-feedback">請輸入密碼</div>
               </div>
 
-              <div className="col-12 d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center justify-content-between">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -108,7 +108,7 @@ const SignIn = () => {
                 </a>
               </div>
 
-              <div className="col-12 d-flex gap-2">
+              <div className="d-flex gap-2">
                 {/* ✅ 登入中時禁用按鈕，防止重複點擊 */}
                 <button
                   className="btn btn-color flex-fill"

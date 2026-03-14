@@ -132,7 +132,7 @@ function OrderReview() {
                     />
                     <p className="mb-4">購物車目前是空的</p>
                   </div>
-                  <div className="col-12 col-md-6 col-lg-4 px-4">
+                  <div className="col-md-6 col-lg-4 px-4">
                     <Link
                       to="/allproducts"
                       className="btn btn-lg btn-dark py-3 w-100"
@@ -157,7 +157,7 @@ function OrderReview() {
                         className="row py-3 py-lg-4 border-bottom border-neutral"
                         key={cartItem.id}
                       >
-                        <div className="col-12 col-md-5 d-flex align-items-center">
+                        <div className="col-md-5 d-flex align-items-center">
                           <img
                             src={cartItem.product.image_url}
                             alt={cartItem.product.title}

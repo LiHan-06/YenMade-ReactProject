@@ -14,7 +14,7 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-  
+
   const { discountAmount, setDiscountAmount } = useOutletContext();
 
   const {
@@ -43,8 +43,11 @@ function CartStepOne() {
 
     fetchCoupons();
   }, [user, fetchCart]);
-  
-  const orderTotal = (Number(totalPrice) || 0) + (Number(deliveryFee) || 0) - (Number(discountAmount) || 0);
+
+  const orderTotal =
+    (Number(totalPrice) || 0) +
+    (Number(deliveryFee) || 0) -
+    (Number(discountAmount) || 0);
   // 套用優惠券
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
@@ -87,7 +90,7 @@ function CartStepOne() {
       (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl),
     );
     // 清理 Tooltip 以免造成記憶體洩漏
-    return () => tooltips.forEach(t => t.dispose());
+    return () => tooltips.forEach((t) => t.dispose());
   }, []);
 
   return (
@@ -132,7 +135,7 @@ function CartStepOne() {
                   <img src={nullCart} alt="購物車目前是空的" className="mb-4" />
                   <p className="mb-4">購物車目前是空的</p>
                 </div>
-                <div className="col-12 col-md-6 col-lg-4 px-4">
+                <div className="col-md-6 col-lg-4 px-4">
                   <Link
                     to="/allproducts"
                     className="btn btn-lg btn-dark py-3 w-100"
@@ -157,7 +160,7 @@ function CartStepOne() {
                       className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral"
                       key={cartItem.id}
                     >
-                      <div className="col-12 col-md-5 d-flex align-items-center">
+                      <div className="col-md-5 d-flex align-items-center">
                         <img
                           src={cartItem.product?.image_url}
                           alt={cartItem.product?.title}
@@ -228,7 +231,7 @@ function CartStepOne() {
                           cartItem.quantity}
                       </div>
 
-                      <div className="col-12 d-md-none mt-2">
+                      <div className="d-md-none mt-2">
                         <button
                           type="button"
                           className="btn btn-sm btn-outline-danger w-100"
@@ -241,7 +244,7 @@ function CartStepOne() {
                   ))}
                 </ul>
                 <div className="row justify-content-between p-3 py-lg-3 px-lg-4">
-                  <div className="col-12 col-lg-4 mb-3 mb-lg-0">
+                  <div className="col-lg-4 mb-3 mb-lg-0">
                     <Link
                       to="/allproducts"
                       className="btn btn-lg btn-outline-dark py-3 w-100"
@@ -249,7 +252,7 @@ function CartStepOne() {
                       <span className="fs-0">繼續逛逛</span>
                     </Link>
                   </div>
-                  <div className="col-12 col-lg-4">
+                  <div className="col-lg-4">
                     <button
                       type="button"
                       className="btn btn-lg btn-outline-dark border-0 py-3 w-100"

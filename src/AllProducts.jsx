@@ -111,7 +111,7 @@ const AllProducts = () => {
           </div>
 
           {/* 右側商品列表 */}
-          <div className="col-12 col-md-9 mt-md-0 mt-4 ps-md-2">
+          <div className="col-md-9 mt-md-0 mt-4 ps-md-2">
             <div className="row">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (

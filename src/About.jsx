@@ -16,8 +16,6 @@ import About_carousel_4 from "./assets/images/about/About_carousel_4.png";
 import About_carousel_5 from "./assets/images/about/About_carousel_5.png";
 import About_carousel_6 from "./assets/images/about/About_carousel_6.png";
 
-
-
 export default function About() {
   const scrollWrapperRef = useRef(null);
   const rafIdRef = useRef(null);
@@ -98,7 +96,7 @@ export default function About() {
 
         {/* section1 */}
         <div className="row mb-80 align-items-center section1-3-row">
-          <div className="col-12 col-md-5 offset-md-1 position-relative d-inline-block mb-3 mb-md-0 order-1 order-md-1">
+          <div className="col-md-5 offset-md-1 position-relative d-inline-block mb-3 mb-md-0 order-1 order-md-1">
             <p className="p1 mb-3 position-relative" style={{ zIndex: 2 }}>
               品牌故事
             </p>
@@ -124,7 +122,7 @@ export default function About() {
               我們希望把這份「熟悉卻被遺忘的好味道」保留下來，也讓它在更多人的生活中發光。
             </p>
           </div>
-          <div className="col-12 col-md-5 offset-md-0 order-2 order-md-2">
+          <div className="col-md-5 offset-md-0 order-2 order-md-2">
             <img src={Brand_story} alt="#" className="img-fluid" />
           </div>
         </div>
@@ -194,7 +192,7 @@ export default function About() {
 
         {/* section3 */}
         <div className="row mb-80 align-items-center section1-3-row">
-          <div className="col-12 col-md-4 offset-md-1 position-relative d-inline-block mb-3 mb-md-0 order-1 order-md-1">
+          <div className="col-md-4 offset-md-1 position-relative d-inline-block mb-3 mb-md-0 order-1 order-md-1">
             <p className="p1 mb-3 position-relative" style={{ zIndex: 2 }}>
               我們的團隊
             </p>
@@ -218,7 +216,7 @@ export default function About() {
               我們希望把這份屬於家庭的好味道，好好保存下來，也慢慢傳承出去。每一罐醃製物，不只是產品，更是我們一家人一起做出來的心意與溫度。
             </p>
           </div>
-          <div className="col-12 col-md-5 offset-md-1 order-2 order-md-2">
+          <div className="col-md-5 offset-md-1 order-2 order-md-2">
             <img
               src={Brand_team}
               alt="#"

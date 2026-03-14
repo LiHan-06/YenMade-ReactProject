@@ -111,7 +111,7 @@ const SignUp = () => {
                 </div>
               </div>
 
-              <div className="col-12 d-flex gap-2">
+              <div className="d-flex gap-2">
                 <button
                   className="btn btn-color flex-fill"
                   type="submit"

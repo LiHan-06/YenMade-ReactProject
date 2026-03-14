@@ -154,7 +154,7 @@ function App() {
                 </Link>
               </div>
               {/* 右側產品卡片 */}
-              <div className="col-12 col-lg-9">
+              <div className="col-lg-9">
                 <div className="row my-4 my-lg-120 new-flavors-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
                   {products.length > 0 ? (
                     products
@@ -206,7 +206,7 @@ function App() {
                         );
                       })
                   ) : (
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="d-flex justify-content-center">
                       <div className="no-products-card text-center p-5">
                         <i className="bi bi-hourglass-split fs-1 mb-3 text-neutral-400"></i>
                         <p className="mb-2 fs-4 fw-semibold">請稍等</p>
@@ -451,7 +451,7 @@ function App() {
                   >
                     <div className="row g-3 justify-content-center review-scroller">
                       {page.map((review) => (
-                        <div key={review.id} className="col-12 col-md-4">
+                        <div key={review.id} className="col-md-4">
                           <div className="card h-100 border-secondary review-card">
                             <div className="review-text">
                               <div className="card-body d-flex align-items-start pe-5">
