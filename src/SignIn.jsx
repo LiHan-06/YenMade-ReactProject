@@ -38,7 +38,7 @@ const SignIn = () => {
       // 將使用者資料存入 localStorage (轉為字串)
       localStorage.setItem("user_info", JSON.stringify(userData));
 
-      console.log(userData);
+      // console.log(userData);
 
       alert("登入成功！");
       navigate("/"); // ✅ 成功後跳轉回首頁

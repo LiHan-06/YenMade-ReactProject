@@ -2,8 +2,22 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
 
+// 搜尋關鍵字
+function highlight(text, keyword) {
+  if (!keyword) return text;
+  const parts = text.split(new RegExp(`(${keyword})`, "gi"));
+  return parts.map((part, i) =>
+    part.toLowerCase() === keyword.toLowerCase() ? (
+      <mark key={i}>{part}</mark>
+    ) : (
+      part
+    ),
+  );
+}
+
 export default function Faq() {
   const [breadcrumbLabel, setBreadcrumbLabel] = useState("所有問題");
+  const [keyword, setKeyword] = useState("");
   const categories = useMemo(
     () => [
       {
@@ -108,13 +122,19 @@ export default function Faq() {
 
           <div className="d-none d-md-flex align-items-center">
             <div className="collapse" id="collapseSearchInput">
-              <form className="d-flex align-items-center me-2" role="search">
+              <form
+                className="d-flex align-items-center me-2"
+                role="search"
+                onSubmit={(e) => e.preventDefault()} //防止頁面跳轉
+              >
                 <input
                   type="search"
                   className="form-control border-0 border-bottom bg-transparent"
                   placeholder="找問題"
                   name="q"
                   style={{ width: 200 }}
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
                 />
               </form>
             </div>
@@ -180,9 +200,12 @@ export default function Faq() {
                     {faqs
                       .filter(
                         (item) =>
-                          c.id === "all" ||
-                          item.category === c.id ||
-                          item.category === "all",
+                          (c.id === "all" ||
+                            item.category === c.id ||
+                            item.category === "all") &&
+                          (!keyword ||
+                            item.q.includes(keyword) ||
+                            item.a.includes(keyword)),
                       )
                       .map((item) => {
                         const headerId = `q-${c.id}-${item.id}`;
@@ -201,7 +224,8 @@ export default function Faq() {
                                 aria-expanded="false"
                                 aria-controls={collapseId}
                               >
-                                <span className="faq-q">Q</span> {item.q}
+                                <span className="faq-q">Q</span>
+                                <span>{highlight(item.q, keyword)}</span>
                               </button>
                             </h2>
                             <div
@@ -210,18 +234,33 @@ export default function Faq() {
                               aria-labelledby={headerId}
                               data-bs-parent={`#faqAccordion-${c.id}`}
                             >
-                              <div className="accordion-body">{item.a}</div>
+                              <div className="accordion-body">
+                                <span>{highlight(item.a, keyword)}</span>
+                              </div>
                             </div>
                           </div>
                         );
                       })}
+                    {faqs.filter(
+                      (item) =>
+                        (c.id === "all" ||
+                          item.category === c.id ||
+                          item.category === "all") &&
+                        (!keyword ||
+                          item.q.includes(keyword) ||
+                          item.a.includes(keyword)),
+                    ).length === 0 && (
+                      <p className="text-muted py-4 text-center">
+                        找不到相關問題，請嘗試其他關鍵字。
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
 
             {/* 分頁（目前是靜態） */}
-            <nav aria-label="FAQ pagination" className="mt-4">
+            {/* <nav aria-label="FAQ pagination" className="mt-4">
               <ul className="pagination justify-content-center pagination-brand">
                 <li className="page-item disabled">
                   <span className="page-link">&lt;</span>
@@ -248,7 +287,7 @@ export default function Faq() {
                   </a>
                 </li>
               </ul>
-            </nav>
+            </nav> */}
           </section>
         </div>
       </main>

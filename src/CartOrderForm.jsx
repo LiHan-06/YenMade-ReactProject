@@ -79,12 +79,12 @@ export default function CartOrderForm() {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      console.log("user:", user); // 先確認有沒有拿到 user
+      // console.log("user:", user); // 先確認有沒有拿到 user
       if (!user) return;
 
       // 2. 打 API 拿會員資料
       const profile = await getUserById(user.id);
-      console.log("profile:", profile); // ← 加這行，看實際回傳什麼欄位
+      // console.log("profile:", profile); // ← 加這行，看實際回傳什麼欄位
       // 3. 填入表單（對應你的欄位）
       setValue("receiverName", profile.full_name ?? "");
       setValue("phone", profile.phone ?? "");
@@ -114,7 +114,7 @@ export default function CartOrderForm() {
       paymentMethod,
       maskedCard,
     };
-    console.log("order form", payload);
+    // console.log("order form", payload);
     navigate("/CheckOut/OrderReview", { state: payload }); // 對應你的路由路徑
   };
 

@@ -61,9 +61,19 @@ function Footer() {
                 </ul>
               </div>
               <div className="text-white fs-9 fs-lg-8 text-center text-md-start">
-                <p className="mb-2">客服專線 ｜ 0800-168-888</p>
+                <a
+                  className="mb-2 text-decoration-none"
+                  href="tel:+886-800-168-888"
+                >
+                  客服專線 ｜ 0800-168-888
+                </a>
                 <p className="mb-2">服務時間 ｜ 周一至周五 ｜ 09:00 - 18:00</p>
-                <p className="mb-2">客服信箱 ｜ yenmadeservice@gmail.com</p>
+                <a
+                  href="yenmadeservice@gmail.com"
+                  className="mb-2 text-decoration-none"
+                >
+                  客服信箱 ｜ yenmadeservice@gmail.com
+                </a>
                 <p className="mb-0">地址 ｜ 桃園縣桃園市醃造路8段8樓之8</p>
               </div>
             </div>

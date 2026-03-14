@@ -14,7 +14,7 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-  
+
   const { discountAmount, setDiscountAmount } = useOutletContext();
 
   const {
@@ -43,8 +43,11 @@ function CartStepOne() {
 
     fetchCoupons();
   }, [user, fetchCart]);
-  
-  const orderTotal = (Number(totalPrice) || 0) + (Number(deliveryFee) || 0) - (Number(discountAmount) || 0);
+
+  const orderTotal =
+    (Number(totalPrice) || 0) +
+    (Number(deliveryFee) || 0) -
+    (Number(discountAmount) || 0);
   // 套用優惠券
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
@@ -67,7 +70,7 @@ function CartStepOne() {
           session: user,
         });
         setDiscountAmount(discount || 0);
-        console.log("套用折扣:", discount);
+        // console.log("套用折扣:", discount);
       } catch (error) {
         console.error("套用優惠券失敗", error);
       }
@@ -87,7 +90,7 @@ function CartStepOne() {
       (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl),
     );
     // 清理 Tooltip 以免造成記憶體洩漏
-    return () => tooltips.forEach(t => t.dispose());
+    return () => tooltips.forEach((t) => t.dispose());
   }, []);
 
   return (
@@ -132,7 +135,7 @@ function CartStepOne() {
                   <img src={nullCart} alt="購物車目前是空的" className="mb-4" />
                   <p className="mb-4">購物車目前是空的</p>
                 </div>
-                <div className="col-12 col-md-6 col-lg-4 px-4">
+                <div className="col-md-6 col-lg-4 px-4">
                   <Link
                     to="/allproducts"
                     className="btn btn-lg btn-dark py-3 w-100"
@@ -145,8 +148,8 @@ function CartStepOne() {
               <>
                 <div className="border-bottom border-neutral px-4 d-none d-md-block">
                   <ul className="row list-unstyled mb-0">
-                    <li className="col-5 py-3">商品資訊</li>
-                    <li className="col-4 py-3">商品數量</li>
+                    <li className="col-6 py-3">商品資訊</li>
+                    <li className="col-3 py-3">商品數量</li>
                     <li className="col-3 py-3 text-end">小計</li>
                   </ul>
                 </div>
@@ -154,15 +157,15 @@ function CartStepOne() {
                 <ul className="list-unstyled mb-0 px-9">
                   {cart.map((cartItem) => (
                     <li
-                      className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral"
+                      className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral position-relative"
                       key={cartItem.id}
                     >
-                      <div className="col-12 col-md-5 d-flex align-items-center">
+                      <div className="col-12 col-md-6 col-lg-5 d-flex align-items-center justify-content-start mb-2 mb-md-0">
                         <img
                           src={cartItem.product?.image_url}
                           alt={cartItem.product?.title}
                           className="me-3"
-                          style={{ width: 80 }}
+                          style={{ width: 100 }}
                         />
                         <div>
                           <h6>{cartItem.product?.title}</h6>
@@ -172,7 +175,7 @@ function CartStepOne() {
                         </div>
                       </div>
 
-                      <div className="col-8 col-md-4 my-auto">
+                      <div className="col-7 col-md-3 col-lg-4 my-auto">
                         <div className="input-group border border-primary-600 bg-white p-2">
                           <div className="d-flex justify-content-between w-100">
                             <button
@@ -222,26 +225,25 @@ function CartStepOne() {
                         </div>
                       </div>
 
-                      <div className="col-4 col-md-3 my-auto text-end">
+                      <div className="col-5 col-md-3 my-auto text-end h6">
                         NTD${" "}
                         {(Number(cartItem.product?.price) || 0) *
                           cartItem.quantity}
                       </div>
-
-                      <div className="col-12 d-md-none mt-2">
+                      <div className="my-auto">
                         <button
                           type="button"
-                          className="btn btn-sm btn-outline-danger w-100"
+                          className="btn btn-sm p-2 position-absolute top-0 end-0"
                           onClick={() => removeItem(cartItem.id)}
                         >
-                          <i className="bi bi-trash3 me-2"></i>移除
+                          <i class="bi bi-x-lg text-danger"></i>
                         </button>
                       </div>
                     </li>
                   ))}
                 </ul>
                 <div className="row justify-content-between p-3 py-lg-3 px-lg-4">
-                  <div className="col-12 col-lg-4 mb-3 mb-lg-0">
+                  <div className="col-lg-4 mb-3 mb-lg-0">
                     <Link
                       to="/allproducts"
                       className="btn btn-lg btn-outline-dark py-3 w-100"
@@ -249,7 +251,7 @@ function CartStepOne() {
                       <span className="fs-0">繼續逛逛</span>
                     </Link>
                   </div>
-                  <div className="col-12 col-lg-4">
+                  <div className="col-lg-4">
                     <button
                       type="button"
                       className="btn btn-lg btn-outline-dark border-0 py-3 w-100"

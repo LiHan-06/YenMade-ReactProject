@@ -136,7 +136,8 @@ function Header({ variant = "default" }) {
             </div>
             <div className="offcanvas-body px-6 px-md-8 px-lg-0">
               <div className="d-flex flex-column">
-                <form
+                {/* <!-- 搜尋欄位 --> */}
+                {/* <form
                   className="mb-4 position-relative d-lg-none"
                   role="search"
                 >
@@ -152,7 +153,7 @@ function Header({ variant = "default" }) {
                   >
                     <i className="bi bi-search fs-5 align-bottom"></i>
                   </button>
-                </form>
+                </form> */}
                 <ul className="navbar-nav flex-grow-1 pe-3">
                   <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
@@ -243,33 +244,36 @@ function Header({ variant = "default" }) {
           <div className="d-none d-lg-block position-relative">
             <div className="d-lg-flex align-items-lg-center">
               {/* <!-- 搜尋欄位 --> */}
-              <div className="collapse" id="collapseSearch">
-                <form role="button">
-                  <input
-                    type="search"
-                    className="form-control border-0 border-bottom bg-white-alpha"
-                    id="exampleFormControlInput1"
-                    placeholder="找商品"
-                  />
-                </form>
-              </div>
-              <button
-                className="btn text-neutral-600"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseSearch"
-                aria-expanded="false"
-                aria-controls="collapseSearch"
-              >
-                <i
-                  className={`bi bi-search fs-6 align-bottom ${style.icon}`}
-                ></i>
-              </button>
+              {/* <div>
+                <div className="collapse" id="collapseSearch">
+                  <form role="button">
+                    <input
+                      type="search"
+                      className="form-control border-0 border-bottom bg-white-alpha"
+                      id="exampleFormControlInput1"
+                      placeholder="找商品"
+                    />
+                  </form>
+                </div>
+                <button
+                  className="btn text-neutral-600"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSearch"
+                  aria-expanded="false"
+                  aria-controls="collapseSearch"
+                >
+                  <i
+                    className={`bi bi-search fs-6 align-bottom ${style.icon}`}
+                  ></i>
+                </button>
+              </div> */}
+
               {/* <!-- 會員頭像 --> */}
               <div className="btn-group ms-2" ref={dropdownRef}>
                 <button
                   type="button"
-                  className="d-none d-lg-inline bg-transparent border-0 p-2"
+                  className="d-none d-lg-inline bg-transparent border-0 py-2 px-3"
                   data-bs-toggle="dropdown"
                   aria-expanded={isOpen}
                   onClick={toggleDropdown}
@@ -311,10 +315,10 @@ function Header({ variant = "default" }) {
                   ) : (
                     <>
                       <li>
-                        <div className="dropdown-item text-center py-3">
+                        <div className="dropdown-item text-center p-0">
                           <NavLink
                             to="SignIn"
-                            className="text-decoration-none"
+                            className="text-decoration-none py-3 px-6"
                             onClick={handleItemClick}
                           >
                             登入
@@ -325,10 +329,10 @@ function Header({ variant = "default" }) {
                         <hr className="dropdown-divider m-auto" />
                       </li>
                       <li>
-                        <div className="dropdown-item text-center py-3">
+                        <div className="dropdown-item text-center p-0">
                           <NavLink
                             to="SignUp"
-                            className="text-decoration-none"
+                            className="text-decoration-none py-3 px-6"
                             onClick={handleItemClick}
                           >
                             註冊
@@ -342,7 +346,7 @@ function Header({ variant = "default" }) {
               {/* <!-- 購物車 --> */}
               <div className="btn-group ms-2 d-none d-lg-block">
                 <NavLink
-                  className="d-none d-lg-inline bg-transparent border-0 p-2"
+                  className="d-none d-lg-inline bg-transparent border-0 py-9 px-3"
                   to="CheckOut"
                   onClick={closeOffcanvas}
                 >

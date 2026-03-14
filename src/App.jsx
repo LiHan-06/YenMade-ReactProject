@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 // import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./lib/supabase.js";
 import "./App.css";
+import { v4 as uuidv4 } from "uuid";
+import { useCart } from "./hooks/useAppContext.js";
 
 import heroBg from "./assets/images/Hero_bg_pc.png";
 import NewArrivalsbg from "./assets/images/New_bg_img.jpg";
@@ -78,6 +80,43 @@ function App() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // 加入購物車
+  const getUserInfo = () => {
+    const savedData = localStorage.getItem("user_info");
+    return savedData ? JSON.parse(savedData) : null;
+  };
+  const { addToCart } = useCart();
+  // 儲存選擇的商品規格
+  const handleAddToCart = async ({ product_id, variant_id, quantity }) => {
+    const user = getUserInfo();
+    let guest_id = localStorage.getItem("guest_id");
+
+    if (!user && !guest_id) {
+      guest_id = uuidv4();
+      localStorage.setItem("guest_id", guest_id);
+    }
+
+    const cartInput = {
+      user_id: user?.id || null,
+      guest_id: guest_id || null,
+      product_id,
+      variant_id,
+      quantity,
+    };
+
+    try {
+      // ✅ 透過 hook 方法加入購物車並更新 UI
+      await addToCart(cartInput);
+
+      // console.log("成功加入購物車", cartInput);
+      alert("成功加入購物車");
+    } catch (error) {
+      console.error("加入購物車失敗:", error.message || error);
+      alert("加入購物車失敗");
+    }
+  };
+  // 加入購物車結束
 
   return (
     <>
@@ -192,7 +231,16 @@ function App() {
                                   {product.description || ""}
                                 </p>
                                 <div className="d-flex justify-content-between align-items-center mt-auto">
-                                  <button className="btn bg-neutral-300 btn-sm cart-btn ">
+                                  <button
+                                    className="btn bg-neutral-300 btn-sm cart-btn"
+                                    onClick={() =>
+                                      handleAddToCart({
+                                        product_id: product.id,
+                                        variant_id: targetVariant.id,
+                                        quantity: 1,
+                                      })
+                                    }
+                                  >
                                     <i className="bi bi-cart3"></i>
                                     <span className="btn-text">加入購物車</span>
                                   </button>

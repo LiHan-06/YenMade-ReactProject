@@ -97,13 +97,11 @@ function AProduct() {
       quantity: quantity,
     };
 
-    console.log("要送出的購物車資料:", cartInput);
-
     try {
       // ✅ 透過 hook 方法加入購物車並更新 UI
       await addToCart(cartInput);
 
-      console.log("成功加入購物車", cartInput);
+      // console.log("成功加入購物車", cartInput);
       alert("成功加入購物車");
     } catch (error) {
       console.error("加入購物車失敗:", error.message || error);
