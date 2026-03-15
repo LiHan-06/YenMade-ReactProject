@@ -72,10 +72,13 @@ const SignIn = () => {
               />
 
               <div className="col-12">
-                <label className="form-label">密碼</label>
+                <label className="form-label" htmlFor="password">
+                  密碼
+                </label>
                 <div className="input-group">
                   <input
                     name="password"
+                    id="password"
                     type={showPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="請輸入密碼"

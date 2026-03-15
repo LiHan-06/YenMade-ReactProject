@@ -236,7 +236,7 @@ function CartStepOne() {
                           className="btn btn-sm p-2 position-absolute top-0 end-0"
                           onClick={() => removeItem(cartItem.id)}
                         >
-                          <i class="bi bi-x-lg text-danger"></i>
+                          <i className="bi bi-x-lg text-danger"></i>
                         </button>
                       </div>
                     </li>

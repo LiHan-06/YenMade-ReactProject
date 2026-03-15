@@ -72,10 +72,13 @@ const SignUp = () => {
               />
 
               <div className="col-12">
-                <label className="form-label">設定密碼</label>
+                <label className="form-label" htmlFor="password">
+                  設定密碼
+                </label>
                 <div className="input-group">
                   <input
                     name="password"
+                    id="password"
                     type={showPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="至少 6 位字元"
