@@ -2,19 +2,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 
-import Banner_about from "./assets/images/about/Banner_about.png";
-import VectorGreen from "./assets/images/Vector-green.svg";
-import VectorOrange from "./assets/images/Vector-orange.svg";
-import Brand_story from "./assets/images/about/Brand_story.png";
-import Brand_team from "./assets/images/about/Brand_team.png";
-import Brand_concept_bg from "./assets/images/about/Brand_concept_bg.png";
-import Brand_concept_bg_mobile from "./assets/images/about/Brand_concept_bg_mobile.png";
-import About_carousel_1 from "./assets/images/about/About_carousel_1.png";
-import About_carousel_2 from "./assets/images/about/About_carousel_2.png";
-import About_carousel_3 from "./assets/images/about/About_carousel_3.png";
-import About_carousel_4 from "./assets/images/about/About_carousel_4.png";
-import About_carousel_5 from "./assets/images/about/About_carousel_5.png";
-import About_carousel_6 from "./assets/images/about/About_carousel_6.png";
+import Banner_about from "../assets/images/about/Banner_about.png";
+import VectorGreen from "../assets/images/Vector-green.svg";
+import VectorOrange from "../assets/images/Vector-orange.svg";
+import Brand_story from "../assets/images/about/Brand_story.png";
+import Brand_team from "../assets/images/about/Brand_team.png";
+import Brand_concept_bg from "../assets/images/about/Brand_concept_bg.png";
+import Brand_concept_bg_mobile from "../assets/images/about/Brand_concept_bg_mobile.png";
+import About_carousel_1 from "../assets/images/about/About_carousel_1.png";
+import About_carousel_2 from "../assets/images/about/About_carousel_2.png";
+import About_carousel_3 from "../assets/images/about/About_carousel_3.png";
+import About_carousel_4 from "../assets/images/about/About_carousel_4.png";
+import About_carousel_5 from "../assets/images/about/About_carousel_5.png";
+import About_carousel_6 from "../assets/images/about/About_carousel_6.png";
 
 export default function About() {
   const scrollWrapperRef = useRef(null);

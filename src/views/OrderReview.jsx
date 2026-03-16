@@ -1,6 +1,6 @@
 // OrderReview.jsx
 import React, { useEffect } from "react";
-import "./OrderReview.css";
+import "../assets/scss/css/OrderReview.css";
 import {
   Link,
   useNavigate,
@@ -8,13 +8,13 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { Tooltip } from "bootstrap";
-import { useCart } from "./hooks/useAppContext";
+import { useCart } from "../hooks/useAppContext";
 
 // images
-import line from "./assets/images/checkOut/Line 1.png";
-import GreenThree from "./assets/images/checkOut/Feature-number (3)1.png";
-import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
-import fullOk from "./assets/images/checkOut/Feature-number (ok).png";
+import line from "../assets/images/checkOut/Line 1.png";
+import GreenThree from "../assets/images/checkOut/Feature-number (3)1.png";
+import outLineFour from "../assets/images/checkOut/Feature-number (4).png";
+import fullOk from "../assets/images/checkOut/Feature-number (ok).png";
 
 // const mockCart = [
 //   {

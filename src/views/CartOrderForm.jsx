@@ -1,15 +1,15 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { getUserById } from "./api/users.js";
+import { getUserById } from "../api/users.js";
 import { Tooltip } from "bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../lib/supabase.js";
 
-import ProgressBar from "./assets/images/Progress-Bar.svg";
-import ProgressBarRwd from "./assets/images/Progress-Bar-rwd.svg";
-import MasterCard from "./assets/images/creditCard/MasterCard.svg";
-import VISA from "./assets/images/creditCard/Visa.svg";
-import JCB from "./assets/images/creditCard/JCB.svg";
+import ProgressBar from "../assets/images/Progress-Bar.svg";
+import ProgressBarRwd from "../assets/images/Progress-Bar-rwd.svg";
+import MasterCard from "../assets/images/creditCard/MasterCard.svg";
+import VISA from "../assets/images/creditCard/Visa.svg";
+import JCB from "../assets/images/creditCard/JCB.svg";
 
 const PAYMENT = {
   COD: "貨到付款",

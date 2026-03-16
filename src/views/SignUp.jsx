@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import AuthLayout from "./components/AuthLayout";
-import SocialButton from "./components/SocialButton";
-import InputGroup from "./components/InputGroup";
-import { signUp } from "./api/auth";
+import AuthLayout from "../components/AuthLayout";
+import SocialButton from "../components/SocialButton";
+import InputGroup from "../components/InputGroup";
+import { signUp } from "../api/auth";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);

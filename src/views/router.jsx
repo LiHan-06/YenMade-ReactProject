@@ -1,7 +1,7 @@
 import { createHashRouter } from "react-router";
 
-import HomeLayout from "./layout/HomeLayout";
-import DefaultLayout from "./layout/DefaultLayout";
+import HomeLayout from "../layout/HomeLayout";
+import DefaultLayout from "../layout/DefaultLayout";
 
 import App from "./App";
 import SignIn from "./SignIn";

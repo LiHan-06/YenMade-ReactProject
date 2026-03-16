@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
-import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
-import { useAuth, useCart } from "./hooks/useAppContext";
+import { getCouponsApi, applyCouponApi } from "../api/getCoupons.js";
+import { useAuth, useCart } from "../hooks/useAppContext";
 import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
 // images
-import line from "./assets/images/checkOut/Line 1.png";
-import GreenOne from "./assets/images/checkOut/Feature-number (1).png";
-import outLineTwo from "./assets/images/checkOut/Feature-number (2).png";
-import outLineThree from "./assets/images/checkOut/Feature-number (3).png";
-import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
-import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
+import line from "../assets/images/checkOut/Line 1.png";
+import GreenOne from "../assets/images/checkOut/Feature-number (1).png";
+import outLineTwo from "../assets/images/checkOut/Feature-number (2).png";
+import outLineThree from "../assets/images/checkOut/Feature-number (3).png";
+import outLineFour from "../assets/images/checkOut/Feature-number (4).png";
+import nullCart from "../assets/images/Gemini Generated Image (3) 1.png";
 
 function CartStepOne() {
   const { user } = useAuth();

@@ -1,24 +1,24 @@
 //首頁
 import { useState, useEffect } from "react";
 // import { createClient } from "@supabase/supabase-js";
-import { supabase } from "./lib/supabase.js";
-import "./App.css";
+import { supabase } from "../lib/supabase.js";
+import "../assets/scss/css/App.css";
 
-import heroBg from "./assets/images/Hero_bg_pc.png";
-import NewArrivalsbg from "./assets/images/New_bg_img.jpg";
-import finalCtaMobile from "./assets/images/FinalCTA_bg_mobile.png";
-import finalCtaDesktop from "./assets/images/FinalCTA_bg_img.jpg";
-import VectorGreen from "./assets/images/Vector-green.svg";
-import FeatureImg from "./assets/images/Feature-img.jpg";
-import salt from "./assets/images/illustration/Illustration_salt.svg";
-import FeatureImg1 from "./assets/images/Feature-img-1.jpg";
-import FeatureImg2 from "./assets/images/Feature-img-2.jpg";
-import FeatureImg3 from "./assets/images/Feature-img-3.jpg";
-import FeatureImg4 from "./assets/images/Feature-img-4.jpg";
-import cut from "./assets/images/illustration/Illustration_cut.svg";
-import VectorOrange from "./assets/images/Vector-orange.svg";
-import plate from "./assets/images/illustration/Illustration_plate.svg";
-import glassJam from "./assets/images/illustration/Illustration_glass_jam.svg";
+import heroBg from "../assets/images/Hero_bg_pc.png";
+import NewArrivalsbg from "../assets/images/New_bg_img.jpg";
+import finalCtaMobile from "../assets/images/FinalCTA_bg_mobile.png";
+import finalCtaDesktop from "../assets/images/FinalCTA_bg_img.jpg";
+import VectorGreen from "../assets/images/Vector-green.svg";
+import FeatureImg from "../assets/images/Feature-img.jpg";
+import salt from "../assets/images/illustration/Illustration_salt.svg";
+import FeatureImg1 from "../assets/images/Feature-img-1.jpg";
+import FeatureImg2 from "../assets/images/Feature-img-2.jpg";
+import FeatureImg3 from "../assets/images/Feature-img-3.jpg";
+import FeatureImg4 from "../assets/images/Feature-img-4.jpg";
+import cut from "../assets/images/illustration/Illustration_cut.svg";
+import VectorOrange from "../assets/images/Vector-orange.svg";
+import plate from "../assets/images/illustration/Illustration_plate.svg";
+import glassJam from "../assets/images/illustration/Illustration_glass_jam.svg";
 import { Link } from "react-router";
 
 // import './index.css'

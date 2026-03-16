@@ -1,11 +1,11 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
-import { supabase } from "./lib/supabase.js";
+import { supabase } from "../lib/supabase.js";
 import { v4 as uuidv4 } from "uuid";
 // import { useCart } from "./api/cartApiDate.jsx.local";
-import { useCart } from "./hooks/useAppContext";
-import Breadcrumb from "./components/BreadCrumb.jsx";
+import { useCart } from "../hooks/useAppContext.js";
+import Breadcrumb from "../components/BreadCrumb.jsx";
 
 // import { getCartAsync, addToCartAsync } from "./slices/cartSlice.js";
 // import { useDispatch } from "react-redux";

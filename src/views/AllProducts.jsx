@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { getProductsApi } from "./api/products.js";
+import { getProductsApi } from "../api/products.js";
 import { Link } from "react-router";
 
-import Banner_allproducts from "./assets/images/第二階段更新/img/Banner_allproducts.png";
-import Banner_allproducts_mobile from "./assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
+import Banner_allproducts from "../assets/images/第二階段更新/img/Banner_allproducts.png";
+import Banner_allproducts_mobile from "../assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);

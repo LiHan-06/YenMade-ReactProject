@@ -1,11 +1,11 @@
 // 部落格
 import { useMemo } from "react";
-import BlogImg1 from "./assets/images/1.jpg";
-import BlogImg2 from "./assets/images/2.jpeg";
-import BlogImg3 from "./assets/images/3.jpg";
-import BlogImg4 from "./assets/images/4.jpg";
-import BlogImg5 from "./assets/images/5.jpg";
-import BlogImg6 from "./assets/images/6.jpg";
+import BlogImg1 from "../assets/images/1.jpg";
+import BlogImg2 from "../assets/images/2.jpeg";
+import BlogImg3 from "../assets/images/3.jpg";
+import BlogImg4 from "../assets/images/4.jpg";
+import BlogImg5 from "../assets/images/5.jpg";
+import BlogImg6 from "../assets/images/6.jpg";
 
 export default function Blog() {
   const posts = useMemo(

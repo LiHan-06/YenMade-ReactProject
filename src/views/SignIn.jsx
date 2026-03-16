@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ 新增：用來跳轉頁面
-import AuthLayout from "./components/AuthLayout";
-import SocialButton from "./components/SocialButton";
-import InputGroup from "./components/InputGroup";
-import { signIn } from "./api/auth"; // ✅ 新增：引入你寫好的 API
+import AuthLayout from "../components/AuthLayout";
+import SocialButton from "../components/SocialButton";
+import InputGroup from "../components/InputGroup";
+import { signIn } from "../api/auth"; // ✅ 新增：引入你寫好的 API
 import { Link } from "react-router";
 
 const SignIn = () => {
