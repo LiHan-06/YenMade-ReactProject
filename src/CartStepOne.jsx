@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
 import { useAuth, useCart } from "./hooks/useAppContext";
 import { Tooltip } from "bootstrap";
@@ -14,9 +14,7 @@ import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
-
   const { discountAmount, setDiscountAmount } = useOutletContext();
-
   const {
     cart,
     fetchCart,
@@ -26,6 +24,36 @@ function CartStepOne() {
     totalPrice,
     deliveryFee,
   } = useCart();
+
+  // 樂觀更新用的本地 cart 狀態
+  const [localCart, setLocalCart] = useState(cart);
+  const debounceTimers = useRef({});
+  // 當 Context 的 cart 有變動時（例如初次載入、其他操作），同步到 localCart
+  useEffect(() => {
+    setLocalCart(cart);
+  }, [cart]);
+  //更新購物車數量 使用者體驗優化
+  const handleUpdateQuantity = (cartItemId, newQuantity, stock) => {
+    if (newQuantity < 1 || newQuantity > stock) return;
+
+    // 1. 立即更新本地 UI（樂觀更新）
+    setLocalCart((prev) =>
+      prev.map((item) =>
+        item.id === cartItemId ? { ...item, quantity: newQuantity } : item,
+      ),
+    );
+
+    // 2. 防抖：清除舊 timer，重新計時
+    clearTimeout(debounceTimers.current[cartItemId]);
+    debounceTimers.current[cartItemId] = setTimeout(async () => {
+      try {
+        await updateQuantity(cartItemId, newQuantity); // 呼叫 Context 的方法
+      } catch {
+        // 失敗時從 Context 的 cart rollback
+        setLocalCart(cart);
+      }
+    }, 500);
+  };
 
   useEffect(() => {
     fetchCart();
@@ -93,6 +121,12 @@ function CartStepOne() {
     return () => tooltips.forEach((t) => t.dispose());
   }, []);
 
+  // 確認是否執行指令
+  const checkoutDel = () => {
+    if (!window.confirm("確定要刪除嗎？")) return;
+    clearCart();
+  };
+
   return (
     <>
       <ul className="row justify-content-center align-items-center gx-1 gx-lg-4 mx-0 px-0 mx-lg-8 px-lg-8 my-6 my-lg-5 py-lg-5 list-unstyled">
@@ -155,7 +189,7 @@ function CartStepOne() {
                 </div>
 
                 <ul className="list-unstyled mb-0 px-9">
-                  {cart.map((cartItem) => (
+                  {localCart.map((cartItem) => (
                     <li
                       className="row py-3 py-lg-4 px-3 px-md-9 border-bottom border-neutral position-relative"
                       key={cartItem.id}
@@ -182,9 +216,10 @@ function CartStepOne() {
                               type="button"
                               className="btn border-0 p-1"
                               onClick={() =>
-                                updateQuantity(
+                                handleUpdateQuantity(
                                   cartItem.id,
                                   cartItem.quantity - 1,
+                                  cartItem.variant?.stock,
                                 )
                               }
                               disabled={cartItem.quantity <= 1}
@@ -206,13 +241,15 @@ function CartStepOne() {
                                     : "暫無庫存"}
                               </p>
                             </div>
+
                             <button
                               type="button"
                               className="btn border-0 p-1"
                               onClick={() =>
-                                updateQuantity(
+                                handleUpdateQuantity(
                                   cartItem.id,
                                   cartItem.quantity + 1,
+                                  cartItem.variant?.stock,
                                 )
                               }
                               disabled={
@@ -255,7 +292,7 @@ function CartStepOne() {
                     <button
                       type="button"
                       className="btn btn-lg btn-outline-dark border-0 py-3 w-100"
-                      onClick={() => clearCart()}
+                      onClick={() => checkoutDel()}
                     >
                       <i className="bi bi-trash3 me-2"></i>
                       <span className="fs-0">清空購物車</span>

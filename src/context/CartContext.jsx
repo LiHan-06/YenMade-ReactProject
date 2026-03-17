@@ -1,18 +1,17 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { CartContext } from "./ContextDefinitions";
-import { useAuth } from "../hooks/useAppContext"; 
-import { 
-  fetchCartWithDetails, 
-  addToCartApi, 
-  updateCartQuantityApi, 
-  deleteCartItemApi, 
-  clearCartApi 
+import { useAuth } from "../hooks/useAppContext";
+import {
+  fetchCartWithDetails,
+  addToCartApi,
+  updateCartQuantityApi,
+  deleteCartItemApi,
+  clearCartApi,
 } from "../api/carts";
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const { user } = useAuth();
-
 
   const fetchCart = useCallback(async () => {
     try {
@@ -31,7 +30,9 @@ export function CartProvider({ children }) {
       if (active) await fetchCart();
     };
     loadData();
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [fetchCart]);
 
   const totalPrice = useMemo(() => {
@@ -48,17 +49,15 @@ export function CartProvider({ children }) {
   const deliveryFee = cart.length > 0 ? 300 : 0;
 
   // ✅ 改成這樣
-const addToCart = async (cartInput) => {
-  try {
-    await addToCartApi(cartInput)  // 直接把物件傳進去
-    await fetchCart()
-  } catch (error) {
-    console.error("Add to cart error:", error)
-    throw error  // ← 這行也要加！不然 AProduct 的 catch 收不到錯誤
-  }
-}
-;
-
+  const addToCart = async (cartInput) => {
+    try {
+      await addToCartApi(cartInput); // 直接把物件傳進去
+      await fetchCart();
+    } catch (error) {
+      console.error("Add to cart error:", error);
+      throw error; // ← 這行也要加！不然 AProduct 的 catch 收不到錯誤
+    }
+  };
   const updateQuantity = async (cartItemId, newQuantity) => {
     if (newQuantity < 1) return;
     try {
@@ -88,17 +87,17 @@ const addToCart = async (cartInput) => {
   };
 
   return (
-    <CartContext.Provider 
-      value={{ 
-        cart, 
-        cartCount, 
-        fetchCart, 
-        addToCart, 
-        updateQuantity, 
-        removeItem, 
-        clearCart, 
-        totalPrice, 
-        deliveryFee 
+    <CartContext.Provider
+      value={{
+        cart,
+        cartCount,
+        fetchCart,
+        addToCart,
+        updateQuantity,
+        removeItem,
+        clearCart,
+        totalPrice,
+        deliveryFee,
       }}
     >
       {children}
