@@ -17,6 +17,7 @@ import CartStepOne from "./CartStepOne";
 import OrderReview from "./OrderReview";
 import OrderSuccess from "./OrderSuccess";
 import CartOrderForm from "./CartOrderForm";
+import BlogPost from "./BlogPost";
 
 export const router = createHashRouter(
   [
@@ -82,6 +83,10 @@ export const router = createHashRouter(
           path: "SignUp",
           element: <SignUp />,
         },
+        {
+    path: "blog/:id",  // 這裡的 :id 要對應你點擊的 /blog/1
+    element: <BlogPost />, 
+  },
       ],
     },
   ],
