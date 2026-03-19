@@ -1,10 +1,13 @@
-//首頁
 import { useState, useEffect } from "react";
 // import { createClient } from "@supabase/supabase-js";
 import { supabase } from "./lib/supabase.js";
 import "./App.css";
 import { v4 as uuidv4 } from "uuid";
 import { useCart } from "./hooks/useAppContext.js";
+
+// ✅ 1. 引入 Toastify 元件與樣式
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import heroBg from "./assets/images/Hero_bg_pc.png";
 import NewArrivalsbg from "./assets/images/New_bg_img.jpg";
@@ -87,7 +90,8 @@ function App() {
     return savedData ? JSON.parse(savedData) : null;
   };
   const { addToCart } = useCart();
-  // 儲存選擇的商品規格
+  
+  // ✅ 2. 儲存選擇的商品規格 (修改為 Toast 彈窗)
   const handleAddToCart = async ({ product_id, variant_id, quantity }) => {
     const user = getUserInfo();
     let guest_id = localStorage.getItem("guest_id");
@@ -109,17 +113,29 @@ function App() {
       // ✅ 透過 hook 方法加入購物車並更新 UI
       await addToCart(cartInput);
 
-      // console.log("成功加入購物車", cartInput);
-      alert("成功加入購物車");
+      // ✅ 換掉 alert，改用吐司訊息
+      toast.success("✨ 成功加入購物車！", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } catch (error) {
       console.error("加入購物車失敗:", error.message || error);
-      alert("加入購物車失敗");
+      // ✅ 錯誤時也顯示吐司
+      toast.error("加入購物車失敗，請再試一次。");
     }
   };
   // 加入購物車結束
 
   return (
     <>
+      {/* ✅ 3. 放置 Toast 容器 */}
+      <ToastContainer />
+
       {/* Section / Hero */}
       <section
         className="hero vh-100 position-relative"

@@ -5,6 +5,10 @@ import SocialButton from "./components/SocialButton";
 import InputGroup from "./components/InputGroup";
 import { signUp } from "./api/auth";
 
+// ✅ 1. 引入 Toastify 元件與樣式
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [validated, setValidated] = useState(false);
@@ -32,10 +36,20 @@ const SignUp = () => {
     try {
       await signUp(email, password, { full_name: fullName });
 
-      alert("註冊成功！");
-      navigate("/signin");
+      // ✅ 2. 註冊成功吐司
+      toast.success("註冊成功！歡迎加入 YenMade ✨", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+
+      // 稍微延遲跳轉，讓使用者看完訊息
+      setTimeout(() => {
+        navigate("/signin");
+      }, 2000);
+      
     } catch (error) {
-      alert("註冊失敗：" + error.message);
+      // ✅ 3. 註冊失敗吐司
+      toast.error(`註冊失敗：${error.message || "請檢查資料是否正確"}`);
       console.error("SignUp error:", error);
     } finally {
       setLoading(false);
@@ -44,6 +58,9 @@ const SignUp = () => {
 
   return (
     <AuthLayout title="加入 YenMade">
+      {/* ✅ 4. 放置 Toast 容器 */}
+      <ToastContainer />
+
       <section className="col-lg-6">
         <div className="card brand-card h-100">
           <div className="card-body">

@@ -3,6 +3,11 @@ import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
 import { useAuth, useCart } from "./hooks/useAppContext";
 import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
+
+// ✅ 引入 Toastify
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // images
 import line from "./assets/images/checkOut/Line 1.png";
 import GreenOne from "./assets/images/checkOut/Feature-number (1).png";
@@ -25,41 +30,36 @@ function CartStepOne() {
     deliveryFee,
   } = useCart();
 
-  // 樂觀更新用的本地 cart 狀態
   const [localCart, setLocalCart] = useState(cart);
   const debounceTimers = useRef({});
-  // 當 Context 的 cart 有變動時（例如初次載入、其他操作），同步到 localCart
+
   useEffect(() => {
     setLocalCart(cart);
   }, [cart]);
-  //更新購物車數量 使用者體驗優化
+
   const handleUpdateQuantity = (cartItemId, newQuantity, stock) => {
     if (newQuantity < 1 || newQuantity > stock) return;
 
-    // 1. 立即更新本地 UI（樂觀更新）
     setLocalCart((prev) =>
       prev.map((item) =>
         item.id === cartItemId ? { ...item, quantity: newQuantity } : item,
       ),
     );
 
-    // 2. 防抖：清除舊 timer，重新計時
     clearTimeout(debounceTimers.current[cartItemId]);
     debounceTimers.current[cartItemId] = setTimeout(async () => {
       try {
-        await updateQuantity(cartItemId, newQuantity); // 呼叫 Context 的方法
+        await updateQuantity(cartItemId, newQuantity);
       } catch {
-        // 失敗時從 Context 的 cart rollback
         setLocalCart(cart);
+        toast.error("更新數量失敗");
       }
     }, 500);
   };
 
   useEffect(() => {
     fetchCart();
-
     if (!user) return;
-
     const fetchCoupons = async () => {
       try {
         const couponData = await getCouponsApi();
@@ -68,7 +68,6 @@ function CartStepOne() {
         console.error("抓優惠券失敗", error);
       }
     };
-
     fetchCoupons();
   }, [user, fetchCart]);
 
@@ -76,10 +75,9 @@ function CartStepOne() {
     (Number(totalPrice) || 0) +
     (Number(deliveryFee) || 0) -
     (Number(discountAmount) || 0);
-  // 套用優惠券
+
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
-
     if (coupon_code === "noneToUse") {
       setDiscountAmount(0);
       return;
@@ -98,14 +96,15 @@ function CartStepOne() {
           session: user,
         });
         setDiscountAmount(discount || 0);
-        // console.log("套用折扣:", discount);
+        toast.success(`已套用優惠券：${coupon.title}`);
       } catch (error) {
         console.error("套用優惠券失敗", error);
+        toast.error("優惠券套用失敗");
       }
     } else {
       setDiscountAmount(0);
-      alert(`${coupon.title} 需滿 ${minAmount} 元才可使用`);
-      // 重置 radio 選項 (對使用者體驗較好)
+      // ✅ 換掉 alert
+      toast.warn(`金額不足！${coupon.title} 需滿 ${minAmount} 元才可使用`);
       e.target.checked = false;
     }
   };
@@ -117,18 +116,27 @@ function CartStepOne() {
     const tooltips = Array.from(tooltipTriggerList).map(
       (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl),
     );
-    // 清理 Tooltip 以免造成記憶體洩漏
     return () => tooltips.forEach((t) => t.dispose());
   }, []);
 
-  // 確認是否執行指令
+  // ✅ 改進後的刪除確認：雖然 Toast 主要是通知，但這裡為了整體感，刪除成功後給予提示
   const checkoutDel = () => {
-    if (!window.confirm("確定要刪除嗎？")) return;
+    if (!window.confirm("確定要清空購物車嗎？")) return;
     clearCart();
+    toast.info("已清空購物車");
+  };
+
+  // 移除單一項目時也加上提示
+  const handleRemoveItem = async (id) => {
+    await removeItem(id);
+    toast.info("已由購物車移除商品");
   };
 
   return (
     <>
+      {/* ✅ 放置 Toast 容器 */}
+      <ToastContainer position="top-right" autoClose={2000} theme="light" />
+
       <ul className="row justify-content-center align-items-center gx-1 gx-lg-4 mx-0 px-0 mx-lg-8 px-lg-8 my-6 my-lg-5 py-lg-5 list-unstyled">
         <li className="col text-center">
           <img src={GreenOne} alt="oneStep" />
@@ -156,6 +164,7 @@ function CartStepOne() {
           <p className="pt-2">完成訂單</p>
         </li>
       </ul>
+
       <section className="row" id="stepOne">
         <div className="col-lg-8">
           <div className="border">
@@ -271,7 +280,7 @@ function CartStepOne() {
                         <button
                           type="button"
                           className="btn btn-sm p-2 position-absolute top-0 end-0"
-                          onClick={() => removeItem(cartItem.id)}
+                          onClick={() => handleRemoveItem(cartItem.id)}
                         >
                           <i className="bi bi-x-lg text-danger"></i>
                         </button>
