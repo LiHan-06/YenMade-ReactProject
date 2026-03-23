@@ -139,7 +139,7 @@
 
 /* RWD */
 /* 媒體查詢：針對寬度小於或等於 768px（Bootstrap 的 $breakpoint-md-min - 1） */
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
   /* 讓 ul 標籤列表可以水平滾動 */
   #productsTab {
     /* 取消在非手機版的垂直間距 */
@@ -215,7 +215,7 @@
   padding-left: 68px;
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
   .ms--10 {
     margin-left: -25px;
     margin-right: -25px;

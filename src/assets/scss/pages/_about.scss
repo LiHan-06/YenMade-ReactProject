@@ -3,8 +3,8 @@
   font-size: $font-size-base * 0.875; // 14px
 }
 
-.mb-80{
-  margin-bottom: 80px
+.mb-80 {
+  margin-bottom: 80px;
 }
 
 .breadcrumb-item {
@@ -14,10 +14,9 @@
 
 .breadcrumb-item + .breadcrumb-item::before {
   display: inline-block;
-  content: var(--bs-breadcrumb-divider, '>');
+  content: var(--bs-breadcrumb-divider, ">");
   margin: 0 0.5rem;
 }
-
 
 /*banner*/
 .about-banner {
@@ -27,15 +26,15 @@
     display: block;
   }
 
-  @media (max-width: 768px) {
+  @include media-breakpoint-down(md) {
     img {
-      content: url('../assets/images/about/Banner_about_mobile.png');
+      content: url("../assets/images/about/Banner_about_mobile.png");
     }
   }
 }
 
 /*section1&3*/
-@media (max-width: 768px) {
+@include media-breakpoint-down(md) {
   .section1-3-row {
     padding-left: 12px;
     padding-right: 12px;
@@ -47,16 +46,16 @@
   position: relative;
 
   .section2-bg {
-    width: 100%;      
+    width: 100%;
     height: auto;
     display: block;
   }
 
   .section2-text {
-    width: 416px;            
-    text-align: left;        
-    padding: 0 20px;          
-    max-height: 80%;          
+    width: 416px;
+    text-align: left;
+    padding: 0 20px;
+    max-height: 80%;
     overflow: visible;
     position: absolute;
     top: 50%;
@@ -74,21 +73,21 @@
       z-index: 1;
     }
 
-    @media (max-width: 768px) {
+    @include media-breakpoint-down(md) {
       /* 手機版文字靠圖片下半部 */
       width: auto;
-      max-width: 90%;         // 滿寬限制
+      max-width: 90%; // 滿寬限制
       top: auto;
       bottom: 5%;
       left: 50%;
       transform: translateX(-50%);
       text-align: left;
-      padding: 0 12px;         // 手機左右留白 12px，避免貼邊太緊
+      padding: 0 12px; // 手機左右留白 12px，避免貼邊太緊
     }
   }
 
   // 手機版圖片去掉容器可能的左右 margin/padding
-  @media (max-width: 768px) {
+  @include media-breakpoint-down(md) {
     .section2-bg {
       display: block;
       position: relative;
@@ -98,39 +97,35 @@
   }
 }
 
-@media (max-width: 450px) {
-.h6{
-  font-size: 16px;
+@include media-breakpoint-down(sm) {
+  .h6 {
+    font-size: 16px;
+  }
 }
-
+@include media-breakpoint-down(sm) {
+  .font-size-375 {
+    font-size: 10px;
+  }
 }
-@media (max-width: 375px) {
-.font-size-375{
-  font-size: 10px;
-}
-
-}
-
-
 
 /*carousel*/
 .scroll-wrapper {
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth; /* 平滑滾動 */
-    scrollbar-width: none; /* Firefox */
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth; /* 平滑滾動 */
+  scrollbar-width: none; /* Firefox */
 }
 .scroll-wrapper::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
+  display: none; /* Chrome, Safari, Edge */
 }
 .scroll-wrapper img {
-    flex: 0 0 auto;
-    width: 300px; /* 每張圖片寬度 */
-    height: 200px; /* 高度可調 */
-    object-fit: cover;
-    scroll-snap-align: start;
-    border-radius: 8px;
+  flex: 0 0 auto;
+  width: 300px; /* 每張圖片寬度 */
+  height: 200px; /* 高度可調 */
+  object-fit: cover;
+  scroll-snap-align: start;
+  border-radius: 8px;
 }

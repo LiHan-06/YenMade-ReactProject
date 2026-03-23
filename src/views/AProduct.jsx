@@ -1,46 +1,36 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
-import { supabase } from "./lib/supabase.js";
+import { supabase } from "../lib/supabase.js";
 import { v4 as uuidv4 } from "uuid";
-// import { useCart } from "./api/cartApiDate.jsx.local";
-import { useCart } from "./hooks/useAppContext";
-import Breadcrumb from "./components/BreadCrumb.jsx";
 
-// import { getCartAsync, addToCartAsync } from "./slices/cartSlice.js";
-// import { useDispatch } from "react-redux";
+import { useCart } from "../hooks/useAppContext.js";
+import Breadcrumb from "../components/BreadCrumb.jsx";
+
+// ✅ 1. 引入 Toastify 元件與樣式
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AProduct() {
   const { id } = useParams();
-  // const navigate = useNavigate(); // ✅ 修正 2: 初始化 navigate
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const { fetchCart } = useCart();
-  // const useDispatch = useDispatch();
 
   // 儲存選擇的商品規格
   const [selectedVariant, setSelectedVariant] = useState(null);
   // 儲存目前的購買數量 (預設為1)
   const [quantity, setQuantity] = useState(1);
 
-  // async function addToCart(product_id, quantity) {
-  //   const data = (product_id, quantity);
-  // }
-
   useEffect(() => {
-    // 取得單一產品 api
     const fetchProduct = async () => {
       const { data, error } = await supabase
         .from("products")
         .select(`*, variants:product_variants(*)`)
-        // 假設你的規格表名稱是 product_variants，這會執行「左連接」
         .eq("id", id)
-        .single(); // 只拿一筆,加上 .single() 會直接回傳物件而非陣列
+        .single();
 
       if (!error && data) {
         setProduct(data);
-        // 預設選取第一個規格
-        // 確保 API 回傳後立即設定初始規格
         if (data.variants && data.variants.length > 0) {
           setSelectedVariant(data.variants[0]);
         }
@@ -53,8 +43,6 @@ function AProduct() {
     fetchProduct();
   }, [id]);
 
-  // 控制購買數量
-  // 數量增加
   const plusNum = () => {
     if (selectedVariant && quantity < selectedVariant?.stock) {
       setQuantity((prev) => prev + 1);
@@ -66,8 +54,6 @@ function AProduct() {
     }
   };
 
-  // 加入購物車
-  // 先有使用者資料才能操作購物車功能
   const getUserInfo = () => {
     const savedData = localStorage.getItem("user_info");
     return savedData ? JSON.parse(savedData) : null;
@@ -75,6 +61,7 @@ function AProduct() {
 
   const { addToCart } = useCart();
 
+  // ✅ 2. 修改 handleAddToCart 邏輯（把 alert 換成 toast）
   const handleAddToCart = async () => {
     const user = getUserInfo();
     let guest_id = localStorage.getItem("guest_id");
@@ -85,7 +72,7 @@ function AProduct() {
     }
 
     if (!selectedVariant) {
-      alert("請先選擇商品規格");
+      toast.warn("請先選擇商品規格"); // 改用警告吐司
       return;
     }
 
@@ -97,17 +84,19 @@ function AProduct() {
       quantity: quantity,
     };
 
-    console.log("要送出的購物車資料:", cartInput);
-
     try {
-      // ✅ 透過 hook 方法加入購物車並更新 UI
       await addToCart(cartInput);
 
-      console.log("成功加入購物車", cartInput);
-      alert("成功加入購物車");
+      // ✅ 成功吐司
+      toast.success(`✨ 已將 ${quantity} 份 ${product.title} 加入購物車！`, {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "light",
+      });
     } catch (error) {
       console.error("加入購物車失敗:", error.message || error);
-      alert("加入購物車失敗");
+      // ✅ 失敗吐司
+      toast.error("加入失敗，請稍後再試。");
     }
   };
 
@@ -116,8 +105,11 @@ function AProduct() {
 
   return (
     <main className="container">
+      {/* ✅ 3. 放置 Toast 容器 */}
+      <ToastContainer />
+
       <Breadcrumb product={product} />
-      {/* <!-- 商品簡介 --> */}
+      {/* */}
       <div className="row justify-content-center">
         <div className="col-md-5 d-none d-md-block">
           <img src={product.image_url} alt={product.title} />
@@ -131,15 +123,15 @@ function AProduct() {
             <img src={product.image_url} alt={product.title} />
           </div>
           <div className="row d-md-none d-lg-flex">
-            {/* <!-- 商品容量大小的選擇按鈕 --> */}
+            {/* */}
             {product?.variants?.map((variant) => (
               <div className="col-6" key={variant.id}>
                 <button
                   type="button"
                   className={`w-100 btn btn-outline-primary variantBtn py-2 px-9 ${
                     selectedVariant?.id === variant.id
-                      ? "text-white active" // 選中樣式
-                      : "" // 未選中
+                      ? "text-white active"
+                      : ""
                   }`}
                   onClick={() => {
                     setSelectedVariant(variant);
@@ -148,7 +140,6 @@ function AProduct() {
                 >
                   <div className="text-center">
                     <p className="btn-font-lg ls-10 mb-0">
-                      {/* {variant.size} */}
                       <span className="d-md-inline-block">{variant.name}</span>
                     </p>
                     <p className="btn-font-sm ls-10 mb-0">
@@ -159,11 +150,9 @@ function AProduct() {
               </div>
             ))}
 
-            {/* <!-- 購買數量的控制按鈕 --> */}
             <div className="col-12 my-9">
               <div className="input-group btn border-1 border-primary-600 bg-white p-2">
                 <div className="d-flex justify-content-between">
-                  {/* 減號按鈕 */}
                   <button
                     type="button"
                     className="btn border-0 p-9"
@@ -180,8 +169,6 @@ function AProduct() {
                       name="buyNumber"
                       readOnly
                     />
-
-                    {/* 動態顯示庫存狀態 */}
                     <p className="form-text text-center fs-9 ls-10 m-0">
                       {selectedVariant?.stock >= 10
                         ? "數量充足"
@@ -190,7 +177,6 @@ function AProduct() {
                           : "暫無庫存"}
                     </p>
                   </div>
-                  {/* 加號按鈕 */}
                   <button
                     type="button"
                     className="btn border-0 p-9"
@@ -202,7 +188,6 @@ function AProduct() {
                 </div>
               </div>
             </div>
-            {/* <!-- 加入購物車 --> */}
             <div className="col-12">
               <button
                 type="button"
@@ -219,17 +204,15 @@ function AProduct() {
           </div>
         </div>
       </div>
-      {/* <!-- 按鈕們 - 只在平板大小時出現 --> */}
+
+      {/* */}
       <div className="d-none d-md-flex d-lg-none row justify-content-center mt-4">
-        {/* <!-- 商品容量大小的選擇按鈕 --> */}
         {product?.variants?.map((variant) => (
           <div className="col-5" key={variant.id}>
             <button
               type="button"
               className={`w-100 btn btn-outline-primary variantBtn py-2 px-9 ${
-                selectedVariant?.id === variant.id
-                  ? "text-white active" // 選中樣式
-                  : "" // 未選中
+                selectedVariant?.id === variant.id ? "text-white active" : ""
               }`}
               onClick={() => {
                 setSelectedVariant(variant);
@@ -247,11 +230,9 @@ function AProduct() {
           </div>
         ))}
 
-        {/* <!-- 購買數量的控制按鈕 --> */}
         <div className="col-10 my-9">
           <div className="input-group btn border-1 border-primary-600 bg-white p-2">
             <div className="d-flex justify-content-between">
-              {/* 減號按鈕 */}
               <button
                 type="button"
                 className="btn border-0 p-9"
@@ -267,10 +248,8 @@ function AProduct() {
                   id="buyNumber"
                   readOnly
                 />
-
                 <p className="form-text text-center fs-9 ls-10 m-0">數量充足</p>
               </div>
-              {/* 加號按鈕 */}
               <button
                 type="button"
                 className="btn border-0 p-9"
@@ -288,14 +267,15 @@ function AProduct() {
             onClick={handleAddToCart}
           >
             <p className="m-auto ls-10">
-              NTD$<span>${(selectedVariant?.price || 0) * quantity}</span>
+              NTD$<span>{(selectedVariant?.price || 0) * quantity}</span>
               <span className="mx-3">－</span>
               加入購物車
             </p>
           </button>
         </div>
       </div>
-      {/* <!-- 詳細說明 --> */}
+
+      {/* */}
       <div className="row justify-content-center">
         <div className="col-md-10 py-8 product-mx-mobile mx-md-0">
           <div className="accordion accordion-flush" id="accordionFlushExample">
@@ -325,11 +305,12 @@ function AProduct() {
                     <br />
                     <span className="fw-bolder">過敏原資訊</span>
                     <br />
-                    本產品不含常見過敏原（如小麥、堅果、牛奶、蛋類等），但製程環境可能接觸含有大豆、芝麻的食品，對相關食材過敏者請留意。
+                    本產品不含常見過敏原，但製程環境可能接觸大豆、芝麻，請留意。
                   </div>
                 </div>
               </div>
             </div>
+
             <div className="accordion-item bg-primary-50 mb-4">
               <h2 className="accordion-header" id="flush-headingTwo">
                 <button
@@ -351,15 +332,17 @@ function AProduct() {
               >
                 <div className="accordion-body">
                   <ul className="fs-8 fw-bold ls-10 text-neutral-600">
-                    {Object.keys(product.origin).map((key) => (
-                      <li className="mb-2" key={key}>
-                        {product.origin[key]}
-                      </li>
-                    ))}
+                    {product.origin &&
+                      Object.keys(product.origin).map((key) => (
+                        <li className="mb-2" key={key}>
+                          {product.origin[key]}
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>
             </div>
+
             <div className="accordion-item bg-primary-50">
               <h2 className="accordion-header" id="flush-headingThree">
                 <button
@@ -381,15 +364,9 @@ function AProduct() {
               >
                 <div className="accordion-body">
                   <ul className="fs-8 fw-bold ls-10 text-neutral-600">
-                    <li className="mb-2">
-                      依《消費者保護法》規定，食品類商品屬於易腐敗、保存期限較短之商品，非商品瑕疵或配送錯誤恕無法辦理退換貨。
-                    </li>
-                    <li className="mb-2">
-                      若商品有瑕疵或與訂單不符，請於收到商品當日拍照存證並於24小時內聯繫客服，我們將協助您更換或退款。
-                    </li>
-                    <li>
-                      退換貨時，商品須保持完整包裝與附帶贈品，並以原包裝寄回。
-                    </li>
+                    <li className="mb-2">食品類不提供一般退換貨。</li>
+                    <li className="mb-2">瑕疵請於 24 小時內聯繫客服。</li>
+                    <li>退貨須保持包裝完整。</li>
                   </ul>
                 </div>
               </div>

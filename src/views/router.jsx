@@ -1,7 +1,7 @@
 import { createHashRouter } from "react-router";
 
-import HomeLayout from "./layout/HomeLayout";
-import DefaultLayout from "./layout/DefaultLayout";
+import HomeLayout from "../layout/HomeLayout";
+import DefaultLayout from "../layout/DefaultLayout";
 
 import App from "./App";
 import SignIn from "./SignIn";
@@ -10,6 +10,7 @@ import AllProducts from "./AllProducts";
 import AProduct from "./AProduct";
 import About from "./About";
 import Blog from "./Blog";
+import BlogPost from "./BlogPost";
 import FAQ from "./FAQ";
 
 import CheckOut from "./CheckOut";
@@ -81,6 +82,10 @@ export const router = createHashRouter(
         {
           path: "SignUp",
           element: <SignUp />,
+        },
+        {
+          path: "blog/:id", // 這裡的 :id 要對應你點擊的 /blog/1
+          element: <BlogPost />,
         },
       ],
     },

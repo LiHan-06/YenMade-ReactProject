@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // ✅ 新增：用來跳轉頁面
-import AuthLayout from "./components/AuthLayout";
-import SocialButton from "./components/SocialButton";
-import InputGroup from "./components/InputGroup";
-import { signIn } from "./api/auth"; // ✅ 新增：引入你寫好的 API
+import AuthLayout from "../components/AuthLayout";
+import SocialButton from "../components/SocialButton";
+import InputGroup from "../components/InputGroup";
+import { signIn } from "../api/auth"; // ✅ 新增：引入你寫好的 API
 import { Link } from "react-router";
+
+// ✅ 1. 引入 Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [loading, setLoading] = useState(false); // ✅ 新增：控制讀取中狀態
-  const navigate = useNavigate(); // ✅ 初始化跳轉工具
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // ✅ 升級為 async 函式
   const handleSubmit = async (event) => {
-    event.preventDefault(); // 先攔截預設行為
+    event.preventDefault();
     const form = event.currentTarget;
 
     if (form.checkValidity() === false) {
@@ -24,34 +27,39 @@ const SignIn = () => {
     }
 
     setValidated(true);
-    setLoading(true); // ✅ 開始讀取
+    setLoading(true);
 
-    // 取得資料
     const formData = new FormData(form);
     const email = formData.get("login_id");
     const password = formData.get("password");
 
     try {
-      // ✅ 執行登入並接收回傳的使用者資料 (測試帳號 ym2026@gmail.com / ym123456)
       const userData = await signIn(email, password);
-
-      // 將使用者資料存入 localStorage (轉為字串)
       localStorage.setItem("user_info", JSON.stringify(userData));
 
-      console.log(userData);
+      // ✅ 2. 登入成功吐司
+      toast.success("歡迎回來！登入成功 ✨", {
+        position: "top-right",
+        autoClose: 1500,
+      });
 
-      alert("登入成功！");
-      navigate("/"); // ✅ 成功後跳轉回首頁
+      // 稍微延遲跳轉，讓使用者看得到吐司
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     } catch (error) {
-      // ✅ 處理錯誤訊息 (例如帳密錯誤)
-      alert("登入失敗：" + error.message);
+      // ✅ 3. 登入失敗吐司
+      toast.error(`登入失敗：${error.message || "帳號或密碼錯誤"}`);
     } finally {
-      setLoading(false); // ✅ 結束讀取
+      setLoading(false);
     }
   };
 
   return (
     <AuthLayout title="登入 YenMade">
+      {/* ✅ 4. 放置 Toast 容器 */}
+      <ToastContainer />
+
       <section className="col-lg-6">
         <div className="card brand-card h-100">
           <div className="card-body">
@@ -65,17 +73,20 @@ const SignIn = () => {
               <InputGroup
                 label="電子郵件"
                 name="login_id"
-                type="email" // 指定 email 格式
+                type="email"
                 placeholder="請輸入 Email"
                 required
                 feedback="請輸入有效的 Email"
               />
 
               <div className="col-12">
-                <label className="form-label">密碼</label>
+                <label className="form-label" htmlFor="password">
+                  密碼
+                </label>
                 <div className="input-group">
                   <input
                     name="password"
+                    id="password"
                     type={showPassword ? "text" : "password"}
                     className="form-control"
                     placeholder="請輸入密碼"
@@ -92,7 +103,7 @@ const SignIn = () => {
                 <div className="invalid-feedback">請輸入密碼</div>
               </div>
 
-              <div className="col-12 d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center justify-content-between">
                 <div className="form-check">
                   <input
                     className="form-check-input"
@@ -109,7 +120,6 @@ const SignIn = () => {
               </div>
 
               <div className="col-12 d-flex gap-2">
-                {/* ✅ 登入中時禁用按鈕，防止重複點擊 */}
                 <button
                   className="btn btn-color flex-fill"
                   type="submit"

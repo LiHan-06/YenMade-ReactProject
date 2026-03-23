@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import logoImg from './assets/images/logo/Type=Logo_Horizontal.svg';
+import logoImg from '../assets/images/logo/Type=Logo_Horizontal.svg';
 
-import orderSuccessImg from './assets/images/checkOut/ordersuccess.png';
+import orderSuccessImg from '../assets/images/checkOut/ordersuccess.png';
 
-import orderSuccessImg2 from './assets/images/checkOut/ordersuccess-2.png';
+import orderSuccessImg2 from '../assets/images/checkOut/ordersuccess-2.png';
 
 
 
