@@ -1,15 +1,15 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { getUserById } from "./api/users.js";
+import { getUserById } from "../api/users.js";
 import { Tooltip } from "bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../lib/supabase.js";
 
-import ProgressBar from "./assets/images/Progress-Bar.svg";
-import ProgressBarRwd from "./assets/images/Progress-Bar-rwd.svg";
-import MasterCard from "./assets/images/creditCard/MasterCard.svg";
-import VISA from "./assets/images/creditCard/Visa.svg";
-import JCB from "./assets/images/creditCard/JCB.svg";
+import ProgressBar from "../assets/images/Progress-Bar.svg";
+import ProgressBarRwd from "../assets/images/Progress-Bar-rwd.svg";
+import MasterCard from "../assets/images/creditCard/MasterCard.svg";
+import VISA from "../assets/images/creditCard/Visa.svg";
+import JCB from "../assets/images/creditCard/JCB.svg";
 
 const PAYMENT = {
   COD: "貨到付款",
@@ -63,6 +63,12 @@ export default function CartOrderForm() {
     name: "sameAsBuyer",
     control,
   });
+
+  // --- 【第一步：在這裡加入以下三行】 ---
+  const currentYear = new Date().getFullYear(); // 取得今年 (2026)
+  const currentMonth = new Date().getMonth() + 1; // 取得當前月份
+  const selectedYear = useWatch({ name: "expYear", control }); // 監控使用者選了哪一年
+
   // 勾選「同寄件人」時打 API
   useEffect(() => {
     if (!sameAsBuyer) {
@@ -399,7 +405,9 @@ export default function CartOrderForm() {
                             className={`${selectBase} ${errors.expYear ? "is-invalid" : ""}`}
                             {...register("expYear", { required: "請選年份" })}
                           >
-                            <option value="">年份</option>
+                            <option value="" disabled>
+                              年份
+                            </option>
                             {years.map((y) => (
                               <option key={y} value={y}>
                                 {y}
@@ -411,12 +419,26 @@ export default function CartOrderForm() {
                             className={`${selectBase} ${errors.expMonth ? "is-invalid" : ""}`}
                             {...register("expMonth", { required: "請選月份" })}
                           >
-                            <option value="">月份</option>
-                            {months.map((m) => (
-                              <option key={m} value={m}>
-                                {m}
-                              </option>
-                            ))}
+                            <option value="" disabled>
+                              月份
+                            </option>
+                            {months.map((m) => {
+                              // 【新增邏輯】：判斷是否為過去的月份
+                              // 如果選的是今年，且月份數字小於目前的月份，就設為 true
+                              const isPastMonth =
+                                Number(selectedYear) === currentYear &&
+                                Number(m) < currentMonth;
+
+                              return (
+                                <option
+                                  key={m}
+                                  value={m}
+                                  disabled={isPastMonth} // 【新增屬性】：若是過去月份則禁用
+                                >
+                                  {m}
+                                </option>
+                              );
+                            })}
                           </select>
                         </div>
 
@@ -528,7 +550,7 @@ export default function CartOrderForm() {
           <div className="row  ">
             {/* 左：返回上一步 */}
             {/* 手機：排序用 order，lg 以上回到左邊 */}
-            <div className="col-12 col-lg d-flex justify-content-start align-items-end order-3 order-lg-1 mt-3 mt-lg-0">
+            <div className=" col-lg d-flex justify-content-start align-items-end order-3 order-lg-1 mt-3 mt-lg-0">
               <button
                 type="button"
                 className="btn btn-outline-dark  px-4 py-3 fw-medium"
@@ -539,7 +561,7 @@ export default function CartOrderForm() {
             </div>
 
             {/* 右：checkbox + 下一步 */}
-            <div className="col-12 col-lg d-flex flex-column align-items-start gap-3 order-1 order-lg-2">
+            <div className=" col-lg d-flex flex-column align-items-start gap-3 order-1 order-lg-2">
               {/* 同意條款 checkbox */}
               <div className="form-check m-0 fs-8 fw-medium py-2">
                 <input

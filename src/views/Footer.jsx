@@ -1,5 +1,5 @@
 // footer
-import Logo_Vertical from "./assets/images/logo/Type=Logo_Vertical.svg";
+import Logo_Vertical from "../assets/images/logo/Type=Logo_Vertical.svg";
 
 const CommList = ({ className, href, id }) => {
   return (

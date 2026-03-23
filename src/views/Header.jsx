@@ -3,11 +3,11 @@ import { NavLink, useLocation } from "react-router";
 import { useState, useEffect, useRef } from "react";
 // import { useCart } from "./api/cartApiDate";
 import { Offcanvas } from "bootstrap";
-import { useAuth, useCart } from "./hooks/useAppContext";
-import { supabase } from "./lib/supabase";
+import { useAuth, useCart } from "../hooks/useAppContext";
+import { supabase } from "../lib/supabase";
 import { createPortal } from "react-dom";
 
-import Logo_Horizontal from "./assets/images/logo/Type=Logo_Horizontal.svg";
+import Logo_Horizontal from "../assets/images/logo/Type=Logo_Horizontal.svg";
 
 // style 對照表
 const headerVariant = {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import AuthLayout from "./components/AuthLayout";
-import SocialButton from "./components/SocialButton";
-import InputGroup from "./components/InputGroup";
-import { signUp } from "./api/auth";
+import AuthLayout from "../components/AuthLayout";
+import SocialButton from "../components/SocialButton";
+import InputGroup from "../components/InputGroup";
+import { signUp } from "../api/auth";
 
 // ✅ 1. 引入 Toastify 元件與樣式
 import { ToastContainer, toast } from 'react-toastify';
@@ -131,7 +131,7 @@ const SignUp = () => {
                 </div>
               </div>
 
-              <div className="col-12 d-flex gap-2">
+              <div className="d-flex gap-2">
                 <button
                   className="btn btn-color flex-fill"
                   type="submit"

@@ -1,14 +1,15 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
-import { supabase } from "./lib/supabase.js";
+import { supabase } from "../lib/supabase.js";
 import { v4 as uuidv4 } from "uuid";
-import { useCart } from "./hooks/useAppContext";
-import Breadcrumb from "./components/BreadCrumb.jsx";
+
+import { useCart } from "../hooks/useAppContext.js";
+import Breadcrumb from "../components/BreadCrumb.jsx";
 
 // ✅ 1. 引入 Toastify 元件與樣式
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AProduct() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ function AProduct() {
         .from("products")
         .select(`*, variants:product_variants(*)`)
         .eq("id", id)
-        .single(); 
+        .single();
 
       if (!error && data) {
         setProduct(data);
@@ -85,7 +86,7 @@ function AProduct() {
 
     try {
       await addToCart(cartInput);
-      
+
       // ✅ 成功吐司
       toast.success(`✨ 已將 ${quantity} 份 ${product.title} 加入購物車！`, {
         position: "top-right",
@@ -129,8 +130,8 @@ function AProduct() {
                   type="button"
                   className={`w-100 btn btn-outline-primary variantBtn py-2 px-9 ${
                     selectedVariant?.id === variant.id
-                      ? "text-white active" 
-                      : "" 
+                      ? "text-white active"
+                      : ""
                   }`}
                   onClick={() => {
                     setSelectedVariant(variant);
@@ -211,9 +212,7 @@ function AProduct() {
             <button
               type="button"
               className={`w-100 btn btn-outline-primary variantBtn py-2 px-9 ${
-                selectedVariant?.id === variant.id
-                  ? "text-white active" 
-                  : "" 
+                selectedVariant?.id === variant.id ? "text-white active" : ""
               }`}
               onClick={() => {
                 setSelectedVariant(variant);
@@ -311,7 +310,7 @@ function AProduct() {
                 </div>
               </div>
             </div>
-            
+
             <div className="accordion-item bg-primary-50 mb-4">
               <h2 className="accordion-header" id="flush-headingTwo">
                 <button
@@ -333,11 +332,12 @@ function AProduct() {
               >
                 <div className="accordion-body">
                   <ul className="fs-8 fw-bold ls-10 text-neutral-600">
-                    {product.origin && Object.keys(product.origin).map((key) => (
-                      <li className="mb-2" key={key}>
-                        {product.origin[key]}
-                      </li>
-                    ))}
+                    {product.origin &&
+                      Object.keys(product.origin).map((key) => (
+                        <li className="mb-2" key={key}>
+                          {product.origin[key]}
+                        </li>
+                      ))}
                   </ul>
                 </div>
               </div>

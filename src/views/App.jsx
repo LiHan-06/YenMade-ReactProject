@@ -1,29 +1,29 @@
 import { useState, useEffect } from "react";
 // import { createClient } from "@supabase/supabase-js";
-import { supabase } from "./lib/supabase.js";
-import "./App.css";
+import { supabase } from "../lib/supabase.js";
+import "../assets/scss/css/App.scss";
 import { v4 as uuidv4 } from "uuid";
-import { useCart } from "./hooks/useAppContext.js";
+import { useCart } from "../hooks/useAppContext.js";
 
 // ✅ 1. 引入 Toastify 元件與樣式
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import heroBg from "./assets/images/Hero_bg_pc.png";
-import NewArrivalsbg from "./assets/images/New_bg_img.jpg";
-import finalCtaMobile from "./assets/images/FinalCTA_bg_mobile.png";
-import finalCtaDesktop from "./assets/images/FinalCTA_bg_img.jpg";
-import VectorGreen from "./assets/images/Vector-green.svg";
-import FeatureImg from "./assets/images/Feature-img.jpg";
-import salt from "./assets/images/illustration/Illustration_salt.svg";
-import FeatureImg1 from "./assets/images/Feature-img-1.jpg";
-import FeatureImg2 from "./assets/images/Feature-img-2.jpg";
-import FeatureImg3 from "./assets/images/Feature-img-3.jpg";
-import FeatureImg4 from "./assets/images/Feature-img-4.jpg";
-import cut from "./assets/images/illustration/Illustration_cut.svg";
-import VectorOrange from "./assets/images/Vector-orange.svg";
-import plate from "./assets/images/illustration/Illustration_plate.svg";
-import glassJam from "./assets/images/illustration/Illustration_glass_jam.svg";
+import heroBg from "../assets/images/Hero_bg_pc.png";
+import NewArrivalsbg from "../assets/images/New_bg_img.jpg";
+import finalCtaMobile from "../assets/images/FinalCTA_bg_mobile.png";
+import finalCtaDesktop from "../assets/images/FinalCTA_bg_img.jpg";
+import VectorGreen from "../assets/images/Vector-green.svg";
+import FeatureImg from "../assets/images/Feature-img.jpg";
+import salt from "../assets/images/illustration/Illustration_salt.svg";
+import FeatureImg1 from "../assets/images/Feature-img-1.jpg";
+import FeatureImg2 from "../assets/images/Feature-img-2.jpg";
+import FeatureImg3 from "../assets/images/Feature-img-3.jpg";
+import FeatureImg4 from "../assets/images/Feature-img-4.jpg";
+import cut from "../assets/images/illustration/Illustration_cut.svg";
+import VectorOrange from "../assets/images/Vector-orange.svg";
+import plate from "../assets/images/illustration/Illustration_plate.svg";
+import glassJam from "../assets/images/illustration/Illustration_glass_jam.svg";
 import { Link } from "react-router";
 
 // import './index.css'
@@ -90,7 +90,7 @@ function App() {
     return savedData ? JSON.parse(savedData) : null;
   };
   const { addToCart } = useCart();
-  
+
   // ✅ 2. 儲存選擇的商品規格 (修改為 Toast 彈窗)
   const handleAddToCart = async ({ product_id, variant_id, quantity }) => {
     const user = getUserInfo();
@@ -209,7 +209,7 @@ function App() {
                 </Link>
               </div>
               {/* 右側產品卡片 */}
-              <div className="col-12 col-lg-9">
+              <div className="col-lg-9">
                 <div className="row my-4 my-lg-120 new-flavors-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
                   {products.length > 0 ? (
                     products
@@ -270,7 +270,7 @@ function App() {
                         );
                       })
                   ) : (
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="d-flex justify-content-center">
                       <div className="no-products-card text-center p-5">
                         <i className="bi bi-hourglass-split fs-1 mb-3 text-neutral-400"></i>
                         <p className="mb-2 fs-4 fw-semibold">請稍等</p>
@@ -515,7 +515,7 @@ function App() {
                   >
                     <div className="row g-3 justify-content-center review-scroller">
                       {page.map((review) => (
-                        <div key={review.id} className="col-12 col-md-4">
+                        <div key={review.id} className="col-md-4">
                           <div className="card h-100 border-secondary review-card">
                             <div className="review-text">
                               <div className="card-body d-flex align-items-start pe-5">

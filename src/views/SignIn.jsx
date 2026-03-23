@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthLayout from "./components/AuthLayout";
-import SocialButton from "./components/SocialButton";
-import InputGroup from "./components/InputGroup";
-import { signIn } from "./api/auth";
+import { useNavigate } from "react-router-dom"; // ✅ 新增：用來跳轉頁面
+import AuthLayout from "../components/AuthLayout";
+import SocialButton from "../components/SocialButton";
+import InputGroup from "../components/InputGroup";
+import { signIn } from "../api/auth"; // ✅ 新增：引入你寫好的 API
 import { Link } from "react-router";
 
 // ✅ 1. 引入 Toastify
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +47,6 @@ const SignIn = () => {
       setTimeout(() => {
         navigate("/");
       }, 1500);
-
     } catch (error) {
       // ✅ 3. 登入失敗吐司
       toast.error(`登入失敗：${error.message || "帳號或密碼錯誤"}`);
@@ -104,7 +103,7 @@ const SignIn = () => {
                 <div className="invalid-feedback">請輸入密碼</div>
               </div>
 
-              <div className="col-12 d-flex align-items-center justify-content-between">
+              <div className="d-flex align-items-center justify-content-between">
                 <div className="form-check">
                   <input
                     className="form-check-input"

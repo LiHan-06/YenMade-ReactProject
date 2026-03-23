@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { getProductsApi } from "./api/products.js";
+import { getProductsApi } from "../api/products.js";
 import { Link } from "react-router";
 
-import Banner_allproducts from "./assets/images/第二階段更新/img/Banner_allproducts.png";
-import Banner_allproducts_mobile from "./assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
+import Banner_allproducts from "../assets/images/第二階段更新/img/Banner_allproducts.png";
+import Banner_allproducts_mobile from "../assets/images/第二階段更新/img/Banner_allproducts_mobile.png";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
@@ -70,7 +70,7 @@ const AllProducts = () => {
                     <i className="bi bi-house-door fs-8"></i>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className="breadcrumb-item breadcrumb-link active"
                   aria-current="page"
                 >
@@ -79,6 +79,17 @@ const AllProducts = () => {
                     className="text-decoration-none fs-8 py-9"
                   >
                     所有商品
+                  </Link>
+                </li> */}
+                <li
+                  className="breadcrumb-item breadcrumb-link active"
+                  aria-current="page"
+                >
+                  <Link
+                    to="/AllProducts"
+                    className="text-decoration-none fs-8 py-9"
+                  >
+                    {currentTab}
                   </Link>
                 </li>
               </ol>
@@ -111,7 +122,7 @@ const AllProducts = () => {
           </div>
 
           {/* 右側商品列表 */}
-          <div className="col-12 col-md-9 mt-md-0 mt-4 ps-md-2">
+          <div className="col-md-9 mt-md-0 mt-4 ps-md-2">
             <div className="row">
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (

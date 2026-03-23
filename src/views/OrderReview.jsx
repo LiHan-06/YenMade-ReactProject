@@ -1,6 +1,6 @@
 // OrderReview.jsx
 import React, { useEffect } from "react";
-import "./OrderReview.css";
+import "../assets/scss/css/OrderReview.css";
 import {
   Link,
   useNavigate,
@@ -8,13 +8,13 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { Tooltip } from "bootstrap";
-import { useCart } from "./hooks/useAppContext";
+import { useCart } from "../hooks/useAppContext";
 
 // images
-import line from "./assets/images/checkOut/Line 1.png";
-import GreenThree from "./assets/images/checkOut/Feature-number (3)1.png";
-import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
-import fullOk from "./assets/images/checkOut/Feature-number (ok).png";
+import line from "../assets/images/checkOut/Line 1.png";
+import GreenThree from "../assets/images/checkOut/Feature-number (3)1.png";
+import outLineFour from "../assets/images/checkOut/Feature-number (4).png";
+import fullOk from "../assets/images/checkOut/Feature-number (ok).png";
 
 // const mockCart = [
 //   {
@@ -132,7 +132,7 @@ function OrderReview() {
                     />
                     <p className="mb-4">購物車目前是空的</p>
                   </div>
-                  <div className="col-12 col-md-6 col-lg-4 px-4">
+                  <div className="col-md-6 col-lg-4 px-4">
                     <Link
                       to="/allproducts"
                       className="btn btn-lg btn-dark py-3 w-100"
@@ -157,7 +157,7 @@ function OrderReview() {
                         className="row py-3 py-lg-4 border-bottom border-neutral"
                         key={cartItem.id}
                       >
-                        <div className="col-12 col-md-5 d-flex align-items-center">
+                        <div className="col-md-5 d-flex align-items-center">
                           <img
                             src={cartItem.product.image_url}
                             alt={cartItem.product.title}

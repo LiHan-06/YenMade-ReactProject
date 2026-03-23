@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { getCouponsApi, applyCouponApi } from "./api/getCoupons.js";
-import { useAuth, useCart } from "./hooks/useAppContext";
+import { getCouponsApi, applyCouponApi } from "../api/getCoupons.js";
+import { useAuth, useCart } from "../hooks/useAppContext";
 import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
 
@@ -9,16 +9,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // images
-import line from "./assets/images/checkOut/Line 1.png";
-import GreenOne from "./assets/images/checkOut/Feature-number (1).png";
-import outLineTwo from "./assets/images/checkOut/Feature-number (2).png";
-import outLineThree from "./assets/images/checkOut/Feature-number (3).png";
-import outLineFour from "./assets/images/checkOut/Feature-number (4).png";
-import nullCart from "./assets/images/Gemini Generated Image (3) 1.png";
+import line from "../assets/images/checkOut/Line 1.png";
+import GreenOne from "../assets/images/checkOut/Feature-number (1).png";
+import outLineTwo from "../assets/images/checkOut/Feature-number (2).png";
+import outLineThree from "../assets/images/checkOut/Feature-number (3).png";
+import outLineFour from "../assets/images/checkOut/Feature-number (4).png";
+import nullCart from "../assets/images/Gemini Generated Image (3) 1.png";
 
 function CartStepOne() {
   const { user } = useAuth();
   const [coupons, setCoupons] = useState([]);
+
   const { discountAmount, setDiscountAmount } = useOutletContext();
   const {
     cart,
@@ -76,6 +77,7 @@ function CartStepOne() {
     (Number(deliveryFee) || 0) -
     (Number(discountAmount) || 0);
 
+  // 套用優惠券
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
     if (coupon_code === "noneToUse") {
@@ -116,6 +118,7 @@ function CartStepOne() {
     const tooltips = Array.from(tooltipTriggerList).map(
       (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl),
     );
+    // 清理 Tooltip 以免造成記憶體洩漏
     return () => tooltips.forEach((t) => t.dispose());
   }, []);
 
