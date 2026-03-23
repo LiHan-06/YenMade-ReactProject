@@ -200,7 +200,7 @@ function Header({ variant = "default" }) {
                       <span className="btn-font-lg">常見問題</span>
                     </NavLink>
                   </li>
-                  <li
+                  {/* <li
                     className={`nav-item text-center border-md-bottom ${style.navLi}`}
                     style={{
                       display: user ? "block" : "none",
@@ -213,7 +213,7 @@ function Header({ variant = "default" }) {
                     >
                       <span className="btn-font-lg">會員專區</span>
                     </NavLink>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>

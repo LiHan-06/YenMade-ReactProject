@@ -5,8 +5,8 @@ import { Tooltip } from "bootstrap";
 import { Link, useOutletContext } from "react-router";
 
 // ✅ 引入 Toastify
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // images
 import line from "./assets/images/checkOut/Line 1.png";
@@ -165,8 +165,8 @@ function CartStepOne() {
         </li>
       </ul>
 
-      <section className="row" id="stepOne">
-        <div className="col-lg-8">
+      <section className="row mb-6 mb-lg-8" id="stepOne">
+        <div className="col-lg-8 mb-4">
           <div className="border">
             <div className="bg-neutral-100 py-3 ps-4 mb-0">
               <p className="mb-0">{`購物車 (共 ${cart.length} 項)`}</p>
