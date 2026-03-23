@@ -1,3 +1,10 @@
+@import "bootstrap/scss/functions";
+@import "../helper/variables";
+@import "../helper/variables-dark";
+@import "bootstrap/scss/bootstrap";
+
+@import "../helper/mixin";
+
 /* Section NewArrivals Start*/
 .no-products-card {
   max-width: 400px;
@@ -117,7 +124,7 @@
 .shopping-bg-height {
   height: calc(100vh - 44px);
 
-  @media (min-width: 768px) {
+  @include rwd-md {
     height: calc(100vh - 288px);
   }
 }
@@ -137,7 +144,7 @@
   margin-bottom: 1rem;
 }
 /* --- 針對 420px 以下：加大外框、固定長度、置中排列 --- */
-@media (max-width: 420px) {
+@include media-breakpoint-down(sm) {
   /* 1. 加大外框並固定最小長度 */
   .review-card {
     display: flex;

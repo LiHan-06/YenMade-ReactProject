@@ -1,11 +1,12 @@
 // 部落格
 import { useMemo } from "react";
-import BlogImg1 from "./assets/images/1.jpg";
-import BlogImg2 from "./assets/images/2.jpeg";
-import BlogImg3 from "./assets/images/3.jpg";
-import BlogImg4 from "./assets/images/4.jpg";
-import BlogImg5 from "./assets/images/5.jpg";
-import BlogImg6 from "./assets/images/6.jpg";
+import { Link } from "react-router-dom";
+import BlogImg1 from "../assets/images/1.jpg";
+import BlogImg2 from "../assets/images/2.jpeg";
+import BlogImg3 from "../assets/images/3.jpg";
+import BlogImg4 from "../assets/images/4.jpg";
+import BlogImg5 from "../assets/images/5.jpg";
+import BlogImg6 from "../assets/images/6.jpg";
 
 export default function Blog() {
   const posts = useMemo(
@@ -18,7 +19,7 @@ export default function Blog() {
         dateISO: "2025-10-05",
         dateText: "2025/10/05",
         title: "醃製小黃瓜可以放幾天？怎麼保存才不會爛？【新手必看】",
-        href: "#",
+        href: "/blog/1",
       },
       {
         id: 2,
@@ -28,7 +29,7 @@ export default function Blog() {
         dateISO: "2025-09-20",
         dateText: "2025/09/20",
         title: "夏日涼拌小菜靈感集：三款輕鬆上桌的醃製料理",
-        href: "#",
+        href: "/blog/2",
       },
       {
         id: 3,
@@ -38,7 +39,7 @@ export default function Blog() {
         dateISO: "2025-09-15",
         dateText: "2025/09/15",
         title: "醃製蔬菜的營養差很多嗎？其實比你想的更有趣",
-        href: "#",
+        href: "/blog/3",
       },
       {
         id: 4,
@@ -48,7 +49,7 @@ export default function Blog() {
         dateISO: "2025-09-10",
         dateText: "2025/09/10",
         title: "低鹽醃製可能嗎？減鹽不減味的 4 個關鍵技巧",
-        href: "#",
+        href: "/blog/4",
       },
       {
         id: 5,
@@ -58,7 +59,7 @@ export default function Blog() {
         dateISO: "2025-08-25",
         dateText: "2025/08/25",
         title: "醃製時間過長會怎樣？風味變化與保存觀察",
-        href: "#",
+        href: "/blog/5",
       },
       {
         id: 6,
@@ -68,7 +69,7 @@ export default function Blog() {
         dateISO: "2025-08-01",
         dateText: "2025/08/01",
         title: "前端開發：團隊心得與感謝",
-        href: "#",
+        href: "/blog/6",
       },
     ],
     [],
@@ -100,9 +101,9 @@ export default function Blog() {
                   <p className="mt-2 mb-3">{post.title}</p>
 
                   <div className="text-end">
-                    <a href={post.href} className="link-brand">
+                    <Link to={post.href} className="link-brand">
                       閱讀更多 &raquo;&raquo;&raquo;
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </article>

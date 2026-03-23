@@ -121,7 +121,7 @@
   // }
 
   // 響應式調整
-  @media (max-width: 768px) {
+  @include media-breakpoint-down(md) {
     min-height: auto;
     padding: 60px 0;
 
@@ -374,7 +374,10 @@
 #reviewCarousel .carousel-control-next .bi {
   color: $secondary-500;
   opacity: 1;
-  transition: opacity 0.25s ease, color 0.25s ease, transform 0.15s ease;
+  transition:
+    opacity 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease;
 }
 
 #reviewCarousel .carousel-control-prev .bi:hover,
@@ -397,7 +400,7 @@
 /* -------------------section 4 ------------------- */
 
 /* 手機版：≤ 576px */
-@media (max-width: 576px) {
+@include media-breakpoint-down(sm) {
   /* H1 */
   .hero h1,
   .hero h1.fs-1 {
@@ -450,7 +453,7 @@
 }
 
 /* 平板（≤992px）：縮小、減少外探 */
-@media (max-width: 991.98px) {
+@include media-breakpoint-down(lg) {
   .illustration-salt {
     width: 110px;
     bottom: -120px;
@@ -464,7 +467,7 @@
 }
 
 /* 手機（≤576px）：取消負 right，改用 transform 視覺外探，不會撐出右邊白邊 */
-@media (max-width: 576.98px) {
+@include media-breakpoint-down(md) {
   .illustration-salt,
   .illustration-glass {
     // right: 0;                 /* 以右側為定位基準 */
@@ -508,7 +511,7 @@
 }
 
 /* 平板（≤992px）：縮小、減少外探 */
-@media (max-width: 991.98px) {
+@include media-breakpoint-down(lg) {
   .illustration-cut {
     width: 110px;
     left: -60px;
@@ -517,7 +520,7 @@
 }
 
 /* 手機（≤576px）：取消負 left，改用 transform 視覺外探 */
-@media (max-width: 576.98px) {
+@include media-breakpoint-down(sm) {
   .illustration-cut {
     width: 84px; /* 可依視覺調 80–96px */
     left: 0; /* 關鍵：不使用負值，避免撐寬 */
@@ -533,7 +536,7 @@
   }
 }
 
-@media (max-width: 992px) {
+@include media-breakpoint-down(lg) {
   .new-flavors .flavors-heading {
     position: absolute;
     top: -100px; /* ↑ 距離頂端，可調 40–72 */
@@ -574,7 +577,7 @@
 }
 
 /* 手機：新味登場 = 375 × 765 視覺 */
-@media (max-width: 780px) {
+@include media-breakpoint-down(md) {
   .new-flavors {
     position: relative;
     height: 765px; /* 固定高度 */
@@ -695,7 +698,7 @@
 }
 
 /* 手機細節微調（可依稿調整字級與間距） */
-@media (max-width: 576.98px) {
+@include media-breakpoint-down(sm) {
   .step-copy {
     gap: 0.5rem;
   }
@@ -712,7 +715,7 @@
 }
 
 /* 手機：固定一個可視高度 + cover 裁切，對準右側紅蘿蔔 */
-@media (max-width: 992px) {
+@include media-breakpoint-down(lg) {
   .carrot-img-wrap {
     overflow: hidden; /* 不讓超出 */
     height: clamp(350px, 48vw, 400px); /* 375 寬時約 230~260px 高，可調 */
@@ -798,7 +801,7 @@
 }
 
 /* 手機：線條縮短或乾脆隱藏（上面已 d-none） */
-@media (max-width: 998px) {
+@include media-breakpoint-down(lg) {
   .section-title3 {
     justify-content: center;
   }
@@ -822,7 +825,7 @@
 }
 
 /* 若想手機再緊一點 */
-@media (max-width: 998px) {
+@include media-breakpoint-down(lg) {
   .step-desc {
     line-height: 1.7;
     margin-inline: auto;
@@ -838,7 +841,7 @@
 }
 
 /* 手機：一次一張，寬度固定一致 */
-@media (max-width: 1200px) {
+@include media-breakpoint-down(xl) {
   /* 外層左右留 16px 安全邊界 */
   .review-scroller {
     display: flex;
@@ -892,7 +895,7 @@
   }
 }
 
-@media (max-width: 998px) {
+@include media-breakpoint-down(lg) {
   .review-scroller > [class*="col-"] {
     flex: 0 0 85%;
     max-width: 60%;
@@ -903,7 +906,7 @@
 }
 
 /* ≤576px：一屏一張，左右不露邊角 */
-@media (max-width: 576.98px) {
+@include media-breakpoint-down(sm) {
   /* 橫向滑、吸附置中 */
   .row.review-scroller {
     display: flex;
@@ -992,7 +995,7 @@
 }
 
 /* 平板再微調（≤992px）*/
-@media (max-width: 992px) {
+@include media-breakpoint-down(lg) {
   .section-title4 {
     letter-spacing: 0.06em;
   }
@@ -1005,7 +1008,7 @@
 }
 
 /* 手機細節（≤576px）*/
-@media (max-width: 576.98px) {
+@include media-breakpoint-down(sm) {
   .section-title4 {
     font-size: clamp(24px, 8vw, 34px);
   }
@@ -1013,14 +1016,14 @@
     font-size: clamp(12px, 4vw, 15px);
   }
 }
-@media (max-width: 998px) {
+@include media-breakpoint-down(lg) {
   .d-flex.align-items-center > .border-top {
     display: none !important;
   }
 }
 
 /* 375px 手機：整頁不要出現水平卷軸，但卡片區仍可左右滑 */
-@media (max-width: 1200px) {
+@include media-breakpoint-down(xl) {
   /* 1) 整頁禁止 X 軸 */
   html,
   body {
