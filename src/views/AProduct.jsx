@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useCart } from "../hooks/useAppContext.js";
 import Breadcrumb from "../components/BreadCrumb.jsx";
+import { Collapse } from "bootstrap";
 
 // ✅ 1. 引入 Toastify 元件與樣式
 import { ToastContainer, toast } from "react-toastify";

@@ -69,7 +69,7 @@ function Footer() {
                 </a>
                 <p className="mb-2">服務時間 ｜ 周一至周五 ｜ 09:00 - 18:00</p>
                 <a
-                  href="yenmadeservice@gmail.com"
+                  href="mailto:yenmadeservice@gmail.com"
                   className="mb-2 text-decoration-none"
                 >
                   客服信箱 ｜ yenmadeservice@gmail.com

@@ -1,6 +1,7 @@
 // 常見問題
 import { useMemo, useState } from "react";
 import { Link } from "react-router";
+import { Collapse, Tab } from "bootstrap";
 
 // 搜尋關鍵字
 function highlight(text, keyword) {

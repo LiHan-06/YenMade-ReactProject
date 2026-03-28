@@ -2,7 +2,7 @@
 import { NavLink, useLocation } from "react-router";
 import { useState, useEffect, useRef } from "react";
 // import { useCart } from "./api/cartApiDate";
-import { Offcanvas } from "bootstrap";
+import { Offcanvas, Dropdown } from "bootstrap";
 import { useAuth, useCart } from "../hooks/useAppContext";
 import { supabase } from "../lib/supabase";
 import { createPortal } from "react-dom";
