@@ -78,6 +78,7 @@ function CartStepOne() {
     (Number(discountAmount) || 0);
 
   // 套用優惠券
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
   const handleCouponChange = async (e) => {
     const coupon_code = e.target.value;
     if (coupon_code === "noneToUse") {
@@ -98,6 +99,7 @@ function CartStepOne() {
           session: user,
         });
         setDiscountAmount(discount || 0);
+        setSelectedCoupon(coupon);
         toast.success(`已套用優惠券：${coupon.title}`);
       } catch (error) {
         console.error("套用優惠券失敗", error);
@@ -105,11 +107,28 @@ function CartStepOne() {
       }
     } else {
       setDiscountAmount(0);
+      setSelectedCoupon(null);
       // ✅ 換掉 alert
       toast.warn(`金額不足！${coupon.title} 需滿 ${minAmount} 元才可使用`);
       e.target.checked = false;
     }
   };
+
+  useEffect(() => {
+  if (selectedCoupon) {
+    const minAmount = Number(selectedCoupon.min_purchase ?? 0);
+    
+    // 總金額減少到低於門檻
+    if (totalPrice < minAmount) {
+      setDiscountAmount(0);
+      setSelectedCoupon(null);
+      toast.warn(`金額低於門檻，已自動取消優惠券：${selectedCoupon.title}`);
+      
+      const noneRadio = document.querySelector('input[value="noneToUse"]');
+      if (noneRadio) noneRadio.checked = true;
+    }
+  }
+}, [totalPrice, selectedCoupon, setDiscountAmount]);
 
   useEffect(() => {
     const tooltipTriggerList = document.querySelectorAll(
