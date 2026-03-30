@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { getCouponsApi, applyCouponApi } from "../api/getCoupons.js";
 import { useAuth, useCart } from "../hooks/useAppContext";
 import { Tooltip } from "bootstrap";
-import { Link, useOutletContext } from "react-router";
+import { Link, useOutletContext } from "react-router-dom";
 
 // ✅ 引入 Toastify
 import { ToastContainer, toast } from "react-toastify";
@@ -115,20 +115,20 @@ function CartStepOne() {
   };
 
   useEffect(() => {
-  if (selectedCoupon) {
-    const minAmount = Number(selectedCoupon.min_purchase ?? 0);
-    
-    // 總金額減少到低於門檻
-    if (totalPrice < minAmount) {
-      setDiscountAmount(0);
-      setSelectedCoupon(null);
-      toast.warn(`金額低於門檻，已自動取消優惠券：${selectedCoupon.title}`);
-      
-      const noneRadio = document.querySelector('input[value="noneToUse"]');
-      if (noneRadio) noneRadio.checked = true;
+    if (selectedCoupon) {
+      const minAmount = Number(selectedCoupon.min_purchase ?? 0);
+
+      // 總金額減少到低於門檻
+      if (totalPrice < minAmount) {
+        setDiscountAmount(0);
+        setSelectedCoupon(null);
+        toast.warn(`金額低於門檻，已自動取消優惠券：${selectedCoupon.title}`);
+
+        const noneRadio = document.querySelector('input[value="noneToUse"]');
+        if (noneRadio) noneRadio.checked = true;
+      }
     }
-  }
-}, [totalPrice, selectedCoupon, setDiscountAmount]);
+  }, [totalPrice, selectedCoupon, setDiscountAmount]);
 
   useEffect(() => {
     const tooltipTriggerList = document.querySelectorAll(

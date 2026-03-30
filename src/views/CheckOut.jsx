@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, Outlet } from "react-router";
+import { useLocation, Outlet } from "react-router-dom";
 
 function CheckOut() {
   const location = useLocation();

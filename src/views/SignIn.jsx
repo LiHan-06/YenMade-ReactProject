@@ -4,7 +4,7 @@ import AuthLayout from "../components/AuthLayout";
 import SocialButton from "../components/SocialButton";
 import InputGroup from "../components/InputGroup";
 import { signIn } from "../api/auth"; // ✅ 新增：引入你寫好的 API
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 // ✅ 1. 引入 Toastify
 import { ToastContainer, toast } from "react-toastify";

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProductsApi } from "../api/products.js";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import Banner_allproducts from "../assets/images/Banner_allproducts.png";
 import Banner_allproducts_mobile from "../assets/images/Banner_allproducts_mobile.png";

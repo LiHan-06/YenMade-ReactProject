@@ -1,6 +1,6 @@
 // 關於我們
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 import Banner_about from "../assets/images/about/Banner_about.png";
 import VectorGreen from "../assets/images/Vector-green.svg";

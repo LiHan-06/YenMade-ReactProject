@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import ScrollToTop from "../components/ScrollToTop";
 import Header from "../views/Header";
 import Footer from "../views/Footer";

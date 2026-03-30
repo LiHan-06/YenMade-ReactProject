@@ -1,6 +1,6 @@
 // 常見問題
 import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { Collapse, Tab } from "bootstrap";
 
 // 搜尋關鍵字

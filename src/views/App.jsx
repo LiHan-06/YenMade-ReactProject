@@ -24,7 +24,7 @@ import cut from "../assets/images/illustration/Illustration_cut.svg";
 import VectorOrange from "../assets/images/Vector-orange.svg";
 import plate from "../assets/images/illustration/Illustration_plate.svg";
 import glassJam from "../assets/images/illustration/Illustration_glass_jam.svg";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 // import './index.css'
 
